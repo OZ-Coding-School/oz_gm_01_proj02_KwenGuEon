@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Google Analytics -->
+		<script>
+			(function(i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				(i[r] =
+					i[r] ||
+					function() {
+						(i[r].q = i[r].q || []).push(arguments);
+					}),
+					(i[r].l = 1 * new Date());
+				(a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m);
+			})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+			ga('create', 'UA-65945334-5', 'auto');
+			ga('send', 'pageview');
+		</script>
+		<!-- End Google Analytics -->
+
+		<title>Coliseum</title>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<link href="https://fonts.googleapis.com/css?family=Passion+One:400,600,700" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet" />
+		<!-- Not needed for the angular app, but needed for this HTML scaffholding -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+		<style>
+			html,
+			body {
+				margin: 0;
+				height: 100%;
+			}
+
+			.external-player {
+				position: relative;
+				width: 75%;
+				margin: auto;
+				overflow: hidden;
+				padding-right: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="externalPlayer" class="external-player">
+			Waiting waiting
+		</div>
+
+		<script src="./coliseum.js"></script>
+		<script>
+			$.ajax({
+				url: 'replay.xml',
+				dataType: 'xml',
+				success: function(response) {
+					// console.log('respoinse', response);
+					const replayAsString = response ? new XMLSerializer().serializeToString(response) : null;
+					window.coliseum.zone.run(() => {
+						window.coliseum.component.loadReplay(replayAsString, {
+							reviewId: 'fakeReviewId',
+						});
+					});
+				},
+			});
+		</script>
+	</body>
+</html>
