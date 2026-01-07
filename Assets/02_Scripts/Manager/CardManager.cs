@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CardManager : MonoBehaviour
 {
@@ -14,16 +16,30 @@ public class CardManager : MonoBehaviour
     [SerializeField] private List<Card> otherCards;
 
     [SerializeField] private Transform cardSpawnPoint;
-    [SerializeField] private Transform cardCanvas;
+    [SerializeField] private RectTransform cardCanvas;
 
     [SerializeField] private Transform playerCardLeft;
     [SerializeField] private Transform playerCardRight;
     [SerializeField] private Transform aiGamerCardLeft;
     [SerializeField] private Transform aiGamerCardRight;
+    
 
     [SerializeField] private TurnManager turnManager;
 
+    [Header("Enlarge")]
+    [SerializeField] float enlargeScale = 3.5f;
+    [SerializeField] float enlargeYPos = -4.8f;
+    [SerializeField] float enlargeZPos = -100f;
+
+    [Header("Hand Area")]
+    [SerializeField] private RectTransform handAreaRect;
+
     List<Item> itemBuffer;
+    Card selectCard;
+    Card dragCard;
+    bool isMyCardDrag;
+    [SerializeField] ECardState cardState;
+    enum ECardState {Nothing, CanMouseOver, CanMouseDrag }
 
     private void Awake()
     {
@@ -36,22 +52,51 @@ public class CardManager : MonoBehaviour
             Destroy(gameObject);
         }       
     }
-
     private void Start()
     {
         SerupItemBuffer();
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
         TurnManager.Instance.SubscribeOnAddCard(AddCard);
-    }
+    }    
     private void OnDestroy()
     {
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
     }
     private void Update()
     {
+        if (isMyCardDrag && dragCard != null)
+            CardDrag();
 
+        SetECardState();
     }
-   
+    void CardDrag()
+    {
+        bool isHand = IsPointerInHandArea(Input.mousePosition);
+
+        if(isHand)
+        {
+            dragCard.MoveVisualTransform(dragCard.originPRS, false);
+        }
+        else
+        {
+            Vector2 mousePos;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)dragCard.transform,
+                Input.mousePosition,
+                null,
+                out mousePos
+            );
+
+            dragCard.SetDragPosition(new Vector3(mousePos.x, mousePos.y, 0));
+        }
+    }
+    public bool IsPointerInHandArea(Vector2 screenPos)
+    {
+        if (handAreaRect == null) return false;
+
+        return RectTransformUtility.RectangleContainsScreenPoint(handAreaRect, screenPos, null);
+    }
     public Item PopItem()
     {
         if (itemBuffer.Count == 0)
@@ -76,13 +121,12 @@ public class CardManager : MonoBehaviour
 
         for (int i = 0; i < itemBuffer.Count; i++)
         {
-            int rand = Random.Range(i, itemBuffer.Count);
+            int rand = UnityEngine.Random.Range(i, itemBuffer.Count);
             Item temp = itemBuffer[i];
             itemBuffer[i] = itemBuffer[rand];
             itemBuffer[rand] = temp;
         }
     }
-
     void AddCard(bool isMine)
     {
         var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI, cardCanvas);
@@ -99,20 +143,17 @@ public class CardManager : MonoBehaviour
         for(int i = 0; i < count; i++)
         {
             var targetCard = isMine? myCards[i] : otherCards[i];
-            targetCard?.GetComponent<Order>().SetOriginOrder(i);
+            targetCard?.GetComponent<SortingOrder>().SetOriginOrder(i);
         }
     }
     void CardAlignment(bool isMine) //카드 정렬
     {
-        List<PositionRotationScale> originCardPRSs = new List<PositionRotationScale>();
-
-       
+        List<PositionRotationScale> originCardPRSs = new List<PositionRotationScale>();       
 
         if (isMine)
             originCardPRSs = RoundAlignment(playerCardLeft, playerCardRight, myCards.Count, arcHeight, Vector3.one * 1.1f);
         else
             originCardPRSs = RoundAlignment(aiGamerCardLeft, aiGamerCardRight, otherCards.Count, -arcHeight, Vector3.one * 1.1f);
-
 
         var targetCards = isMine ? myCards : otherCards;
         for(int i = 0; i < targetCards.Count; i++)
@@ -156,5 +197,89 @@ public class CardManager : MonoBehaviour
             results.Add(new PositionRotationScale(targetPos, targetRot, scale));
         }
         return results;
+    }
+
+    public void CardMouseOver(Card card)
+    {
+        if (cardState == ECardState.Nothing) return;
+
+        if(!isMyCardDrag)
+        {
+            selectCard = card;
+            EnlargeCard(true, card);
+        }
+    }
+    public void CardMouseExit(Card card)
+    {
+        if(!isMyCardDrag)
+            EnlargeCard(false, card);
+    }
+    public void CardMouseDown(Card card)
+    {
+        if (cardState != ECardState.CanMouseDrag) return;
+        Debug.Log($"2. 매니저 신호 받음! 받은 카드: {card.name}");
+
+        isMyCardDrag = true;
+        dragCard = card;
+    }
+    public void CardMouseUp()
+    {
+        isMyCardDrag = false;
+
+        if (cardState != ECardState.CanMouseDrag) return;
+
+        if (dragCard != null)
+        {
+            dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
+
+            dragCard.MoveVisualTransform(dragCard.originPRS, false);
+            dragCard = null;
+        }
+        DetectCardPointer();
+    }
+   void DetectCardPointer()
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerEventData, results);
+
+        foreach (var result in results)
+        {
+            
+            Card card = result.gameObject.GetComponentInParent<Card>();
+            if (card != null && card.isFront)
+            {
+                CardMouseOver(card); // 강제로 마우스 오버 함수 실행
+                break;
+            }
+        }
+    }
+    void EnlargeCard(bool isEnlarge, Card card)
+    {
+        if(isEnlarge)
+        {
+            Vector3 enlargePos = new Vector3(card.originPRS.pos.x, enlargeYPos, enlargeZPos);
+            card.MoveVisualTransform(new PositionRotationScale(enlargePos, Utils.QI, Vector3.one * enlargeScale), false);
+        }
+        else
+        {
+            card.MoveVisualTransform(card.originPRS, false);
+        }
+
+        card.GetComponent<SortingOrder>().SetMostFrontOrder(isEnlarge);            
+    }
+    void SetECardState()
+    {
+        if (TurnManager.Instance.isLoading)
+            cardState = ECardState.Nothing;
+
+        else if (!TurnManager.Instance.isMyTurn)
+            cardState = ECardState.CanMouseOver;
+
+        else if(TurnManager.Instance.isMyTurn)
+            cardState = ECardState.CanMouseDrag;
+            
     }
 }

@@ -20,13 +20,17 @@ public class TurnManager : MonoBehaviour
 
     [Header("Develop")]
     [SerializeField][Tooltip("선공, 후공을 정합니다")] ETurnMode eTurnMode;
+    [SerializeField][Tooltip("카드 드로우가 빨라진다")] bool isFaseMode;
     [SerializeField][Tooltip("시작 카드 개수를 정합니다")] int startCardCount;
 
     [Header("Properties")]
+    public bool isLoading; // 로딩중이면 true로 카드와 엔티티 클릭방지
     public bool isMyTurn;
 
     public enum ETurnMode {Random, my, Other }
-    WaitForSeconds delay = new WaitForSeconds(0.5f);
+    WaitForSeconds StartGameDelay = new WaitForSeconds(0.5f);
+    WaitForSeconds turnCardDelay = new WaitForSeconds(0.5f);
+    
 
     private static Action<bool> onAddCard;
 
@@ -45,6 +49,10 @@ public class TurnManager : MonoBehaviour
 
     void GameSetup()
     {
+        if (isFaseMode)
+            StartGameDelay = new WaitForSeconds(0.05f);
+
+
         switch(eTurnMode)
         {
             case ETurnMode.Random:
@@ -58,13 +66,32 @@ public class TurnManager : MonoBehaviour
     public IEnumerator StartGameCo()
     {
         GameSetup();
+        isLoading = true;
 
         for(int i = 0; i < startCardCount; i++)
         {
-            yield return delay;
+            yield return StartGameDelay;
             onAddCard?.Invoke(true);
-            yield return delay;
+            yield return StartGameDelay;
             onAddCard?.Invoke(false);
         }
+        StartCoroutine(StartTurnCo());
+    }
+    IEnumerator StartTurnCo()
+    {
+        isLoading = true;
+
+        if (isMyTurn)
+            GameManager.Instance.TurnChangePanel("나의 턴");
+
+        yield return turnCardDelay;
+        onAddCard?.Invoke(isMyTurn);
+        yield return turnCardDelay;
+        isLoading = false;
+    }
+    public void EndTurn()
+    {
+        isMyTurn = !isMyTurn;
+        StartCoroutine(StartTurnCo());
     }
 }
