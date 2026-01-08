@@ -47,6 +47,20 @@ public class TurnManager : MonoBehaviour
         onAddCard?.Invoke(isMine);
     }
 
+    private static event Action<bool> onTurnStarted;
+    public void SubscribeOnTurnStarted(Action<bool> action)
+    {
+        onTurnStarted += action;
+    }
+    public void UnsubscribeOnTurnStarted(Action<bool> action)
+    {
+        onTurnStarted -= action;
+    }
+    public void TriggerOnTurnStarted(bool isMine)
+    {
+        onTurnStarted?.Invoke(isMine);
+    }
+
     void GameSetup()
     {
         if (isFaseMode)
@@ -88,6 +102,8 @@ public class TurnManager : MonoBehaviour
         onAddCard?.Invoke(isMyTurn);
         yield return turnCardDelay;
         isLoading = false;
+        TriggerOnTurnStarted(isMyTurn);
+
     }
     public void EndTurn()
     {

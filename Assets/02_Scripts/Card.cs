@@ -42,8 +42,6 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log($"1. Ä«µå Å¬¸¯µÊ! isFront: {isFront}");
-
         if (isFront)
             CardManager.instance.CardMouseDown(this);
     }
