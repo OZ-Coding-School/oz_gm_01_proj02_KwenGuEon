@@ -14,13 +14,34 @@ public class Entity : MonoBehaviour
     [SerializeField] SpriteRenderer character;
     [SerializeField] TMP_Text attackTMP;    
     [SerializeField] TMP_Text heathTMP;
+    [SerializeField] GameObject sleepParticle;
 
     public int attack;
     public int heath;
     public bool isMine;
     public bool isBossOrEmpty;
     public Vector3 originPos;
+    int liveCount;
 
+    private void Start()
+    {
+        TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+        TurnManager.Instance.SubscribeOnTurnStarted(OnTurnStarted);
+    }
+    private void OnDestroy()
+    {
+        TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+    }
+    void OnTurnStarted(bool myTurn)
+    {
+        if (isBossOrEmpty)
+            return;
+
+        if (isMine == myTurn)
+            liveCount++;
+
+        sleepParticle.SetActive(liveCount < 1);
+    }
 
     public void Setup(Item item)
     {

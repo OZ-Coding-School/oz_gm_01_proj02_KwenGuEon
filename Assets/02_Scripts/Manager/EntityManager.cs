@@ -26,6 +26,7 @@ public class EntityManager : MonoBehaviour
     [SerializeField] Entity otherBossEntity;
 
     [Range(0f, 5f)][SerializeField] float entitySpacing = 2.3f;
+    WaitForSeconds delay = new WaitForSeconds(1.0f);
 
     const int MAX_ENTITY_COUNT = 7;
     public bool isFullMyEntities => myEntities.Count >= MAX_ENTITY_COUNT && !ExistMyEmptyEntity;
@@ -33,6 +34,29 @@ public class EntityManager : MonoBehaviour
     bool ExistMyEmptyEntity => myEntities.Exists(x => x == myEmptyEntity);
     int myEmptyEntityIndex => myEntities.FindIndex(x => x == myEmptyEntity);
 
+    private void Start()
+    {
+        TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+        TurnManager.Instance.SubscribeOnTurnStarted(OnTurnStarted);
+    }
+    private void OnDestroy()
+    {
+        TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+    }
+    void OnTurnStarted(bool myTurn)
+    {
+        if (!myTurn)
+            StartCoroutine(AICo());
+    }
+    IEnumerator AICo()
+    {
+        yield return delay;
+        CardManager.instance.TryPutCard(false);
+        yield return delay;
+
+        //공격로직
+        TurnManager.Instance.EndTurn();
+    }
     void EntityAlignment(bool isMine)
     {
         float targetY = isMine ? -1.48f : 1.48f;
