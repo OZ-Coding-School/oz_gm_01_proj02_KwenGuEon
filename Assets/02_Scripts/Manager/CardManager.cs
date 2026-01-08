@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,6 +18,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private List<Card> otherCards;
 
     [SerializeField] private Transform cardSpawnPoint;
+    [SerializeField] private Transform otherCardSpawnPoint;
     [SerializeField] private RectTransform cardCanvas;
 
     [SerializeField] private Transform playerCardLeft;
@@ -39,6 +42,7 @@ public class CardManager : MonoBehaviour
     Card dragCard;
     bool isMyCardDrag;
     [SerializeField] ECardState cardState;
+    int myPutCount;
     enum ECardState {Nothing, CanMouseOver, CanMouseDrag }
 
     private void Awake()
@@ -57,10 +61,19 @@ public class CardManager : MonoBehaviour
         SerupItemBuffer();
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
         TurnManager.Instance.SubscribeOnAddCard(AddCard);
+
+        TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+        TurnManager.Instance.SubscribeOnTurnStarted(OnTurnStarted);
     }    
     private void OnDestroy()
     {
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
+        TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+    }
+    void OnTurnStarted(bool isMyTurn)
+    {
+        if (isMyTurn)
+            myPutCount = 0;
     }
     private void Update()
     {
@@ -69,28 +82,7 @@ public class CardManager : MonoBehaviour
 
         SetECardState();
     }
-    void CardDrag()
-    {
-        bool isHand = IsPointerInHandArea(Input.mousePosition);
-
-        if(isHand)
-        {
-            dragCard.MoveVisualTransform(dragCard.originPRS, false);
-        }
-        else
-        {
-            Vector2 mousePos;
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                (RectTransform)dragCard.transform,
-                Input.mousePosition,
-                null,
-                out mousePos
-            );
-
-            dragCard.SetDragPosition(new Vector3(mousePos.x, mousePos.y, 0));
-        }
-    }
+   
     public bool IsPointerInHandArea(Vector2 screenPos)
     {
         if (handAreaRect == null) return false;
@@ -198,7 +190,42 @@ public class CardManager : MonoBehaviour
         }
         return results;
     }
+    public bool TryPutCard(bool isMine)
+    {        
 
+        if (isMine && myPutCount >= 1) //카드를 1개만 내면 끝 나중에 마나로 수정
+        {                        
+            return false;
+        }
+
+        if(!isMine && otherCards.Count <= 0)
+            return false;
+
+        Card card = isMine ? selectCard : otherCards[UnityEngine.Random.Range(0, otherCards.Count)];        
+
+        var spawnPos = isMine ? Utils.MousePos : otherCardSpawnPoint.position;
+        var targetCards = isMine ? myCards : otherCards;       
+
+        if (EntityManager.Instance.SpawnEntity(isMine, card.item, spawnPos))
+        {           
+            targetCards.Remove(card);
+            card.transform.DOKill();
+            DestroyImmediate(card.gameObject);
+            if(isMine)
+            {
+                selectCard = null;
+                myPutCount++;
+            }
+            CardAlignment(isMine);
+            return true;
+        }
+        else
+        {            
+            targetCards.ForEach(x => x.GetComponent<SortingOrder>().SetMostFrontOrder(false));
+            CardAlignment(isMine);
+            return false;
+        }
+    }
     public void CardMouseOver(Card card)
     {
         if (cardState == ECardState.Nothing) return;
@@ -217,7 +244,6 @@ public class CardManager : MonoBehaviour
     public void CardMouseDown(Card card)
     {
         if (cardState != ECardState.CanMouseDrag) return;
-        Debug.Log($"2. 매니저 신호 받음! 받은 카드: {card.name}");
 
         isMyCardDrag = true;
         dragCard = card;
@@ -230,14 +256,45 @@ public class CardManager : MonoBehaviour
 
         if (dragCard != null)
         {
-            dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
+            if(!IsPointerInHandArea(Input.mousePosition) && TryPutCard(true))
+            {
+                dragCard = null;
+            }
+            else
+            {
+                dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
 
-            dragCard.MoveVisualTransform(dragCard.originPRS, false);
-            dragCard = null;
+                dragCard.MoveVisualTransform(dragCard.originPRS, false);
+                dragCard = null;
+                EntityManager.Instance.RemoveMyEmptyEntity();
+            }                
         }
         DetectCardPointer();
     }
-   void DetectCardPointer()
+    void CardDrag()
+    {
+        bool isHand = IsPointerInHandArea(Input.mousePosition);
+
+        if (isHand)
+        {
+            dragCard.MoveVisualTransform(dragCard.originPRS, false);
+        }
+        else
+        {
+            Vector2 mousePos;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)dragCard.transform,
+                Input.mousePosition,
+                null,
+                out mousePos
+            );
+
+            dragCard.SetDragPosition(new Vector3(mousePos.x, mousePos.y, 0));
+            EntityManager.Instance.InsertMyEmptyEntity(Utils.MousePos.x);
+        }
+    }
+    void DetectCardPointer()
     {
         PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
         pointerEventData.position = Input.mousePosition;
@@ -275,11 +332,10 @@ public class CardManager : MonoBehaviour
         if (TurnManager.Instance.isLoading)
             cardState = ECardState.Nothing;
 
-        else if (!TurnManager.Instance.isMyTurn)
+        else if (!TurnManager.Instance.isMyTurn) // || myPutCount == 1 || EntityManager.Instance.isFullMyEntities
             cardState = ECardState.CanMouseOver;
 
         else if(TurnManager.Instance.isMyTurn)
-            cardState = ECardState.CanMouseDrag;
-            
+            cardState = ECardState.CanMouseDrag;            
     }
 }
