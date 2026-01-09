@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using DG.Tweening;
+using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 public class ResultPanel : MonoBehaviour
 {
@@ -14,7 +11,7 @@ public class ResultPanel : MonoBehaviour
     [SerializeField] TMP_Text resultTMP;
     [SerializeField] PanelDimmer dimmer;
 
-    
+
 
     public void ShowVictory()
     {
@@ -23,7 +20,7 @@ public class ResultPanel : MonoBehaviour
         transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutQuad);
         dimmer.ShowDimmer();
     }
-    public void Showlose()
+    public void ShowLose()
     {
         victoryPanel.SetActive(false);
         losePanel.SetActive(true);
@@ -45,7 +42,7 @@ public class ResultPanel : MonoBehaviour
     private void Start()
     {
         ScaleZero();
-        if(dimmer == null)
+        if (dimmer == null)
             dimmer = FindAnyObjectByType<PanelDimmer>();
     }
 

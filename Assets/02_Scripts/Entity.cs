@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
 using DG.Tweening;
+using TMPro;
+using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
@@ -12,7 +9,7 @@ public class Entity : MonoBehaviour
     [SerializeField] Item item;
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer character;
-    [SerializeField] TMP_Text attackTMP;    
+    [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text heathTMP;
     [SerializeField] GameObject sleepParticle;
 
@@ -77,7 +74,7 @@ public class Entity : MonoBehaviour
         heath -= damage;
         heathTMP.text = heath.ToString();
 
-        if(heath <= 0)
+        if (heath <= 0)
         {
             isDead = true;
             return true;
@@ -86,7 +83,7 @@ public class Entity : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(isMine)
+        if (isMine)
             EntityManager.Instance.EntityMouseDown(this);
     }
     private void OnMouseUp()

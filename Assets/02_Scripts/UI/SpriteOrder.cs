@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpriteOrder : MonoBehaviour
@@ -23,13 +21,13 @@ public class SpriteOrder : MonoBehaviour
     {
         int mulOrder = order * 10;
 
-        foreach(var renderer in backRenderers)
+        foreach (var renderer in backRenderers)
         {
             renderer.sortingLayerName = sortingLayerName;
             renderer.sortingOrder = mulOrder;
         }
 
-        foreach(var renderer in middleRenderers)
+        foreach (var renderer in middleRenderers)
         {
             renderer.sortingLayerName = sortingLayerName;
             renderer.sortingOrder = mulOrder + 1;

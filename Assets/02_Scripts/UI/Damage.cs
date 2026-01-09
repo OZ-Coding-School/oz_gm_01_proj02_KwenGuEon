@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
 
-    [SerializeField] TMP_Text damageTMP;    
-    
+    [SerializeField] TMP_Text damageTMP;
+
     public void Damaged(int damage)
     {
         if (damage <= 0)

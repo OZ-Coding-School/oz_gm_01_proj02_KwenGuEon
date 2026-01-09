@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -17,7 +15,7 @@ public class TurnChangePanel : MonoBehaviour
             .Append(transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutQuad))
             .AppendInterval(0.9f)
             .Append(transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutQuad));
-        
+
     }
     void Start() => ScaleZero();
 
