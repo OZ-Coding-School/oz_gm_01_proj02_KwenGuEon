@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -8,7 +7,7 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance;
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -27,12 +26,12 @@ public class TurnManager : MonoBehaviour
     public bool isLoading; // 로딩중이면 true로 카드와 엔티티 클릭방지
     public bool isMyTurn;
 
-    public enum ETurnMode {Random, my, Other }
+    public enum ETurnMode { Random, my, Other }
     WaitForSeconds StartGameDelay = new WaitForSeconds(0.5f);
     WaitForSeconds turnCardDelay = new WaitForSeconds(0.5f);
-    
 
-    private static Action<bool> onAddCard;
+
+    private event Action<bool> onAddCard;
 
     public void SubscribeOnAddCard(Action<bool> action)
     {
@@ -47,7 +46,7 @@ public class TurnManager : MonoBehaviour
         onAddCard?.Invoke(isMine);
     }
 
-    private static event Action<bool> onTurnStarted;
+    private event Action<bool> onTurnStarted;
     public void SubscribeOnTurnStarted(Action<bool> action)
     {
         onTurnStarted += action;
@@ -61,16 +60,30 @@ public class TurnManager : MonoBehaviour
         onTurnStarted?.Invoke(isMine);
     }
 
+    private event Action<bool> onGameResult;
+    public void SubscribeOnGameResult(Action<bool> action)
+    {
+        onGameResult += action;
+    }
+    public void UnsubscribeOnGameResult(Action<bool> action)
+    {
+        onGameResult -= action;
+    }
+    public void TriggerOnGameResult(bool isWin)
+    {
+        onGameResult?.Invoke(isWin);
+    }   
+
     void GameSetup()
     {
         if (isFaseMode)
             StartGameDelay = new WaitForSeconds(0.05f);
 
 
-        switch(eTurnMode)
+        switch (eTurnMode)
         {
             case ETurnMode.Random:
-                isMyTurn = UnityEngine.Random.Range(0,2) == 0; break;
+                isMyTurn = UnityEngine.Random.Range(0, 2) == 0; break;
             case ETurnMode.my:
                 isMyTurn = true; break;
             case ETurnMode.Other:
@@ -82,7 +95,7 @@ public class TurnManager : MonoBehaviour
         GameSetup();
         isLoading = true;
 
-        for(int i = 0; i < startCardCount; i++)
+        for (int i = 0; i < startCardCount; i++)
         {
             yield return StartGameDelay;
             onAddCard?.Invoke(true);
@@ -94,16 +107,13 @@ public class TurnManager : MonoBehaviour
     IEnumerator StartTurnCo()
     {
         isLoading = true;
-
-        if (isMyTurn)
-            GameManager.Instance.TurnChangePanel("나의 턴");
+        TriggerOnTurnStarted(isMyTurn);
 
         yield return turnCardDelay;
         onAddCard?.Invoke(isMyTurn);
         yield return turnCardDelay;
         isLoading = false;
-        TriggerOnTurnStarted(isMyTurn);
-
+        
     }
     public void EndTurn()
     {

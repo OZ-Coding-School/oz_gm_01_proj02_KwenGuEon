@@ -1,8 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using DG.Tweening;
 using UnityEngine.Rendering;
 
 public class EntityManager : MonoBehaviour
@@ -10,7 +10,7 @@ public class EntityManager : MonoBehaviour
     public static EntityManager Instance;
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -81,7 +81,7 @@ public class EntityManager : MonoBehaviour
                 finalPos = Camera.main.WorldToScreenPoint(targetPickEntity.transform.position);
             }
             targetPicker.transform.position = finalPos;
-        }            
+        }
     }
     void Attack(Entity attacker, Entity defender)
     {
@@ -107,19 +107,19 @@ public class EntityManager : MonoBehaviour
             })
             .AppendInterval(0.05f)
             .Append(attacker.transform.DOMove(attacker.originPos, 0.3f)).SetEase(Ease.OutCirc)
-            .OnComplete(() => 
+            .OnComplete(() =>
             {
                 sortingGroup.sortingOrder = originOrder;
                 AttackCallback(attacker, defender);
-            }); 
+            });
     }
     void AttackCallback(params Entity[] entities)
     {
-        foreach(var entity in entities)
+        foreach (var entity in entities)
         {
-            if(!entity.isDead || entity.isBossOrEmpty) continue; // 나중에 보스도 파괴시키는 장면 있어야하면 보스는 빼기
+            if (!entity.isDead || entity.isBossOrEmpty) continue; // 나중에 보스도 파괴시키는 장면 있어야하면 보스는 빼기
 
-            if(entity.isMine)
+            if (entity.isMine)
                 myEntities.Remove(entity);
             else
                 otherEntities.Remove(entity);
@@ -143,7 +143,7 @@ public class EntityManager : MonoBehaviour
 
         Vector3 screenPos = Vector3.zero;
 
-        if(targetEntity.GetComponent<RectTransform>() != null)
+        if (targetEntity.GetComponent<RectTransform>() != null)
         {
             screenPos = targetEntity.transform.position;
         }
@@ -154,7 +154,7 @@ public class EntityManager : MonoBehaviour
 
         screenPos += (Vector3)damageOffset;
         screenPos.z = 0;
-        
+
         damageComponent.transform.position = screenPos;
         damageComponent.Damaged(damage);
     }
@@ -167,13 +167,15 @@ public class EntityManager : MonoBehaviour
     }
     IEnumerator AICo()
     {
+        yield return new WaitUntil(() => !TurnManager.Instance.isLoading);
+
         yield return delay1Sc;
         CardManager.instance.TryPutCard(false);
         yield return delay1Sc;
 
         //공격로직
         var attackers = new List<Entity>(otherEntities.FindAll(x => x.attackAble == true));
-        for(int i = 0; i< attackers.Count; i++)
+        for (int i = 0; i < attackers.Count; i++)
         {
             int rand = Random.Range(i, attackers.Count);
             Entity temp = attackers[i];
@@ -181,14 +183,14 @@ public class EntityManager : MonoBehaviour
             attackers[rand] = temp;
         }
 
-        foreach(var attacker in attackers)
+        foreach (var attacker in attackers)
         {
             var defenders = new List<Entity>(myEntities);
             defenders.Add(myBossEntity);
             int rand = Random.Range(0, defenders.Count);
             Attack(attacker, defenders[rand]);
 
-            if(TurnManager.Instance.isLoading)
+            if (TurnManager.Instance.isLoading)
                 yield break;
 
             yield return delay2Sc;
@@ -200,11 +202,12 @@ public class EntityManager : MonoBehaviour
         yield return delay2Sc;
 
         if (myBossEntity.isDead)
-            StartCoroutine(GameManager.Instance.GameOver(false));
+            TurnManager.Instance.TriggerOnGameResult(false);        
 
         if (otherBossEntity.isDead)
-            StartCoroutine(GameManager.Instance.GameOver(true));
+            TurnManager.Instance.TriggerOnGameResult(true);        
     }
+
     //디버깅용
     public void DamageBoss(bool isMine, int damage)
     {
@@ -212,25 +215,26 @@ public class EntityManager : MonoBehaviour
         targetBpssEntity.TakeDamage(damage);
         StartCoroutine(CheckBossDead());
     }
+
     void EntityAlignment(bool isMine)
     {
         float targetY = isMine ? -1.62f : 0.59f;
         var targetEntities = isMine ? myEntities : otherEntities;
 
-        for(int i = 0; i < targetEntities.Count; i++)
+        for (int i = 0; i < targetEntities.Count; i++)
         {
-            float targetX = (targetEntities.Count - 1) * -(entitySpacing/ 2) + i * entitySpacing;
+            float targetX = (targetEntities.Count - 1) * -(entitySpacing / 2) + i * entitySpacing;
 
             var targetEntity = targetEntities[i];
             targetEntity.originPos = new Vector3(targetX, targetY, 0);
-            targetEntity.MoveTransform(targetEntity.originPos, true, 0.5f);            
+            targetEntity.MoveTransform(targetEntity.originPos, true, 0.5f);
         }
     }
     public void InsertMyEmptyEntity(float xPos)
     {
         if (isFullMyEntities) return;
 
-        if(!ExistMyEmptyEntity)
+        if (!ExistMyEmptyEntity)
             myEntities.Add(myEmptyEntity);
 
         Vector3 emptyEntitiesPos = myEmptyEntity.transform.position;
@@ -252,13 +256,13 @@ public class EntityManager : MonoBehaviour
     }
     public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos)
     {
-        if(isMine)
+        if (isMine)
         {
-            if (isFullMyEntities || !ExistMyEmptyEntity) return false; 
+            if (isFullMyEntities || !ExistMyEmptyEntity) return false;
         }
         else
         {
-            if(isFullOtherEntities) return false; 
+            if (isFullOtherEntities) return false;
         }
 
         var entityObject = Instantiate(entityPrefab, spawnPos, Utils.QI);
@@ -272,7 +276,7 @@ public class EntityManager : MonoBehaviour
         entity.isMine = isMine;
         entity.Setup(item);
         EntityAlignment(isMine);
-        
+
         return true;
     }
     public void EntityMouseDown(Entity entity)
@@ -297,10 +301,10 @@ public class EntityManager : MonoBehaviour
         if (!canMouseInput || selectEntity == null) return;
 
         bool existTarget = false;
-        foreach(var hit in Physics2D.RaycastAll(Utils.MousePos,Vector3.forward))
+        foreach (var hit in Physics2D.RaycastAll(Utils.MousePos, Vector3.forward))
         {
             Entity entity = hit.collider?.GetComponent<Entity>();
-            if(entity != null && !entity.isMine && selectEntity.attackAble)
+            if (entity != null && !entity.isMine && selectEntity.attackAble)
             {
                 targetPickEntity = entity;
                 existTarget = true;
@@ -317,9 +321,9 @@ public class EntityManager : MonoBehaviour
             EventSystem.current.RaycastAll(pointerData, results);
 
             foreach (var result in results)
-            {                
+            {
                 Entity entity = result.gameObject.GetComponent<Entity>();
-                
+
                 if (entity != null && !entity.isMine && selectEntity.attackAble)
                 {
                     targetPickEntity = entity;

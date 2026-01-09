@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 public class Item
@@ -21,11 +19,11 @@ public class Item
     [TextArea]
     public string cardInfo; //카드 능력 설명
 
-    [Range(0,100)]
+    [Range(0, 100)]
     public int shopPercent;
 }
 
-[CreateAssetMenu(fileName = "ItemSO",menuName = "SeriptableObject/ItemSO")]
+[CreateAssetMenu(fileName = "ItemSO", menuName = "SeriptableObject/ItemSO")]
 public class ItemSO : ScriptableObject
 {
     public Item[] items;

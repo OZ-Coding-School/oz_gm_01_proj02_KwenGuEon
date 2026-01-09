@@ -1,7 +1,5 @@
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -25,7 +23,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform playerCardRight;
     [SerializeField] private Transform aiGamerCardLeft;
     [SerializeField] private Transform aiGamerCardRight;
-    
+
 
     [SerializeField] private TurnManager turnManager;
 
@@ -43,7 +41,7 @@ public class CardManager : MonoBehaviour
     bool isMyCardDrag;
     [SerializeField] ECardState cardState;
     int myPutCount;
-    enum ECardState {Nothing, CanMouseOver, CanMouseDrag }
+    enum ECardState { Nothing, CanMouseOver, CanMouseDrag }
 
     private void Awake()
     {
@@ -54,7 +52,7 @@ public class CardManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }       
+        }
     }
     private void Start()
     {
@@ -64,7 +62,7 @@ public class CardManager : MonoBehaviour
 
         TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
         TurnManager.Instance.SubscribeOnTurnStarted(OnTurnStarted);
-    }    
+    }
     private void OnDestroy()
     {
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
@@ -82,7 +80,7 @@ public class CardManager : MonoBehaviour
 
         SetECardState();
     }
-   
+
     public bool IsPointerInHandArea(Vector2 screenPos)
     {
         if (handAreaRect == null) return false;
@@ -132,15 +130,15 @@ public class CardManager : MonoBehaviour
     void SetOriginorder(bool isMine)
     {
         int count = isMine ? myCards.Count : otherCards.Count;
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            var targetCard = isMine? myCards[i] : otherCards[i];
+            var targetCard = isMine ? myCards[i] : otherCards[i];
             targetCard?.GetComponent<SortingOrder>().SetOriginOrder(i);
         }
     }
     void CardAlignment(bool isMine) //카드 정렬
     {
-        List<PositionRotationScale> originCardPRSs = new List<PositionRotationScale>();       
+        List<PositionRotationScale> originCardPRSs = new List<PositionRotationScale>();
 
         if (isMine)
             originCardPRSs = RoundAlignment(playerCardLeft, playerCardRight, myCards.Count, arcHeight, Vector3.one * 1.1f);
@@ -148,7 +146,7 @@ public class CardManager : MonoBehaviour
             originCardPRSs = RoundAlignment(aiGamerCardLeft, aiGamerCardRight, otherCards.Count, -arcHeight, Vector3.one * 1.1f);
 
         var targetCards = isMine ? myCards : otherCards;
-        for(int i = 0; i < targetCards.Count; i++)
+        for (int i = 0; i < targetCards.Count; i++)
         {
             var targetCard = targetCards[i];
 
@@ -161,28 +159,28 @@ public class CardManager : MonoBehaviour
         float[] objLerps = new float[objCount];
         List<PositionRotationScale> results = new List<PositionRotationScale>(objCount);
 
-        switch(objCount)
+        switch (objCount)
         {
             case 1: objLerps = new float[] { 0.5f }; break;
             case 2: objLerps = new float[] { 0.27f, 0.73f }; break;
             case 3: objLerps = new float[] { 0.1f, 0.5f, 0.9f }; break;
             default:
                 float interval = 1.0f / (objCount - 1);
-                for(int i = 0; i < objCount; i++)
+                for (int i = 0; i < objCount; i++)
                 {
                     objLerps[i] = interval * i;
                 }
                 break;
         }
 
-        for(int i = 0; i < objCount; i++)
+        for (int i = 0; i < objCount; i++)
         {
             var targetPos = Vector3.Lerp(leftTr.position, rightTr.position, objLerps[i]);
             var targetRot = Quaternion.identity;
 
-            if(objCount >= 4)
+            if (objCount >= 4)
             {
-                float curveY = Mathf.Sin(objLerps[i] * Mathf.PI) * height;                
+                float curveY = Mathf.Sin(objLerps[i] * Mathf.PI) * height;
                 targetPos.y += curveY;
                 targetRot = Quaternion.Slerp(leftTr.rotation, rightTr.rotation, objLerps[i]);
             }
@@ -191,27 +189,27 @@ public class CardManager : MonoBehaviour
         return results;
     }
     public bool TryPutCard(bool isMine)
-    {        
+    {
 
         if (isMine && myPutCount >= 1) //카드를 1개만 내면 끝 나중에 마나로 수정
-        {                        
+        {
             return false;
         }
 
-        if(!isMine && otherCards.Count <= 0)
+        if (!isMine && otherCards.Count <= 0)
             return false;
 
-        Card card = isMine ? selectCard : otherCards[UnityEngine.Random.Range(0, otherCards.Count)];        
+        Card card = isMine ? selectCard : otherCards[UnityEngine.Random.Range(0, otherCards.Count)];
 
         var spawnPos = isMine ? Utils.MousePos : otherCardSpawnPoint.position;
-        var targetCards = isMine ? myCards : otherCards;       
+        var targetCards = isMine ? myCards : otherCards;
 
         if (EntityManager.Instance.SpawnEntity(isMine, card.item, spawnPos))
-        {           
+        {
             targetCards.Remove(card);
             card.transform.DOKill();
             DestroyImmediate(card.gameObject);
-            if(isMine)
+            if (isMine)
             {
                 selectCard = null;
                 myPutCount++;
@@ -220,7 +218,7 @@ public class CardManager : MonoBehaviour
             return true;
         }
         else
-        {            
+        {
             targetCards.ForEach(x => x.GetComponent<SortingOrder>().SetMostFrontOrder(false));
             CardAlignment(isMine);
             return false;
@@ -230,7 +228,7 @@ public class CardManager : MonoBehaviour
     {
         if (cardState == ECardState.Nothing) return;
 
-        if(!isMyCardDrag)
+        if (!isMyCardDrag)
         {
             selectCard = card;
             EnlargeCard(true, card);
@@ -238,7 +236,7 @@ public class CardManager : MonoBehaviour
     }
     public void CardMouseExit(Card card)
     {
-        if(!isMyCardDrag)
+        if (!isMyCardDrag)
             EnlargeCard(false, card);
     }
     public void CardMouseDown(Card card)
@@ -256,7 +254,7 @@ public class CardManager : MonoBehaviour
 
         if (dragCard != null)
         {
-            if(!IsPointerInHandArea(Input.mousePosition) && TryPutCard(true))
+            if (!IsPointerInHandArea(Input.mousePosition) && TryPutCard(true))
             {
                 dragCard = null;
             }
@@ -267,7 +265,7 @@ public class CardManager : MonoBehaviour
                 dragCard.MoveVisualTransform(dragCard.originPRS, false);
                 dragCard = null;
                 EntityManager.Instance.RemoveMyEmptyEntity();
-            }                
+            }
         }
         DetectCardPointer();
     }
@@ -304,7 +302,7 @@ public class CardManager : MonoBehaviour
 
         foreach (var result in results)
         {
-            
+
             Card card = result.gameObject.GetComponentInParent<Card>();
             if (card != null && card.isFront)
             {
@@ -315,7 +313,7 @@ public class CardManager : MonoBehaviour
     }
     void EnlargeCard(bool isEnlarge, Card card)
     {
-        if(isEnlarge)
+        if (isEnlarge)
         {
             Vector3 enlargePos = new Vector3(card.originPRS.pos.x, enlargeYPos, enlargeZPos);
             card.MoveVisualTransform(new PositionRotationScale(enlargePos, Utils.QI, Vector3.one * enlargeScale), false);
@@ -325,7 +323,7 @@ public class CardManager : MonoBehaviour
             card.MoveVisualTransform(card.originPRS, false);
         }
 
-        card.GetComponent<SortingOrder>().SetMostFrontOrder(isEnlarge);            
+        card.GetComponent<SortingOrder>().SetMostFrontOrder(isEnlarge);
     }
     void SetECardState()
     {
@@ -335,7 +333,7 @@ public class CardManager : MonoBehaviour
         else if (!TurnManager.Instance.isMyTurn) // || myPutCount == 1 || EntityManager.Instance.isFullMyEntities
             cardState = ECardState.CanMouseOver;
 
-        else if(TurnManager.Instance.isMyTurn)
-            cardState = ECardState.CanMouseDrag;            
+        else if (TurnManager.Instance.isMyTurn)
+            cardState = ECardState.CanMouseDrag;
     }
 }

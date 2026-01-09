@@ -16,7 +16,7 @@ public class EndTurnButton : MonoBehaviour
     }
     private void OnDestroy()
     {
-        TurnManager.Instance.UnsubscribeOnTurnStarted(Setup);        
+        TurnManager.Instance.UnsubscribeOnTurnStarted(Setup);
     }
     public void Setup(bool isActive)
     {

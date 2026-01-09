@@ -1,6 +1,5 @@
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -46,7 +45,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
             CardManager.instance.CardMouseDown(this);
     }
     public void OnDrag(PointerEventData eventData)
-    {        
+    {
     }
     public void OnPointerUp(PointerEventData eventData)
     {
@@ -65,7 +64,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         this.item = item;
         this.isFront = isFrount;
 
-        if(this.isFront)
+        if (this.isFront)
         {
             character.sprite = this.item.sprite;
             nameTMP.text = this.item.name;
@@ -94,7 +93,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     }
     public void MoveTransform(PositionRotationScale prs, bool isUseDoTween, float doTweenTime = 0.0f)
     {
-        if(isUseDoTween)
+        if (isUseDoTween)
         {
             transform.DOMove(prs.pos, doTweenTime);
             transform.DORotateQuaternion(prs.rot, doTweenTime);
@@ -102,14 +101,14 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         }
         else
         {
-            transform.position = prs.pos; 
+            transform.position = prs.pos;
             transform.rotation = prs.rot;
             transform.localScale = prs.scale;
         }
     }
     public void MoveVisualTransform(PositionRotationScale prs, bool isEnlarge, float doTweenTime = 0.0f)
     {
-        if(isEnlarge)
+        if (isEnlarge)
         {
             cardVisual.transform.DOMove(prs.pos, doTweenTime);
             cardVisual.transform.DORotateQuaternion(prs.rot, doTweenTime);
