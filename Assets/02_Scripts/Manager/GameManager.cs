@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour
         endTrunBtn.SetActive(false);
         yield return delay2Sc;
 
+
+        TurnManager.Instance.isLoading = true;
         if (isWin)
             resultPanel.ShowVictory();
         else

@@ -172,6 +172,27 @@ public class EntityManager : MonoBehaviour
         yield return delay1Sc;
 
         //공격로직
+        var attackers = new List<Entity>(otherEntities.FindAll(x => x.attackAble == true));
+        for(int i = 0; i< attackers.Count; i++)
+        {
+            int rand = Random.Range(i, attackers.Count);
+            Entity temp = attackers[i];
+            attackers[i] = attackers[rand];
+            attackers[rand] = temp;
+        }
+
+        foreach(var attacker in attackers)
+        {
+            var defenders = new List<Entity>(myEntities);
+            defenders.Add(myBossEntity);
+            int rand = Random.Range(0, defenders.Count);
+            Attack(attacker, defenders[rand]);
+
+            if(TurnManager.Instance.isLoading)
+                yield break;
+
+            yield return delay2Sc;
+        }
         TurnManager.Instance.EndTurn();
     }
     IEnumerator CheckBossDead()
