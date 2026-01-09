@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c5c8f51ed8e43d14db548ea71028d3be
+guid: 395ad89914d8d15419922727ee2cec5b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,148 +123,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: card_0
+      name: CjaracterBG2_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 58
-        width: 47
-        height: 62
+        x: 685
+        y: 152
+        width: 168
+        height: 161
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37e36f9a23a87c540bf6dd0fb3eec4d2
-      internalID: -989347482
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: card_1
-      rect:
-        serializedVersion: 2
-        x: 58
-        y: 58
-        width: 47
-        height: 62
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6ab477b843967204a960e23bfe3d07c8
-      internalID: -1197057657
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: card_2
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 58
-        width: 48
-        height: 61
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 83e66ca44b9c44e44a4ba89d4737226b
-      internalID: -1688032884
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: card_3
-      rect:
-        serializedVersion: 2
-        x: 172
-        y: 57
-        width: 56
-        height: 55
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 54312bb652410fe43ae0a8ecc9a3131d
-      internalID: -282227433
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: card_4
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 13
-        width: 23
-        height: 23
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d3cff214eb8e7244babd0e3dd6abaffe
-      internalID: 1808241149
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: card_6
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 16
-        width: 35
-        height: 19
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7abed73898dd01245b46579bd5bb57bd
-      internalID: 755799982
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: card_7
-      rect:
-        serializedVersion: 2
-        x: 88
-        y: 16
-        width: 35
-        height: 19
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3fc1012156855194f84084d9c0e196ec
-      internalID: -292209587
+      spriteID: 1f9fba5483e50ed43b384de7b33d5e10
+      internalID: -1921411215
       vertices: []
       indices: 
       edges: []
@@ -280,16 +154,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      card_0: -989347482
-      card_1: -1197057657
-      card_2: -1688032884
-      card_3: -282227433
-      card_4: 1808241149
-      card_5: -1417043324
-      card_6: 755799982
-      card_7: -292209587
-      card_8: -1681388511
-      card_9: -1127068232
+      CjaracterBG2_0: -1921411215
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

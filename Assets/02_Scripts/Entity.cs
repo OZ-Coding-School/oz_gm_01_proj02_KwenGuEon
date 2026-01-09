@@ -19,7 +19,9 @@ public class Entity : MonoBehaviour
     public int attack;
     public int heath;
     public bool isMine;
+    public bool isDead;
     public bool isBossOrEmpty;
+    public bool attackAble;
     public Vector3 originPos;
     int liveCount;
 
@@ -27,6 +29,17 @@ public class Entity : MonoBehaviour
     {
         TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
         TurnManager.Instance.SubscribeOnTurnStarted(OnTurnStarted);
+
+        if (isBossOrEmpty || isUI)
+        {
+            Vector3 screenPos = transform.position;
+
+            screenPos.z = -Camera.main.transform.position.z;
+
+            originPos = Camera.main.ScreenToWorldPoint(screenPos);
+
+            originPos.z = 0;
+        }
     }
     private void OnDestroy()
     {
@@ -42,7 +55,6 @@ public class Entity : MonoBehaviour
 
         sleepParticle.SetActive(liveCount < 1);
     }
-
     public void Setup(Item item)
     {
         attack = item.attack;
@@ -59,5 +71,32 @@ public class Entity : MonoBehaviour
             transform.DOMove(pos, dotweenTIme);
         else
             transform.position = pos;
+    }
+    public bool TakeDamage(int damage)
+    {
+        heath -= damage;
+        heathTMP.text = heath.ToString();
+
+        if(heath <= 0)
+        {
+            isDead = true;
+            return true;
+        }
+        return false;
+    }
+    private void OnMouseDown()
+    {
+        if(isMine)
+            EntityManager.Instance.EntityMouseDown(this);
+    }
+    private void OnMouseUp()
+    {
+        if (isMine)
+            EntityManager.Instance.EntityMouseUp();
+    }
+    private void OnMouseDrag()
+    {
+        if (isMine)
+            EntityManager.Instance.EntityMouseDrag();
     }
 }

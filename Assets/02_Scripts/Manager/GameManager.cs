@@ -1,15 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Multiline(10)]
+    [SerializeField] string cheatInfo;
     [SerializeField] TurnChangePanel turnChangePanel;
+    [SerializeField] ResultPanel resultPanel;
+    [SerializeField] GameObject endTrunBtn;
+
+    WaitForSeconds delay2Sc = new WaitForSeconds(2.0f);
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -39,9 +44,22 @@ public class GameManager : MonoBehaviour
         {
             TurnManager.Instance.TriggerOnAddCard(false);
         }
-        if(Input.GetKeyDown(KeyCode.Keypad3))
+        if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             TurnManager.Instance.EndTurn();
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            CardManager.instance.TryPutCard(false);
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            EntityManager.Instance.DamageBoss(true, 29);
+            
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad6))
+        {
+            EntityManager.Instance.DamageBoss(false, 29);
         }
     }
     public void StartGame()
@@ -51,5 +69,17 @@ public class GameManager : MonoBehaviour
     public void TurnChangePanel(string message)
     {
         turnChangePanel.Show(message);
+    }
+
+    public IEnumerator GameOver(bool isWin)
+    {
+        TurnManager.Instance.isLoading = true;
+        endTrunBtn.SetActive(false);
+        yield return delay2Sc;
+
+        if (isWin)
+            resultPanel.ShowVictory();
+        else
+            resultPanel.Showlose();
     }
 }
