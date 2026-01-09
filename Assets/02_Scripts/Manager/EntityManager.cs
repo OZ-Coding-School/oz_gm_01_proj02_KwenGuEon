@@ -202,13 +202,12 @@ public class EntityManager : MonoBehaviour
         yield return delay2Sc;
 
         if (myBossEntity.isDead)
-            TurnManager.Instance.TriggerOnGameResult(false);
-        //StartCoroutine(GameManager.Instance.GameOver(false));
+            TurnManager.Instance.TriggerOnGameResult(false);        
 
         if (otherBossEntity.isDead)
-            TurnManager.Instance.TriggerOnGameResult(true);
-        //StartCoroutine(GameManager.Instance.GameOver(true));
+            TurnManager.Instance.TriggerOnGameResult(true);        
     }
+
     //µð¹ö±ë¿ë
     public void DamageBoss(bool isMine, int damage)
     {
@@ -216,6 +215,7 @@ public class EntityManager : MonoBehaviour
         targetBpssEntity.TakeDamage(damage);
         StartCoroutine(CheckBossDead());
     }
+
     void EntityAlignment(bool isMine)
     {
         float targetY = isMine ? -1.62f : 0.59f;
