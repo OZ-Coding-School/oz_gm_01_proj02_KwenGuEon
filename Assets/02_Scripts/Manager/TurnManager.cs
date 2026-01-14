@@ -26,13 +26,34 @@ public class TurnManager : MonoBehaviour
     public bool isLoading; // 로딩중이면 true로 카드와 엔티티 클릭방지
     public bool isMyTurn;
 
+    [Header("Mana System")]
+    public int myMana;
+    public int myMaxMana;
+    public int otherMana;
+    public int otherMaxMana;
+
     public enum ETurnMode { Random, my, Other }
     WaitForSeconds StartGameDelay = new WaitForSeconds(0.5f);
     WaitForSeconds turnCardDelay = new WaitForSeconds(0.5f);
 
 
+    private event Action< bool ,int, int> onManaChange;
+    #region onManaChange
+    public void SubscribeOnManaChange(Action< bool, int, int> action)
+    {
+        onManaChange += action;
+    }
+    public void UnsubscribeOnManaChange(Action< bool, int, int> action)
+    {
+        onManaChange -= action;
+    }
+    public void TriggerOnManaChange(bool isMine, int mana, int maxMana)
+    {
+        onManaChange?.Invoke(isMine, mana, maxMana);
+    }
+    #endregion
     private event Action<bool> onAddCard;
-
+    #region onAddCard
     public void SubscribeOnAddCard(Action<bool> action)
     {
         onAddCard += action;
@@ -45,8 +66,9 @@ public class TurnManager : MonoBehaviour
     {
         onAddCard?.Invoke(isMine);
     }
-
+    #endregion
     private event Action<bool> onTurnStarted;
+    #region onTurnStarted
     public void SubscribeOnTurnStarted(Action<bool> action)
     {
         onTurnStarted += action;
@@ -59,8 +81,9 @@ public class TurnManager : MonoBehaviour
     {
         onTurnStarted?.Invoke(isMine);
     }
-
+    #endregion
     private event Action<bool> onGameResult;
+    #region onGameResult
     public void SubscribeOnGameResult(Action<bool> action)
     {
         onGameResult += action;
@@ -72,13 +95,17 @@ public class TurnManager : MonoBehaviour
     public void TriggerOnGameResult(bool isWin)
     {
         onGameResult?.Invoke(isWin);
-    }   
+    }
+    #endregion
+    
 
     void GameSetup()
     {
+        myMana = 0; myMaxMana = 0;
+        otherMana = 0; otherMaxMana = 0;
+
         if (isFaseMode)
             StartGameDelay = new WaitForSeconds(0.05f);
-
 
         switch (eTurnMode)
         {
@@ -98,22 +125,56 @@ public class TurnManager : MonoBehaviour
         for (int i = 0; i < startCardCount; i++)
         {
             yield return StartGameDelay;
-            onAddCard?.Invoke(true);
+            TriggerOnAddCard(true);
             yield return StartGameDelay;
-            onAddCard?.Invoke(false);
+            TriggerOnAddCard(false);
         }
         StartCoroutine(StartTurnCo());
     }
     IEnumerator StartTurnCo()
     {
         isLoading = true;
-        TriggerOnTurnStarted(isMyTurn);
 
+        if(isMyTurn)
+        {
+            if (myMaxMana < 10) myMaxMana++;
+            myMana = myMaxMana;
+            TriggerOnManaChange(true, myMana, myMaxMana);
+        }
+        else
+        {
+            if(otherMaxMana < 10) otherMaxMana++;
+            otherMana = otherMaxMana;
+            TriggerOnManaChange(false, otherMana, otherMaxMana);
+        }
+
+        TriggerOnTurnStarted(isMyTurn);
         yield return turnCardDelay;
-        onAddCard?.Invoke(isMyTurn);
+        TriggerOnAddCard(isMyTurn);
         yield return turnCardDelay;
-        isLoading = false;
-        
+        isLoading = false;        
+    }
+    public bool UseMana(bool isMine, int cost)
+    {
+        if(isMine)
+        {
+            if(myMana >= cost)
+            {
+                myMana -= cost;
+                TriggerOnManaChange(true, myMana, myMaxMana);
+                return true;
+            }            
+        }
+        else
+        {
+            if(otherMana >= cost)
+            {
+                otherMana -= cost;
+                TriggerOnManaChange(false, otherMana, otherMaxMana);
+                return true;
+            }
+        }
+        return false;
     }
     public void EndTurn()
     {

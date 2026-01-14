@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -47,8 +48,7 @@ public class EntityManager : MonoBehaviour
     Entity selectEntity;
     Entity targetPickEntity;
 
-    [SerializeField] Vector2 damageOffset = new Vector2(0, 50);
-    [SerializeField] float damageRandomRange = 30.0f;
+    [SerializeField] Vector2 damageOffset = new Vector2(0, 50);    
 
     private void Start()
     {
@@ -63,6 +63,7 @@ public class EntityManager : MonoBehaviour
     {
         ShowTargetPicker(existTargetPickEntity);
     }
+    //타겟이 누군지 보여주는 스프라이트의 로직
     void ShowTargetPicker(bool isShow)
     {
         targetPicker.SetActive(isShow);
@@ -86,6 +87,7 @@ public class EntityManager : MonoBehaviour
     void Attack(Entity attacker, Entity defender)
     {
         attacker.attackAble = false;
+        attacker.TurnOnOffOutLine(false);
 
         var sortingGroup = attacker.GetComponent<SortingGroup>();
         int originOrder = sortingGroup.sortingOrder;
@@ -168,13 +170,15 @@ public class EntityManager : MonoBehaviour
     IEnumerator AICo()
     {
         yield return new WaitUntil(() => !TurnManager.Instance.isLoading);
-
         yield return delay1Sc;
-        CardManager.instance.TryPutCard(false);
-        yield return delay1Sc;
+        while (CardManager.instance.TryPutCard(false))
+        {
+            yield return delay1Sc;
+        }
 
         //공격로직
         var attackers = new List<Entity>(otherEntities.FindAll(x => x.attackAble == true));
+
         for (int i = 0; i < attackers.Count; i++)
         {
             int rand = Random.Range(i, attackers.Count);
@@ -187,6 +191,14 @@ public class EntityManager : MonoBehaviour
         {
             var defenders = new List<Entity>(myEntities);
             defenders.Add(myBossEntity);
+
+            var provocationDefenders = myEntities.FindAll(x => x.isProvocation);
+
+            if(provocationDefenders.Count > 0)
+            {
+                defenders = provocationDefenders;
+            }
+
             int rand = Random.Range(0, defenders.Count);
             Attack(attacker, defenders[rand]);
 
@@ -277,7 +289,32 @@ public class EntityManager : MonoBehaviour
         entity.Setup(item);
         EntityAlignment(isMine);
 
+        if(item.isBattleCry)
+        {
+            RunBattleCry(isMine, item);
+        }
+
         return true;
+    }
+    //전투의 함성 로직
+    public void RunBattleCry(bool isMine, Item item)
+    {
+        switch(item.name)
+        {
+            case ("투척병"):
+                break;
+            case ("숲의 치유사"):
+                break;
+            case ("미치광이 폭탄마"):
+                break;
+        }
+    }
+    public void RunSpell(bool isMine, Item item)
+    {
+        switch(item.name)
+        {
+            
+        }
     }
     public void EntityMouseDown(Entity entity)
     {
@@ -300,12 +337,16 @@ public class EntityManager : MonoBehaviour
     {
         if (!canMouseInput || selectEntity == null) return;
 
+        bool existTauntEntity = otherEntities.Exists(x => x.isProvocation);
         bool existTarget = false;
+
         foreach (var hit in Physics2D.RaycastAll(Utils.MousePos, Vector3.forward))
         {
             Entity entity = hit.collider?.GetComponent<Entity>();
             if (entity != null && !entity.isMine && selectEntity.attackAble)
             {
+                if (existTauntEntity && !entity.isProvocation) continue;
+
                 targetPickEntity = entity;
                 existTarget = true;
                 break;
@@ -340,5 +381,13 @@ public class EntityManager : MonoBehaviour
     {
         var targetEntities = isMine ? myEntities : otherEntities;
         targetEntities.ForEach(x => x.attackAble = true);
+
+        foreach (var entity in myEntities) 
+        {
+            //if(entity == null || entity.isBossOrEmpty) continue;
+
+            entity.attackAble = isMine;
+            entity.TurnOnOffOutLine(entity.attackAble);
+        }
     }
 }
