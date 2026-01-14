@@ -8,8 +8,7 @@ public class CardManager : MonoBehaviour
     public static CardManager instance;
 
     [SerializeField] ItemSO itemSO;
-    [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private float cardOriginScale = 1.1f;
+    [SerializeField] private GameObject cardPrefab;    
     [SerializeField] float arcHeight = 70.0f;
 
     [SerializeField] private List<Card> myCards;
@@ -40,7 +39,7 @@ public class CardManager : MonoBehaviour
     Card dragCard;
     bool isMyCardDrag;
     [SerializeField] ECardState cardState;
-    int myPutCount;
+    
     enum ECardState { Nothing, CanMouseOver, CanMouseDrag }
 
     private void Awake()
@@ -69,16 +68,19 @@ public class CardManager : MonoBehaviour
         TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
     }
     void OnTurnStarted(bool isMyTurn)
-    {
-        if (isMyTurn)
-            myPutCount = 0;
+    {        
     }
     private void Update()
     {
+        if (TurnManager.Instance.isLoading) return;
+
         if (isMyCardDrag && dragCard != null)
             CardDrag();
 
         SetECardState();
+
+        if (cardState != ECardState.Nothing)
+            DetectCardPointer();
     }
 
     public bool IsPointerInHandArea(Vector2 screenPos)
@@ -190,10 +192,11 @@ public class CardManager : MonoBehaviour
     }
     public bool TryPutCard(bool isMine)
     {
-
-        if (isMine && myPutCount >= 1) //카드를 1개만 내면 끝 나중에 마나로 수정
+        if(isMine && selectCard != null)
         {
-            return false;
+            int cost = selectCard.item.cardCost;
+            if (TurnManager.Instance.myMana < cost) return false;
+            if (TurnManager.Instance.myMaxMana < cost) return false;
         }
 
         if (!isMine && otherCards.Count <= 0)
@@ -201,20 +204,29 @@ public class CardManager : MonoBehaviour
 
         Card card = isMine ? selectCard : otherCards[UnityEngine.Random.Range(0, otherCards.Count)];
 
+        if(!isMine)
+        {
+            int cost = card.item.cardCost;
+            if (TurnManager.Instance.otherMana < cost) return false;
+            if (TurnManager.Instance.otherMaxMana < cost) return false;
+        }
+
         var spawnPos = isMine ? Utils.MousePos : otherCardSpawnPoint.position;
         var targetCards = isMine ? myCards : otherCards;
 
         if (EntityManager.Instance.SpawnEntity(isMine, card.item, spawnPos))
         {
+            if (isMine) TurnManager.Instance.UseMana(true, card.item.cardCost);
+            else TurnManager.Instance.UseMana(false, card.item.cardCost);            
+
             targetCards.Remove(card);
             card.transform.DOKill();
             DestroyImmediate(card.gameObject);
             if (isMine)
             {
                 selectCard = null;
-                myPutCount++;
             }
-            CardAlignment(isMine);
+            CardAlignment(isMine);            
             return true;
         }
         else
@@ -222,7 +234,7 @@ public class CardManager : MonoBehaviour
             targetCards.ForEach(x => x.GetComponent<SortingOrder>().SetMostFrontOrder(false));
             CardAlignment(isMine);
             return false;
-        }
+        }        
     }
     public void CardMouseOver(Card card)
     {

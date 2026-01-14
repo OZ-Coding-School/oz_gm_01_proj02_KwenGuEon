@@ -13,73 +13,992 @@ MonoBehaviour:
   m_Name: ItemSO
   m_EditorClassIdentifier: 
   items:
-  - name: "\uB8E8\uB124\uCF54"
-    attack: 2
-    health: 5
-    sprite: {fileID: 21300000, guid: 7f9dcc596313f5f4cb23be067bb7d1b8, type: 3}
+  - cardID: 0
+    cardCost: 0
+    cardType: 0
+    cardClass: 0
+    name: "\uD6C8\uB828\uC6A9 \uD558\uC218\uC778"
+    attack: 0
+    health: 2
+    sprite: {fileID: 21300000, guid: c551b2099bed1d445b43a3548e9966fc, type: 3}
+    backGround: {fileID: 0}
     percent: 12
-    cardInfo: 
+    cardInfo: "\uB3C4\uBC1C"
     shopPercent: 0
-  - name: "\uB204\uBAA8"
-    attack: 1
-    health: 7
-    sprite: {fileID: 21300000, guid: 9ce4d6f5c4b0eb745a15e723a4fb954d, type: 3}
-    percent: 10
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uB514\uB2C8\uC5D0"
-    attack: 4
-    health: 4
-    sprite: {fileID: 21300000, guid: 3d4dbd0cf1321bd4aba04a410f454713, type: 3}
-    percent: 10
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uB77C\uB2C8\uC5D8"
-    attack: 1
-    health: 4
-    sprite: {fileID: 21300000, guid: 8f656be7d188b9843a0b579ce9e9a716, type: 3}
-    percent: 15
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uB8E8\uB370\uB098"
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 1
+    cardCost: 1
+    cardType: 0
+    cardClass: 0
+    name: "\uB9C8\uB098 \uC815\uB839"
     attack: 1
     health: 3
-    sprite: {fileID: 21300000, guid: 7d507d3bb26614549bcb17fbd0511952, type: 3}
+    sprite: {fileID: 21300000, guid: de94291c4ddd2864e88c75af0ebf2445, type: 3}
+    backGround: {fileID: 0}
+    percent: 10
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 2
+    cardCost: 1
+    cardType: 0
+    cardClass: 0
+    name: "\uD22C\uCC99\uBCD1"
+    attack: 2
+    health: 1
+    sprite: {fileID: 21300000, guid: e99bc0d7332b40e4292d6cbef29f878a, type: 3}
+    backGround: {fileID: 0}
+    percent: 10
+    cardInfo: "\uC0C1\uB300\uC5D0\uAC8C 1\uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4."
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 3
+    cardCost: 1
+    cardType: 0
+    cardClass: 0
+    name: "\uC131\uC2E4\uD55C \uACBD\uBE44\uBCD1"
+    attack: 1
+    health: 2
+    sprite: {fileID: 21300000, guid: 70d81fefe611b78478c6965dc7baf63c, type: 3}
+    backGround: {fileID: 0}
     percent: 15
-    cardInfo: 
+    cardInfo: "\uB3C4\uBC1C"
     shopPercent: 0
-  - name: "\uB9AC\uCF54"
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 4
+    cardCost: 1
+    cardType: 0
+    cardClass: 0
+    name: "\uAD11\uC18D\uC758 \uB7EC\uB108"
+    attack: 1
+    health: 1
+    sprite: {fileID: 21300000, guid: f7ef1d32c0fb74a4da48d9faa31c5e94, type: 3}
+    backGround: {fileID: 0}
+    percent: 15
+    cardInfo: "\uB3CC\uC9C4"
+    shopPercent: 0
+    isRush: 1
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 5
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uACB8\uC2B5 \uB9C8\uBC95\uC0AC"
     attack: 3
-    health: 4
-    sprite: {fileID: 21300000, guid: 8598ca15c46bd9b408e2928f6edbee29, type: 3}
-    percent: 8
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uCCB4\uB9AC"
-    attack: 4
-    health: 5
-    sprite: {fileID: 21300000, guid: e698aeaf58f360740831d62b29eeef2f, type: 3}
-    percent: 10
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uCF08\uD2B8"
-    attack: 3
-    health: 4
-    sprite: {fileID: 21300000, guid: c0e6eba31a4d39947836e63003ca554e, type: 3}
-    percent: 10
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uD504\uB9AC\uB098"
-    attack: 3
-    health: 4
-    sprite: {fileID: 21300000, guid: 10ab4671ecbf273488a2ca3030b9746c, type: 3}
-    percent: 8
-    cardInfo: 
-    shopPercent: 0
-  - name: "\uD0C0\uC774\uAC00"
-    attack: 4
-    health: 8
+    health: 2
     sprite: {fileID: 21300000, guid: 3f03aa17c3f2dc84187d86fd2436a3a9, type: 3}
+    backGround: {fileID: 0}
+    percent: 8
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 6
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uB2AA\uC9C0 \uB9C8\uBC95\uC0AC"
+    attack: 2
+    health: 3
+    sprite: {fileID: 21300000, guid: 97943a1a01c548544a73dc159bdd7e84, type: 3}
+    backGround: {fileID: 0}
+    percent: 10
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 7
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uBB34\uC1E0\uAECD\uC9C8\uBCD1"
+    attack: 1
+    health: 4
+    sprite: {fileID: 21300000, guid: 682b429960ad6c54098e2a7fc1766313, type: 3}
+    backGround: {fileID: 0}
+    percent: 10
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 8
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uB291\uB300 \uC778\uAC04"
+    attack: 2
+    health: 1
+    sprite: {fileID: 21300000, guid: 1557b4ec994aea04c953ba41ec4f23cf, type: 3}
+    backGround: {fileID: 0}
+    percent: 8
+    cardInfo: "\uB3CC\uC9C4"
+    shopPercent: 0
+    isRush: 1
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 9
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uC232\uC758 \uCE58\uC720\uC0AC"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: 8a38dc4c9ae7dd846a92ab04c6ffc1e8, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC544\uAD70\uC758 \uCCB4\uB825\uC744 2\uD68C\uBCF5 \uC2DC\uD0B5\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 10
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uBBF8\uCE58\uAD11\uC774 \uD3ED\uD0C4\uB9C8"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: 7e069db2d916f354f8c2c25a97ca139a, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBB34\uC791\uC704 \uC801\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 11
+    cardCost: 2
+    cardType: 1
+    cardClass: 0
+    name: "\uCE74\uB4DC \uB3C4\uB451"
+    attack: 1
+    health: 1
+    sprite: {fileID: 21300000, guid: 109bacc3a598fc949b5f41dd31e7eba2, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uCE74\uB4DC 1\uC7A5\uC744 \uBF51\uC2B5\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 12
+    cardCost: 1
+    cardType: 1
+    cardClass: 0
+    name: "\uD654\uC5FC\uAD6C"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 487ca9c97a2121c49b97711625081a3b, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC120\uD0DD\uD55C \uC801\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC90D\uB2C8\uB2E4.(\uB098\uC911\uC5D0
+      bool\uCD94\uAC00)"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 13
+    cardCost: 1
+    cardType: 1
+    cardClass: 0
+    name: "\uBC29\uD328 \uBC00\uCE58\uAE30"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 92f9edc39defc6946b6a6d173b78e4e8, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD558\uC218\uC778 \uD558\uB098\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC8FC\uACE0
+      \uAE30\uC808\uC2DC\uD0B5\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 14
+    cardCost: 1
+    cardType: 1
+    cardClass: 0
+    name: "\uCE58\uC720\uC758 \uBE5B"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 754513e7ccdd28a469ede86fc54eb2c3, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC544\uAD70\uC758 \uCCB4\uB825\uC744 4\uD68C\uBCF5 \uC2DC\uD0B5\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 15
+    cardCost: 2
+    cardType: 1
+    cardClass: 0
+    name: "\uC57C\uC0DD\uC758 \uD798"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 48aab667bb174e94b94edcd6a1e41c96, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBAA8\uB4E0 \uC804\uC7A5\uC758 \uC544\uAD70\uD558\uC218\uC778\uB4E4\uC5D0\uAC8C
+      \uACF5\uACA9\uB825 +1\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 16
+    cardCost: 0
+    cardType: 1
+    cardClass: 0
+    name: "\uB3D9\uC804 \uD55C \uB2E2"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: b285833c001494247805fb3d5399a81a, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC774\uBC88 \uD134\uC5D0\uB9CC \uB9C8\uB0981\uC744 \uD68D\uB4DD\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 17
+    cardCost: 2
+    cardType: 1
+    cardClass: 0
+    name: "\uAE09\uC18D \uC131\uC7A5"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: c67cb5ecf78926749a4848e6546d330c, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBE48 \uB9C8\uB098\uC218\uC815\uC744 1\uAC1C \uB298\uB9BD\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 18
+    cardCost: 2
+    cardType: 1
+    cardClass: 0
+    name: "\uC5BC\uC74C \uD654\uC0B4"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: ec9a21ce586964d4cb814cbcceae79a1, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD53C\uD574\uB97C 2\uC8FC\uACE0 \uB300\uC0C1\uC744 \uC5BC\uB9BD\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 19
+    cardCost: 1
+    cardType: 1
+    cardClass: 0
+    name: "\uAD11\uAE30"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 04aa6d588031cca46a8bd5e5e6582140, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD558\uC218\uC778 \uD558\uB098\uC5D0\uAC8C \uACF5\uACA9\uB825 +2\uB97C
+      \uBD80\uC5EC\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 20
+    cardCost: 3
+    cardType: 0
+    cardClass: 0
+    name: "\uC655\uC2E4 \uADFC\uC704\uBCD1"
+    attack: 3
+    health: 4
+    sprite: {fileID: 21300000, guid: 1069398f9cf85784fab555f56720dae5, type: 3}
+    backGround: {fileID: 0}
     percent: 4
     cardInfo: 
     shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 21
+    cardCost: 3
+    cardType: 0
+    cardClass: 0
+    name: "\uB728\uAC70\uC6B4 \uC804\uC0AC"
+    attack: 5
+    health: 1
+    sprite: {fileID: 21300000, guid: fce1e1cb85c36fb48ade36df493abfd2, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 22
+    cardCost: 3
+    cardType: 0
+    cardClass: 0
+    name: "\uB3CC\uAC00\uC8FD \uC778\uAC04"
+    attack: 3
+    health: 3
+    sprite: {fileID: 21300000, guid: 89deb1aed13de7f42969899338d9b5ec, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 23
+    cardCost: 3
+    cardType: 0
+    cardClass: 0
+    name: "\uD45C\uBC94 \uC0AC\uB0E5\uAFBC"
+    attack: 4
+    health: 2
+    sprite: {fileID: 21300000, guid: b75bba7d78db6d14c942e2356a73a4ae, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3CC\uC9C4"
+    shopPercent: 0
+    isRush: 1
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 24
+    cardCost: 3
+    cardType: 0
+    cardClass: 0
+    name: "\uC131\uC9C1\uC790"
+    attack: 3
+    health: 3
+    sprite: {fileID: 21300000, guid: 0dfc16044bcc25443a2cf75af388f273, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC544\uAD70\uC758 \uCCB4\uB825\uC744 +2\uBD80\uC5EC"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 25
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uC124\uC6D0 \uD0C0\uC774\uAC70"
+    attack: 4
+    health: 5
+    sprite: {fileID: 21300000, guid: 8a8cef819f24ce2418d644170d6ae84d, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 26
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uC13C\uC9C4 \uBC29\uD328\uB300\uAC00"
+    attack: 3
+    health: 5
+    sprite: {fileID: 21300000, guid: 9b18a1732dccd60469ee12f4589a6bdb, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 27
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uB299\uC740 \uB300\uB9C8\uBC95\uC0AC"
+    attack: 2
+    health: 4
+    sprite: {fileID: 21300000, guid: 8eef187ec93728e45880018baab1e3eb, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 28
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uB3CC\uC9C4\uD558\uB294 \uCF54\uBFD4\uC18C\uBCD1"
+    attack: 3
+    health: 3
+    sprite: {fileID: 21300000, guid: e67755acd3155e24d9d1b7e5f6ab4789, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3CC\uC9C4"
+    shopPercent: 0
+    isRush: 1
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 29
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uC5B4\uB460\uC758 \uC554\uC0B4\uC9C0"
+    attack: 4
+    health: 2
+    sprite: {fileID: 21300000, guid: 4187212040e8ebd44b1013ae563a453b, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD53C\uD574\uB97C \uC785\uC740 \uD558\uC218\uC778 \uD558\uB098\uB97C
+      \uCC98\uCE58\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 30
+    cardCost: 5
+    cardType: 0
+    cardClass: 0
+    name: "\uD22C\uAE30\uC7A5 \uC81C\uC655"
+    attack: 6
+    health: 5
+    sprite: {fileID: 21300000, guid: aa67c425553163246a106bf7a03f02dc, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 31
+    cardCost: 5
+    cardType: 0
+    cardClass: 0
+    name: "\uB2AA\uC9C0\uB300 \uB369\uCE58"
+    attack: 3
+    health: 6
+    sprite: {fileID: 21300000, guid: 4cbee5b22540b7f4890f39ab9e8405cb, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 32
+    cardCost: 5
+    cardType: 0
+    cardClass: 0
+    name: "\uC57C\uAC04 \uCD94\uC801\uC790"
+    attack: 5
+    health: 4
+    sprite: {fileID: 21300000, guid: da99b1bd589addf43be74753759c8603, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC801 \uC601\uC6C5\uC5D0\uAC8C \uD53C\uD574\uB97C 3\uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 33
+    cardCost: 3
+    cardType: 1
+    cardClass: 0
+    name: "\uBD88\uD0C0\uB294 \uB3C5\uAE30"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 1f5de622ff473dc43b8a4d774b5a2a2d, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD53C\uD574\uB97C 4\uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 34
+    cardCost: 4
+    cardType: 1
+    cardClass: 0
+    name: "\uC2E0\uC131\uD55C \uD3ED\uBC1C"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: 1b497534119c3594b9debd153c826819, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uD53C\uD574 2\uB97C \uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 35
+    cardCost: 4
+    cardType: 1
+    cardClass: 0
+    name: "\uBCC0\uC774"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: db490fef869ede74681706cdad4bde48, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD558\uC218\uC778 \uD558\uB098\uB97C 1/1 \uC0AC\uB78C\uC73C\uB85C
+      \uBCC0\uC774\uC2DC\uD0B5\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 36
+    cardCost: 5
+    cardType: 0
+    cardClass: 0
+    name: "\uC232\uC758 \uCE58\uC720\uC0AC"
+    attack: 1
+    health: 1
+    sprite: {fileID: 21300000, guid: 3f03aa17c3f2dc84187d86fd2436a3a9, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD558\uC218\uC778 \uD558\uB098\uC5D0\uAC8C +4/+4\uB97C \uBD80\uC5EC\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 37
+    cardCost: 4
+    cardType: 1
+    cardClass: 0
+    name: "\uD654\uC5FC\uAD6C"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 3434169aea05eeb4185f2fa72c80bf31, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD53C\uD574\uB97C 6\uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 38
+    cardCost: 5
+    cardType: 1
+    cardClass: 0
+    name: "\uC554\uC0B4"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 4a59da33ae922924dbd2e6dae5f25353, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC801 \uD558\uC218\uC778 \uD558\uB098\uB97C \uCC98\uCE58\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 39
+    cardCost: 5
+    cardType: 1
+    cardClass: 0
+    name: "\uD53C\uC758 \uC695\uB9DD"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 83fe21a42540fdc4e9b540846b75472f, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC774\uBC88 \uD134\uC5D0\uB9CC \uBAA8\uB4E0 \uC544\uAD70 \uD558\uC218\uC778
+      \uACF5\uACA9\uB825 +3\uBD80\uC5EC\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 40
+    cardCost: 6
+    cardType: 1
+    cardClass: 0
+    name: "\uB208\uBCF4\uB77C"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 2bf67b30afa6a6b4681094ea0cba6239, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC801 \uC804\uCCB4 \uD53C\uD5742 \uBC0F \uBE59\uACB0"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 41
+    cardCost: 3
+    cardType: 1
+    cardClass: 0
+    name: "\uC6A9\uC758 \uC228\uACB0"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: 81a98ed79aa54bc47b60dedb5ea0ec28, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBB34\uC791\uC704 \uC801\uC5D0\uAC8C \uD53C\uD5744\uB97C \uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 42
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uC815\uC2E0 \uC9C0\uBC30\uC790"
+    attack: 3
+    health: 3
+    sprite: {fileID: 21300000, guid: 8823b99716022a342ac93230cdbee756, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC801 \uD558\uC218\uC778\uC774 4\uBA85 \uC774\uC0C1\uC774\uBA74 \uD558\uB098\uB97C
+      \uBE8F\uC5B4 \uC635\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 43
+    cardCost: 4
+    cardType: 0
+    cardClass: 0
+    name: "\uC778\uAC04\uD615 \uACE8\uB818"
+    attack: 4
+    health: 3
+    sprite: {fileID: 21300000, guid: c2e956062a4ab3f439904dcef274715a, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 44
+    cardCost: 6
+    cardType: 0
+    cardClass: 0
+    name: "\uC624\uC6B0\uAC70 \uD22C\uC0AC"
+    attack: 6
+    health: 7
+    sprite: {fileID: 21300000, guid: 1740fdcb17f5fb54aa23456463abaa2b, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 45
+    cardCost: 6
+    cardType: 0
+    cardClass: 0
+    name: "\uD0DC\uC591\uAE38\uC7A1\uC774"
+    attack: 4
+    health: 5
+    sprite: {fileID: 21300000, guid: 1fc0415ca4b52b047ace1421a3ffe0d7, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 46
+    cardCost: 6
+    cardType: 0
+    cardClass: 0
+    name: "\uC0AC\uB839\uAD00"
+    attack: 5
+    health: 2
+    sprite: {fileID: 21300000, guid: 8468ea9d0c8e08c459a8cbe68828347c, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3CC\uC9C4"
+    shopPercent: 0
+    isRush: 1
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 47
+    cardCost: 7
+    cardType: 0
+    cardClass: 0
+    name: "\uC804\uC7C1 \uACE0\uB300 \uC815\uB839"
+    attack: 5
+    health: 10
+    sprite: {fileID: 21300000, guid: f43f9e6813c20124bb4abe985ade271a, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 48
+    cardCost: 8
+    cardType: 0
+    cardClass: 0
+    name: "\uC2A4\uD1A0\uC634 \uC6A9\uC0AC"
+    attack: 6
+    health: 6
+    sprite: {fileID: 21300000, guid: 29f1f9126fa13954584084b012b23a85, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB2E4\uB978 \uBAA8\uB4E0 \uC544\uAD70\uD558\uC218\uC778\uC5D0\uAC8C
+      +1/+1 \uBD80\uC5EC"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 49
+    cardCost: 7
+    cardType: 0
+    cardClass: 0
+    name: "\uD654\uC5FC\uC758 \uAD70\uC8FC"
+    attack: 7
+    health: 5
+    sprite: {fileID: 21300000, guid: 784e6c513fd5aa8499859c91ec415071, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBB34\uC791\uC704 \uC804 1\uBA85\uC5D0\uAC8C \uD53C\uD574\uB97C 5\uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 50
+    cardCost: 8
+    cardType: 0
+    cardClass: 0
+    name: "\uB9CC\uB2A5 \uC6B4\uC804\uC218"
+    attack: 8
+    health: 8
+    sprite: {fileID: 21300000, guid: 9917365325ba9d3469a674429885a2ff, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 51
+    cardCost: 8
+    cardType: 0
+    cardClass: 0
+    name: "\uC2EC\uD310\uAD00"
+    attack: 5
+    health: 5
+    sprite: {fileID: 21300000, guid: 1b59f5428f26fc2438c75fe1784b628b, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC801 \uD558\uC218\uC778 \uD558\uB098\uC758 \uCCB4\uB825\uC744 1\uB85C
+      \uB9CC\uB4ED\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 52
+    cardCost: 9
+    cardType: 0
+    cardClass: 0
+    name: "\uC6A9"
+    attack: 4
+    health: 12
+    sprite: {fileID: 21300000, guid: a8510ae27996ff64d883235a7b73804b, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: 
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 53
+    cardCost: 10
+    cardType: 0
+    cardClass: 0
+    name: "\uB370\uC2A4\uC719"
+    attack: 12
+    health: 12
+    sprite: {fileID: 21300000, guid: d1cb597dcead81f4bbcefb93a5810e5d, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB0B4 \uB371\uACFC \uC190\uC5D0 \uC788\uB294\uCE74\uB4DC\uB97C \uBAA8\uB450
+      \uBC84\uB9BD\uB2C8\uB2E4, \uBAA8\uB4E0 \uD558\uC218\uC778\uC744 \uCC98\uCE58\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 54
+    cardCost: 10
+    cardType: 1
+    cardClass: 0
+    name: "\uC815\uC2E0\uC9C0\uBC30"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: 333e7435b7d88d44b9dc0df723e24a97, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC801 \uD558\uC218\uC778 \uD558\uB098\uB97C \uAC00\uC838\uC635\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 55
+    cardCost: 7
+    cardType: 1
+    cardClass: 0
+    name: "\uBD88\uAE30\uB465"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: c6406523391cdce44a6d3f221b6615f4, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBAA8\uB4E0 \uC801 \uD558\uC218\uC778\uC5D0\uAC8C \uD53C\uD574 4\uB97C
+      \uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 56
+    cardCost: 8
+    cardType: 1
+    cardClass: 0
+    name: "\uB4A4\uD2C0\uB9B0 \uD669\uCC9C"
+    attack: 0
+    health: 0
+    sprite: {fileID: 21300000, guid: eb321bcbcd09da1449fe20c79135532c, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uBAA8\uB4E0 \uD558\uC218\uC778\uC744 \uCC98\uCE58\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 57
+    cardCost: 10
+    cardType: 1
+    cardClass: 0
+    name: "\uBD88\uB369\uC774 \uC791\uB82C"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: 70fb95ee0dff6ea44a4f6561c4d87cda, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uD53C\uD574 10\uC744 \uC90D\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 1
+  - cardID: 58
+    cardCost: 2
+    cardType: 0
+    cardClass: 0
+    name: "\uC5B4\uB460\uC758 \uCE58\uC720\uC0AC"
+    attack: 2
+    health: 2
+    sprite: {fileID: 21300000, guid: a7a88de75f1b50442876be8dbff60870, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uC544\uAD70\uC560\uAC1C \uD53C\uD5741\uC744 \uC8FC\uACE0 \uACF5\uACA9\uB825
+      +2\uB97C \uBD80\uC5EC\uD569\uB2C8\uB2E4"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 1
+    isSpell: 0
+  - cardID: 59
+    cardCost: 8
+    cardType: 0
+    cardClass: 0
+    name: "\uBB34\uC1E0 \uD30C\uAD34\uC790"
+    attack: 8
+    health: 8
+    sprite: {fileID: 21300000, guid: 5aa6a9adbd0e1644393152ba951ce176, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3C4\uBC1C"
+    shopPercent: 0
+    isRush: 0
+    isProvocation: 1
+    isBattleCry: 0
+    isSpell: 0
+  - cardID: 60
+    cardCost: 5
+    cardType: 0
+    cardClass: 0
+    name: "\uB9AC\uB85C\uC774 \uC820\uD0A8\uC2A4"
+    attack: 6
+    health: 2
+    sprite: {fileID: 21300000, guid: 395da9a4219c0b24db48e34262597d6b, type: 3}
+    backGround: {fileID: 0}
+    percent: 4
+    cardInfo: "\uB3CC\uC9C4"
+    shopPercent: 0
+    isRush: 1
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
