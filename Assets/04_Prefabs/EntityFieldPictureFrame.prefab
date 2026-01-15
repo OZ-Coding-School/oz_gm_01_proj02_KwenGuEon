@@ -927,16 +927,21 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   entity: {fileID: 657928711839873041}
   character: {fileID: 1213125286335144091}
   attackTMP: {fileID: 8102609860259578502}
-  heathTMP: {fileID: 4665481904521473634}
+  healthTMP: {fileID: 4665481904521473634}
   sleepParticle: {fileID: 8742129842807886075}
   outLineRenderer: {fileID: 8356408902503198851}
   provocationSpriteOutLIne: {fileID: 3143311846311218544}
   provocationSprite: {fileID: 3355453766138593183}
   attack: 0
-  heath: 0
+  health: 0
+  maxHealth: 0
+  temporaryAttack: 0
   isMine: 1
   isDead: 0
   isBossOrEmpty: 0

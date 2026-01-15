@@ -8,7 +8,7 @@ public class CardManager : MonoBehaviour
     public static CardManager instance;
 
     [SerializeField] ItemSO itemSO;
-    [SerializeField] private GameObject cardPrefab;    
+    [SerializeField] private GameObject cardPrefab;
     [SerializeField] float arcHeight = 70.0f;
 
     [SerializeField] private List<Card> myCards;
@@ -23,7 +23,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform aiGamerCardLeft;
     [SerializeField] private Transform aiGamerCardRight;
 
-
+    private Entity spellTarget;
     [SerializeField] private TurnManager turnManager;
 
     [Header("Enlarge")]
@@ -39,7 +39,7 @@ public class CardManager : MonoBehaviour
     Card dragCard;
     bool isMyCardDrag;
     [SerializeField] ECardState cardState;
-    
+
     enum ECardState { Nothing, CanMouseOver, CanMouseDrag }
 
     private void Awake()
@@ -68,7 +68,7 @@ public class CardManager : MonoBehaviour
         TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
     }
     void OnTurnStarted(bool isMyTurn)
-    {        
+    {
     }
     private void Update()
     {
@@ -119,7 +119,7 @@ public class CardManager : MonoBehaviour
             itemBuffer[rand] = temp;
         }
     }
-    void AddCard(bool isMine)
+    public void AddCard(bool isMine)
     {
         var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI, cardCanvas);
         var card = cardObject.GetComponent<Card>();
@@ -128,6 +128,14 @@ public class CardManager : MonoBehaviour
 
         SetOriginorder(isMine);
         CardAlignment(isMine);
+    }
+    public void DrawCard(bool isMine, int count)
+    {
+        count = Mathf.Max(0, count);
+        for(int i = 0; i < count; i++)
+        {
+            AddCard(isMine);
+        }
     }
     void SetOriginorder(bool isMine)
     {
@@ -192,7 +200,7 @@ public class CardManager : MonoBehaviour
     }
     public bool TryPutCard(bool isMine)
     {
-        if(isMine && selectCard != null)
+        if (isMine && selectCard != null)
         {
             int cost = selectCard.item.cardCost;
             if (TurnManager.Instance.myMana < cost) return false;
@@ -204,11 +212,22 @@ public class CardManager : MonoBehaviour
 
         Card card = isMine ? selectCard : otherCards[UnityEngine.Random.Range(0, otherCards.Count)];
 
-        if(!isMine)
+        if (!isMine)
         {
             int cost = card.item.cardCost;
             if (TurnManager.Instance.otherMana < cost) return false;
             if (TurnManager.Instance.otherMaxMana < cost) return false;
+        }
+
+        if (!isMine && card.item.isSpell)
+        {
+            Entity target = null;
+            if (card.item.needTarget)
+            {                
+                target = EntityManager.Instance.FindRandomEntity(true);
+            }
+
+            return TryUseSpell(false, card, target);
         }
 
         var spawnPos = isMine ? Utils.MousePos : otherCardSpawnPoint.position;
@@ -217,7 +236,7 @@ public class CardManager : MonoBehaviour
         if (EntityManager.Instance.SpawnEntity(isMine, card.item, spawnPos))
         {
             if (isMine) TurnManager.Instance.UseMana(true, card.item.cardCost);
-            else TurnManager.Instance.UseMana(false, card.item.cardCost);            
+            else TurnManager.Instance.UseMana(false, card.item.cardCost);
 
             targetCards.Remove(card);
             card.transform.DOKill();
@@ -226,7 +245,7 @@ public class CardManager : MonoBehaviour
             {
                 selectCard = null;
             }
-            CardAlignment(isMine);            
+            CardAlignment(isMine);
             return true;
         }
         else
@@ -234,7 +253,48 @@ public class CardManager : MonoBehaviour
             targetCards.ForEach(x => x.GetComponent<SortingOrder>().SetMostFrontOrder(false));
             CardAlignment(isMine);
             return false;
-        }        
+        }
+    }
+    public bool TryUseSpell(bool isMine, Card usedCard, Entity target)
+    {
+        if (usedCard == null) return false;
+
+        Item item = usedCard.item;
+        if (item == null) return false;
+
+        if (item.needTarget && target == null) return false;
+
+        bool isUseSpell = EntityManager.Instance.RunSpell(isMine, item, target);
+        if (!isUseSpell) return false;
+        
+        TurnManager.Instance.UseMana(isMine, item.cardCost);
+        
+        var list = isMine ? myCards : otherCards;
+        list.Remove(usedCard);
+        
+        Destroy(usedCard.gameObject);
+        
+        CardAlignment(isMine);
+        
+        if (dragCard == usedCard) dragCard = null;
+        if (isMine) selectCard = null;
+
+        return true;
+    }
+    public void DiscardAllHand(bool isMine)
+    {
+        var list = isMine ? myCards : otherCards;
+
+        for(int i = 0; i < list.Count; i++)
+        {
+            var card = list[i];
+            if(card != null) Destroy(card.gameObject);
+        }
+        list.Clear();
+    }
+    public void DiscardAllDeck()
+    {
+        if(itemBuffer != null) itemBuffer.Clear();
     }
     public void CardMouseOver(Card card)
     {
@@ -265,19 +325,33 @@ public class CardManager : MonoBehaviour
         if (cardState != ECardState.CanMouseDrag) return;
 
         if (dragCard != null)
-        {
-            if (!IsPointerInHandArea(Input.mousePosition) && TryPutCard(true))
+        {            
+            if(!IsPointerInHandArea(Input.mousePosition))
             {
-                dragCard = null;
+                if (dragCard.item.isSpell)
+                {                    
+                    if (TryUseSpell(true, dragCard, spellTarget))
+                    {
+                        dragCard = null;
+                        spellTarget = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (TryPutCard(true))
+                    {
+                        dragCard = null;
+                        return;
+                    }
+                }
             }
-            else
-            {
-                dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
+            dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
 
-                dragCard.MoveVisualTransform(dragCard.originPRS, false);
-                dragCard = null;
-                EntityManager.Instance.RemoveMyEmptyEntity();
-            }
+            dragCard.MoveVisualTransform(dragCard.originPRS, false);
+            dragCard = null;
+            spellTarget = null;
+            EntityManager.Instance.RemoveMyEmptyEntity();
         }
         DetectCardPointer();
     }
@@ -301,8 +375,39 @@ public class CardManager : MonoBehaviour
             );
 
             dragCard.SetDragPosition(new Vector3(mousePos.x, mousePos.y, 0));
-            EntityManager.Instance.InsertMyEmptyEntity(Utils.MousePos.x);
+            if(!dragCard.item.isSpell)
+            {
+                EntityManager.Instance.InsertMyEmptyEntity(Utils.MousePos.x);
+            }
+            else
+            {
+                spellTarget = DetectSpellTarget();
+            }
+            
         }
+    }
+    private Entity DetectSpellTarget()
+    {
+        foreach (var hit in Physics2D.RaycastAll(Utils.MousePos, Vector3.forward))
+        {
+            var e = hit.collider?.GetComponent<Entity>();
+            if (e != null && !e.isBossOrEmpty) return e;
+        }
+
+        // 2) UI(보스 등) 타겟도 잡고 싶으면 EventSystem으로
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+        pointerData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        foreach (var r in results)
+        {
+            var e = r.gameObject.GetComponent<Entity>();
+            if (e != null && !e.isBossOrEmpty) return e;
+        }
+
+        return null;
     }
     void DetectCardPointer()
     {

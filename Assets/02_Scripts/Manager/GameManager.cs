@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,7 +5,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Multiline(10)]
-    [SerializeField] string cheatInfo;       
+    [SerializeField] string cheatInfo;
 
     private void Awake()
     {
@@ -23,7 +22,6 @@ public class GameManager : MonoBehaviour
     {
         StartGame();
     }
-
     void Update()
     {
 #if UNITY_EDITOR
@@ -61,5 +59,5 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         StartCoroutine(TurnManager.Instance.StartGameCo());
-    }   
+    }
 }

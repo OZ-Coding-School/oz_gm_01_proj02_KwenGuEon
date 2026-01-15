@@ -1,10 +1,15 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
+
+    private readonly List<Action> myEndTurnRollback = new List<Action>();
+    private readonly List<Action> otherEndTurnRollback = new List<Action>();
     private void Awake()
     {
         if (Instance == null)
@@ -96,8 +101,7 @@ public class TurnManager : MonoBehaviour
     {
         onGameResult?.Invoke(isWin);
     }
-    #endregion
-    
+    #endregion    
 
     void GameSetup()
     {
@@ -176,8 +180,51 @@ public class TurnManager : MonoBehaviour
         }
         return false;
     }
+    public void GainTempMana(bool isMine, int amount)
+    {
+        if (amount <= 0) return;
+
+        if (isMine) myMana += amount;
+        else otherMana += amount;
+
+        RegisterEndTurnRollback(isMine, () =>
+        {
+            if (isMine) myMana -= amount;
+            else otherMana -= amount;
+        });
+    }
+    public void RegisterEndTurnRollback(bool isMine, Action rollback)
+    {
+        if (rollback == null) return;
+        if (isMine) myEndTurnRollback.Add(rollback);
+        else otherEndTurnRollback.Add(rollback);
+    }
+    public void GainEmptyMana(bool isMine, int amount)
+    {
+        if (amount <= 0) return;
+
+        if(isMine)
+        {
+            myMaxMana += amount;
+        }
+        else
+        {
+            otherMaxMana += amount;
+        }
+    }
+    private void ExecuteEndTurnRollbacks(bool isMine)
+    {
+        var list = isMine ? myEndTurnRollback : otherEndTurnRollback;
+
+        for (int i = 0; i < list.Count; i++)
+            list[i]?.Invoke();
+
+        list.Clear();
+    }
     public void EndTurn()
     {
+        ExecuteEndTurnRollbacks(isMyTurn);
+
         isMyTurn = !isMyTurn;
         StartCoroutine(StartTurnCo());
     }

@@ -10,18 +10,22 @@ public class Entity : MonoBehaviour
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer character;
     [SerializeField] TMP_Text attackTMP;
-    [SerializeField] TMP_Text heathTMP;
+    [SerializeField] TMP_Text healthTMP;
     [SerializeField] GameObject sleepParticle;
     [SerializeField] SpriteRenderer outLineRenderer;
     [SerializeField] SpriteRenderer provocationSpriteOutLIne;
     [SerializeField] SpriteRenderer provocationSprite;
 
     public int attack;
-    public int heath;
+    public int health;
+    public int maxHealth;
+    public int temporaryAttack;
     public bool isMine;
     public bool isDead;
     public bool isBossOrEmpty;
     public bool attackAble;
+    public int cantActTurns;
+    public bool isCantAct => cantActTurns > 0;
     public Vector3 originPos;
     int liveCount;
 
@@ -93,6 +97,9 @@ public class Entity : MonoBehaviour
         if (isBossOrEmpty)
             return;
 
+        if (isMine != myTurn)
+            RemoveTempAttackThisTurn();
+
         if (isMine == myTurn)
             liveCount++;
         if (!isRush)
@@ -102,17 +109,20 @@ public class Entity : MonoBehaviour
         else
         {
             sleepParticle.SetActive(false);
+            outLineRenderer.gameObject.SetActive(true);
+
         }
     }
     public void Setup(Item item)
     {
         attack = item.attack;
-        heath = item.health;
+        health = item.health;
+        maxHealth = item.health;
 
         this.item = item;
         character.sprite = this.item.sprite;
         attackTMP.text = attack.ToString();
-        heathTMP.text = heath.ToString();
+        healthTMP.text = health.ToString();
 
         this.isRush = item.isRush;
         this.isProvocation = item.isProvocation;
@@ -143,16 +153,96 @@ public class Entity : MonoBehaviour
     }
     public bool TakeDamage(int damage)
     {
-        heath -= damage;
-        heathTMP.text = heath.ToString();
+        health -= damage;
+        UpdateHealthUI();        
 
-        if (heath <= 0)
+        if (health <= 0)
         {
             isDead = true;
             return true;
         }
         return false;
     }
+    public void Heal(int heal)
+    {
+        health += heal;
+
+        if (health >= maxHealth)
+        {
+            health = maxHealth;
+        }
+
+        UpdateHealthUI();
+    }
+    public void AttackUP(int plusAttack)
+    {
+        attack += plusAttack;
+        if(attackTMP != null) attackTMP.text = attack.ToString();
+    }
+    public void GrantHealth(int amount)
+    {
+        maxHealth += amount;        
+        if (health > maxHealth) health = maxHealth;
+        UpdateHealthUI();
+    }
+    /// <summary>
+    /// 공격력, 체력을 지정한 숫자로 만든다
+    /// SetHealth, SetAttack 
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetHealth(int value)
+    {
+        health = Mathf.Clamp(value, 0, maxHealth);
+        UpdateHealthUI();
+
+        if (health <= 0) isDead = true;
+    }
+    public void SetAttack(int value)
+    {
+        attack = Mathf.Max(0, value);
+        if (attackTMP != null) attackTMP.text = attack.ToString();
+    }
+    public void TempAttackThisTurn(int amount)
+    {
+        if (amount == 0) return;
+
+        temporaryAttack += amount;
+        attack += amount;
+
+        if(attackTMP != null)
+            attackTMP.text = attack.ToString();
+    }
+    public void RemoveTempAttackThisTurn()
+    {
+        if (temporaryAttack == 0) return;
+
+        attack -= temporaryAttack;
+        temporaryAttack = 0;
+
+        if(attack < 0) attack = 0;
+        if(attackTMP != null)
+            attackTMP.text = attack.ToString();
+    }
+    public void ConsumeCantActOnMyTurnStart()
+    {
+        if (cantActTurns > 0) cantActTurns--;
+    }
+    public void UpdateHealthUI()
+    {
+        if(healthTMP != null)
+        {
+            healthTMP.text = health.ToString();
+
+            if(health < maxHealth)
+            {
+                healthTMP.color = Color.red;
+            }
+            else if(health >= maxHealth)
+            {
+                healthTMP.color = Color.white;
+            }
+        }    
+    }   
     private void OnMouseDown()
     {
         if (isMine)
