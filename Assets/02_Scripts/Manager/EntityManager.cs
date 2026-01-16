@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -21,12 +20,17 @@ public class EntityManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private EffectManager effectManager;
+
     [SerializeField] GameObject entityPrefab;
     [SerializeField] GameObject damagePrefab;
     [SerializeField] List<Entity> myEntities;
     [SerializeField] List<Entity> otherEntities;
 
-    [SerializeField] Entity myEmptyEntity;
+    public List<Entity> GetEntities(bool isMine) => isMine ? new List<Entity>(myEntities) : new List<Entity>(otherEntities);
+    public Entity GetBoss(bool isMine) => isMine ? myBossEntity : otherBossEntity;
+    
+    [SerializeField] Entity myEmptyEntity;    
     [SerializeField] Entity myBossEntity;
     [SerializeField] Entity otherBossEntity;
 
@@ -36,11 +40,12 @@ public class EntityManager : MonoBehaviour
     [Range(0f, 5f)][SerializeField] float entitySpacing = 2.3f;
     WaitForSeconds delay1Sc = new WaitForSeconds(1.0f);
     WaitForSeconds delay2Sc = new WaitForSeconds(2.0f);
+    bool isCheckBossDead;
 
     const int MAX_ENTITY_COUNT = 7;
     public bool isFullMyEntities => myEntities.Count >= MAX_ENTITY_COUNT && !ExistMyEmptyEntity;
     bool isFullOtherEntities => otherEntities.Count >= MAX_ENTITY_COUNT;
-    bool ExistMyEmptyEntity => myEntities.Exists(x => x == myEmptyEntity);
+    bool ExistMyEmptyEntity => myEntities.Exists(x => x == myEmptyEntity);    
     int myEmptyEntityIndex => myEntities.FindIndex(x => x == myEmptyEntity);
     bool canMouseInput => TurnManager.Instance.isMyTurn && !TurnManager.Instance.isLoading;
     bool existTargetPickEntity => targetPickEntity != null;
@@ -48,7 +53,7 @@ public class EntityManager : MonoBehaviour
     Entity selectEntity;
     Entity targetPickEntity;
 
-    [SerializeField] Vector2 damageOffset = new Vector2(0, 50);    
+    [SerializeField] Vector2 damageOffset = new Vector2(0, 50);
 
     private void Start()
     {
@@ -63,6 +68,50 @@ public class EntityManager : MonoBehaviour
     {
         ShowTargetPicker(existTargetPickEntity);
     }
+    #region Minions List
+    public List<Entity> GetAliveMinions(bool isMine)
+    {
+        var src = isMine ? myEntities : otherEntities;
+        var result = new List<Entity>(src.Count);
+
+        foreach(var ent in src)
+        {
+            if (ent == null) continue;
+            if (ent == myEmptyEntity) continue;
+            if (ent.isBossOrEmpty) continue;   // empty 포함
+            if (ent.isDead) continue;
+            result.Add(ent);
+        }
+        return result;
+    }
+    public List<Entity> GetAliveTargetCandidates(bool isTargetIsMine, bool includeBoss, bool onlyMinion)
+    {
+        var candidates = GetAliveMinions(isTargetIsMine);
+
+        if(includeBoss && !onlyMinion)
+        {
+            var boss = isTargetIsMine ? myBossEntity : otherBossEntity;
+            if(boss != null && !boss.isDead) candidates.Add(boss);
+        }
+
+        return candidates;
+    }
+    public List<Entity> GetAliveTargetCandidatesAll(bool includeBoss, bool onlyMinion)
+    {
+        var result = new List<Entity>();
+
+        result.AddRange(GetAliveMinions(true));
+        result.AddRange(GetAliveMinions(false));
+
+        if (includeBoss && !onlyMinion)
+        {
+            if (myBossEntity != null && !myBossEntity.isDead) result.Add(myBossEntity);
+            if (otherBossEntity != null && !otherBossEntity.isDead) result.Add(otherBossEntity);
+        }
+
+        return result;
+    }
+    #endregion
     //타겟이 누군지 보여주는 스프라이트의 로직
     void ShowTargetPicker(bool isShow)
     {
@@ -119,14 +168,21 @@ public class EntityManager : MonoBehaviour
     {
         foreach (var entity in entities)
         {
-            if (!entity.isDead || entity.isBossOrEmpty) continue; // 나중에 보스도 파괴시키는 장면 있어야하면 보스는 빼기
+            if (!entity.isDead || entity.isBossOrEmpty) continue; // 나중에 보스도 파괴시키는 장면 있어야하면 보스는 빼기 
 
-            if (entity.isMine)
-                myEntities.Remove(entity);
-            else
-                otherEntities.Remove(entity);
+            DeadEntity(entity);
+        }
+        CheckBossDeadCo();
+    }
+    private void DeadEntity(Entity entity)
+    {
+        if (entity == null) return;
+        if (!entity.isDead || entity.isBossOrEmpty) return;
 
-            Sequence sequence = DOTween.Sequence()
+        if (entity.isMine) myEntities.Remove(entity);
+        else otherEntities.Remove(entity);
+
+        Sequence sequence = DOTween.Sequence()
                 .Append(entity.transform.DOShakePosition(0.5f, 0.5f, 30))
                 .Append(entity.transform.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutCirc))
                 .OnComplete(() =>
@@ -134,8 +190,14 @@ public class EntityManager : MonoBehaviour
                     EntityAlignment(entity.isMine);
                     Destroy(entity.gameObject);
                 });
-        }
-        StartCoroutine(CheckBossDead());
+    }
+    public void ResolveDead()
+    {
+        var myDead = myEntities.FindAll(e => e != null && e.isDead && !e.isBossOrEmpty);
+        var otherDead = otherEntities.FindAll(e => e != null && e.isDead && !e.isBossOrEmpty);
+
+        foreach (var e in myDead) DeadEntity(e);
+        foreach (var e in otherDead) DeadEntity(e);        
     }
     void SpawnDamage(int damage, Entity targetEntity)
     {
@@ -194,7 +256,7 @@ public class EntityManager : MonoBehaviour
 
             var provocationDefenders = myEntities.FindAll(x => x.isProvocation);
 
-            if(provocationDefenders.Count > 0)
+            if (provocationDefenders.Count > 0)
             {
                 defenders = provocationDefenders;
             }
@@ -211,24 +273,31 @@ public class EntityManager : MonoBehaviour
     }
     IEnumerator CheckBossDead()
     {
+        isCheckBossDead = true;
         yield return delay2Sc;
 
         if (myBossEntity.isDead)
-            TurnManager.Instance.TriggerOnGameResult(false);        
+            TurnManager.Instance.TriggerOnGameResult(false);
 
         if (otherBossEntity.isDead)
-            TurnManager.Instance.TriggerOnGameResult(true);        
-    }
+            TurnManager.Instance.TriggerOnGameResult(true);
 
+        isCheckBossDead = false;
+    }
+    public void CheckBossDeadCo()
+    {
+        if (isCheckBossDead) return;        
+        StartCoroutine(CheckBossDead());
+    }
     //디버깅용
     public void DamageBoss(bool isMine, int damage)
     {
         var targetBpssEntity = isMine ? myBossEntity : otherBossEntity;
         targetBpssEntity.TakeDamage(damage);
-        StartCoroutine(CheckBossDead());
+        CheckBossDeadCo();
     }
 
-    void EntityAlignment(bool isMine)
+    public void EntityAlignment(bool isMine)
     {
         float targetY = isMine ? -1.62f : 0.59f;
         var targetEntities = isMine ? myEntities : otherEntities;
@@ -266,8 +335,10 @@ public class EntityManager : MonoBehaviour
         myEntities.RemoveAt(myEmptyEntityIndex);
         EntityAlignment(true);
     }
-    public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos)
+    public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos, out Entity spawned, Entity target = null)
     {
+        spawned = null;
+
         if (isMine)
         {
             if (isFullMyEntities || !ExistMyEmptyEntity) return false;
@@ -275,6 +346,11 @@ public class EntityManager : MonoBehaviour
         else
         {
             if (isFullOtherEntities) return false;
+        }
+
+        if (item.isSpell)
+        {
+            return false;
         }
 
         var entityObject = Instantiate(entityPrefab, spawnPos, Utils.QI);
@@ -287,34 +363,20 @@ public class EntityManager : MonoBehaviour
 
         entity.isMine = isMine;
         entity.Setup(item);
-        EntityAlignment(isMine);
+        EntityAlignment(isMine);       
 
-        if(item.isBattleCry)
-        {
-            RunBattleCry(isMine, item);
-        }
-
+        spawned = entity;
         return true;
     }
-    //전투의 함성 로직
-    public void RunBattleCry(bool isMine, Item item)
+    public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos, Entity target = null)
     {
-        switch(item.name)
-        {
-            case ("투척병"):
-                break;
-            case ("숲의 치유사"):
-                break;
-            case ("미치광이 폭탄마"):
-                break;
-        }
+        return SpawnEntity(isMine, item, spawnPos, out _, target);
     }
-    public void RunSpell(bool isMine, Item item)
+    public bool RunSpell(bool isMIne, Item item, Entity target = null)
     {
-        switch(item.name)
-        {
-            
-        }
+        Entity caster = isMIne ? myBossEntity : otherBossEntity;
+
+        return effectManager.RunAbilities(item, caster, target);
     }
     public void EntityMouseDown(Entity entity)
     {
@@ -345,7 +407,11 @@ public class EntityManager : MonoBehaviour
             Entity entity = hit.collider?.GetComponent<Entity>();
             if (entity != null && !entity.isMine && selectEntity.attackAble)
             {
-                if (existTauntEntity && !entity.isProvocation) continue;
+                if (existTauntEntity && !entity.isProvocation)
+                {
+                    targetPickEntity = null;
+                    continue;                        
+                }
 
                 targetPickEntity = entity;
                 existTarget = true;
@@ -367,6 +433,12 @@ public class EntityManager : MonoBehaviour
 
                 if (entity != null && !entity.isMine && selectEntity.attackAble)
                 {
+                    if (existTauntEntity && !entity.isProvocation)
+                    {
+                        targetPickEntity = null;
+                        continue;
+                    }
+
                     targetPickEntity = entity;
                     existTarget = true;
                     break;
@@ -382,12 +454,85 @@ public class EntityManager : MonoBehaviour
         var targetEntities = isMine ? myEntities : otherEntities;
         targetEntities.ForEach(x => x.attackAble = true);
 
-        foreach (var entity in myEntities) 
+        foreach(var ent in targetEntities)
         {
-            //if(entity == null || entity.isBossOrEmpty) continue;
+            if (ent == null) continue;
+            if (ent.isBossOrEmpty) continue;
 
+            if (ent.isCantAct)
+            {
+                ent.ConsumeCantActOnMyTurnStart(); // 턴 시작에 1 감소
+                ent.attackAble = false;           // 이번 턴 행동 불가
+            }
+        }
+
+        foreach (var entity in myEntities)
+        {
             entity.attackAble = isMine;
             entity.TurnOnOffOutLine(entity.attackAble);
+
+            if(isMine && entity.isCantAct)
+            {                
+                entity.attackAble = false;
+                entity.TurnOnOffOutLine(false);
+            }
         }
+    }
+    public bool TryStealMinion(Entity target, bool isToMine)
+    {
+        if(target == null) return false;
+        if(target.isBossOrEmpty) return false;
+        if(target.isMine == isToMine) return false;
+
+        if(isToMine)
+        {
+            if (CountMinions(true) >= MAX_ENTITY_COUNT) return false;
+        }
+        else
+        {
+            if (CountMinions(false) >= MAX_ENTITY_COUNT) return false;
+        }
+
+        if(target.isMine) myEntities.Remove(target);
+        else otherEntities.Remove(target);
+
+        target.isMine = isToMine;
+
+        if(isToMine)
+        {
+            myEntities.Add(target);
+        }
+        else
+        {
+            otherEntities.Insert(Random.Range(0, otherEntities.Count + 1), target);
+        }
+
+        EntityAlignment(true);
+        EntityAlignment(false);
+        return true;
+    }
+    public int CountMinions(bool isMine)
+    {
+        var list = isMine ? myEntities : otherEntities;
+        int count = 0;
+
+        foreach(var ent in list)
+        {
+            if(ent == null) continue;
+            if(ent.isBossOrEmpty) continue;
+            count++;
+        }
+        return count;
+    }
+    public Entity FindRandomEntity(bool isTargetIsMine, bool isIncludeBoss, bool isOnlyMinion)
+    {
+        // 2) 보스 포함 여부       
+        var candidates = GetAliveTargetCandidates(isTargetIsMine, isIncludeBoss, isOnlyMinion);
+        if (candidates.Count == 0) return null;
+        return candidates[Random.Range(0, candidates.Count)];
+    }
+    public Entity FindEnemyBoss(bool isMine)
+    {
+        return isMine ? otherBossEntity : myBossEntity;
     }
 }

@@ -403,6 +403,51 @@ MonoBehaviour:
   m_Spacing: {x: 30.6, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &55105068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55105069}
+  - component: {fileID: 55105070}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &55105069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55105068}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2131687760}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &55105070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55105068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e486850fe1cd9c34b9da41041eb6b6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityManager: {fileID: 855773007}
 --- !u!1 &75191393
 GameObject:
   m_ObjectHideFlags: 0
@@ -3566,6 +3611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 938cf74c0c29a1f4f81b99e3b2e59ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectManager: {fileID: 55105070}
   entityPrefab: {fileID: 8556827582665395581, guid: 7f9b0722b692dca4d8a3208f60de92d8, type: 3}
   damagePrefab: {fileID: 6397772828565763994, guid: 8b1a3c7102f391d46b6dbeaa128e981b, type: 3}
   myEntities: []
@@ -4501,7 +4547,8 @@ MonoBehaviour:
   cheatInfo: "\uC5D0\uB514\uD130 \uB118\uBC84\uD328\uB4DC\uC5D0\uC11C \uB3D9\uC791\n\n1.
     \uB0B4 \uCE74\uB4DC \uCD94\uAC00\n2. \uC0C1\uB300 \uCE74\uB4DC \uCD94\uAC00\n3.
     \uD134 \uC885\uB8CC\n4.\uC0C1\uB300\uCE74\uB4DC\uB193\uAE30\n5. \uB0B4 \uBCF4\uC2A4
-    \uB300\uBBF8\uC9C0 -29\n6. \uC0C1\uB300 \uBCF4\uC2A4 \uB300\uBBF8\uC9C0 -29"
+    \uB300\uBBF8\uC9C0 -29\n6. \uC0C1\uB300 \uBCF4\uC2A4 \uB300\uBBF8\uC9C0 -29\n7.
+    \uB098\uC758 \uB9C8\uB098 1++\n8.\uC0C1\uB300 \uB9C8\uB098 1++"
 --- !u!4 &1238475607
 Transform:
   m_ObjectHideFlags: 0
@@ -5660,31 +5707,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isUI: 0
   item:
+    cardID: 0
+    cardCost: 0
     cardType: 0
+    cardClass: 0
     name: 
     attack: 0
     health: 0
     sprite: {fileID: 0}
     backGround: {fileID: 0}
     percent: 0
-    cardCost: 0
     cardInfo: 
     shopPercent: 0
     isRush: 0
     isProvocation: 0
     isBattleCry: 0
+    isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   entity: {fileID: 0}
   character: {fileID: 0}
   attackTMP: {fileID: 0}
-  heathTMP: {fileID: 0}
+  healthTMP: {fileID: 0}
   sleepParticle: {fileID: 0}
   outLineRenderer: {fileID: 0}
+  provocationSpriteOutLIne: {fileID: 0}
+  provocationSprite: {fileID: 0}
   attack: 0
-  heath: 0
+  health: 0
+  maxHealth: 0
+  temporaryAttack: 0
   isMine: 0
   isDead: 0
   isBossOrEmpty: 1
   attackAble: 0
+  cantActTurns: 0
   originPos: {x: 0, y: 0, z: 0}
   isRush: 0
   isProvocation: 0
@@ -6187,6 +6245,7 @@ MonoBehaviour:
   aiGamerCardLeft: {fileID: 2018172640}
   aiGamerCardRight: {fileID: 1850124472}
   turnManager: {fileID: 1216535774}
+  effectManager: {fileID: 0}
   enlargeScale: 2.5
   enlargeYPos: 450
   enlargeZPos: 100
@@ -7874,6 +7933,7 @@ Transform:
   - {fileID: 855773008}
   - {fileID: 1216535775}
   - {fileID: 1285064953}
+  - {fileID: 55105069}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2547520204604249651
@@ -7889,7 +7949,7 @@ PrefabInstance:
       value: AIGamer
       objectReference: {fileID: 0}
     - target: {fileID: 4721762780540216322, guid: 74597f633bab0c048924ed0d1aedf91e, type: 3}
-      propertyPath: heathTMP
+      propertyPath: healthTMP
       value: 
       objectReference: {fileID: 1724050101}
     - target: {fileID: 5171653504591774003, guid: 74597f633bab0c048924ed0d1aedf91e, type: 3}
@@ -8071,7 +8131,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5037542435810396467, guid: 1abc30369f18c5a4eaa5f528baa6a804, type: 3}
-      propertyPath: heathTMP
+      propertyPath: healthTMP
       value: 
       objectReference: {fileID: 1296220820}
     - target: {fileID: 7775982037039731697, guid: 1abc30369f18c5a4eaa5f528baa6a804, type: 3}

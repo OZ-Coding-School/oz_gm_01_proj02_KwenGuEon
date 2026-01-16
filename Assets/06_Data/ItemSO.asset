@@ -29,6 +29,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 1
     cardCost: 1
     cardType: 0
@@ -45,6 +48,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 2
     cardCost: 1
     cardType: 0
@@ -61,6 +67,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 3
     cardCost: 1
     cardType: 0
@@ -77,6 +107,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 4
     cardCost: 1
     cardType: 0
@@ -93,6 +126,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 5
     cardCost: 2
     cardType: 0
@@ -109,6 +145,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 6
     cardCost: 2
     cardType: 0
@@ -125,6 +164,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 7
     cardCost: 2
     cardType: 0
@@ -141,6 +183,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 8
     cardCost: 2
     cardType: 0
@@ -157,6 +202,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 9
     cardCost: 2
     cardType: 0
@@ -173,6 +221,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 1
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 10
     cardCost: 2
     cardType: 0
@@ -189,6 +261,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 1
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 11
     cardCost: 2
     cardType: 1
@@ -205,6 +301,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 4
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 12
     cardCost: 1
     cardType: 1
@@ -215,13 +335,36 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 487ca9c97a2121c49b97711625081a3b, type: 3}
     backGround: {fileID: 0}
     percent: 4
-    cardInfo: "\uC120\uD0DD\uD55C \uC801\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC90D\uB2C8\uB2E4.(\uB098\uC911\uC5D0
-      bool\uCD94\uAC00)"
+    cardInfo: "\uC120\uD0DD\uD55C \uC801\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC90D\uB2C8\uB2E4."
     shopPercent: 0
     isRush: 0
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 13
     cardCost: 1
     cardType: 1
@@ -239,6 +382,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 6
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 1
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 14
     cardCost: 1
     cardType: 1
@@ -255,6 +443,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 1
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 4
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 15
     cardCost: 2
     cardType: 1
@@ -272,6 +484,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 2
+      targetRule:
+        targetGroup: 3
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 1
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 16
     cardCost: 0
     cardType: 1
@@ -288,6 +524,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 5
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 1
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 17
     cardCost: 2
     cardType: 1
@@ -304,6 +564,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 5
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 18
     cardCost: 2
     cardType: 1
@@ -320,6 +604,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 6
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 2
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 19
     cardCost: 1
     cardType: 1
@@ -337,6 +666,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 2
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 2
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 20
     cardCost: 3
     cardType: 0
@@ -353,6 +706,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 21
     cardCost: 3
     cardType: 0
@@ -369,6 +725,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 22
     cardCost: 3
     cardType: 0
@@ -385,6 +744,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 23
     cardCost: 3
     cardType: 0
@@ -401,6 +763,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 24
     cardCost: 3
     cardType: 0
@@ -417,6 +782,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 1
+    abilities:
+    - effectType: 2
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 2
+      isGrantHealth: 1
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 1
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 25
     cardCost: 4
     cardType: 0
@@ -433,6 +843,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 26
     cardCost: 4
     cardType: 0
@@ -449,6 +862,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 27
     cardCost: 4
     cardType: 0
@@ -465,6 +881,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 28
     cardCost: 4
     cardType: 0
@@ -481,6 +900,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 29
     cardCost: 4
     cardType: 0
@@ -498,6 +920,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 3
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 1
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 30
     cardCost: 5
     cardType: 0
@@ -514,6 +960,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 31
     cardCost: 5
     cardType: 0
@@ -530,6 +979,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 32
     cardCost: 5
     cardType: 0
@@ -546,6 +998,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 2
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 3
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 33
     cardCost: 3
     cardType: 1
@@ -562,6 +1038,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 4
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 34
     cardCost: 4
     cardType: 1
@@ -578,6 +1078,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 4
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 35
     cardCost: 4
     cardType: 1
@@ -595,11 +1119,56 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 7
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 1
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 7
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 36
     cardCost: 5
     cardType: 0
     cardClass: 0
-    name: "\uC232\uC758 \uCE58\uC720\uC0AC"
+    name: "\uC232\uC758 \uAD50\uAD00"
     attack: 1
     health: 1
     sprite: {fileID: 21300000, guid: 3f03aa17c3f2dc84187d86fd2436a3a9, type: 3}
@@ -611,6 +1180,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 1
+    abilities:
+    - effectType: 2
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 4
+      addHealth: 4
+      isGrantHealth: 1
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 1
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 4
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 37
     cardCost: 4
     cardType: 1
@@ -627,6 +1241,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 6
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 38
     cardCost: 5
     cardType: 1
@@ -643,6 +1281,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 3
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 39
     cardCost: 5
     cardType: 1
@@ -660,6 +1322,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 2
+      targetRule:
+        targetGroup: 3
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 3
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 40
     cardCost: 6
     cardType: 1
@@ -676,6 +1362,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 4
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 2
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 6
+      targetRule:
+        targetGroup: 4
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 2
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 41
     cardCost: 3
     cardType: 1
@@ -692,6 +1423,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 1
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 4
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 42
     cardCost: 4
     cardType: 0
@@ -709,6 +1464,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 1
+    abilities:
+    - effectType: 9
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 1
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 43
     cardCost: 4
     cardType: 0
@@ -725,6 +1504,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 44
     cardCost: 6
     cardType: 0
@@ -741,6 +1523,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 45
     cardCost: 6
     cardType: 0
@@ -757,6 +1542,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 46
     cardCost: 6
     cardType: 0
@@ -773,6 +1561,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 47
     cardCost: 7
     cardType: 0
@@ -789,6 +1580,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 48
     cardCost: 8
     cardType: 0
@@ -806,6 +1600,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 2
+      targetRule:
+        targetGroup: 3
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 1
+      addHealth: 1
+      isGrantHealth: 1
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 1
+      targetRule:
+        targetGroup: 3
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 49
     cardCost: 7
     cardType: 0
@@ -822,6 +1661,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 1
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 5
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 50
     cardCost: 8
     cardType: 0
@@ -838,6 +1701,9 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 51
     cardCost: 8
     cardType: 0
@@ -855,6 +1721,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 7
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 52
     cardCost: 9
     cardType: 0
@@ -871,6 +1761,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 53
     cardCost: 10
     cardType: 0
@@ -888,6 +1781,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 0
+    abilities:
+    - effectType: 8
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 1
+      isAffectDeck: 1
+      isMoveDiscard: 1
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 3
+      targetRule:
+        targetGroup: 6
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 54
     cardCost: 10
     cardType: 1
@@ -904,6 +1842,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 9
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 1
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 1
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 55
     cardCost: 7
     cardType: 1
@@ -921,6 +1883,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 5
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 4
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 56
     cardCost: 8
     cardType: 1
@@ -937,6 +1923,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 0
+    abilities:
+    - effectType: 3
+      targetRule:
+        targetGroup: 6
+        isAffectAll: 1
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 57
     cardCost: 10
     cardType: 1
@@ -953,6 +1963,30 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 1
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 10
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 58
     cardCost: 2
     cardType: 0
@@ -970,6 +2004,51 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 1
     isSpell: 0
+    needTarget: 1
+    abilities:
+    - effectType: 0
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 1
+      secondaryValue: 0
+      addAttack: 0
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    - effectType: 2
+      targetRule:
+        targetGroup: 0
+        isAffectAll: 0
+        count: 0
+        isOnlyMinion: 0
+        isOnlyDamage: 0
+      defaultValue: 0
+      secondaryValue: 0
+      addAttack: 2
+      addHealth: 0
+      isGrantHealth: 0
+      isJustThisTurnMana: 0
+      StatusAbnormalityId: 0
+      isSetAttack: 0
+      isAffectHand: 0
+      isAffectDeck: 0
+      isMoveDiscard: 0
+      isMoveToMyField: 0
+      needEnemyMinionCount: 0
+      isTempThisTurn: 0
+    activeEffect: {fileID: 0}
   - cardID: 59
     cardCost: 8
     cardType: 0
@@ -986,6 +2065,9 @@ MonoBehaviour:
     isProvocation: 1
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   - cardID: 60
     cardCost: 5
     cardType: 0
@@ -1002,3 +2084,6 @@ MonoBehaviour:
     isProvocation: 0
     isBattleCry: 0
     isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}

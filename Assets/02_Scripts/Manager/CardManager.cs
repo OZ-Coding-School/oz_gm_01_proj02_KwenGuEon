@@ -8,7 +8,7 @@ public class CardManager : MonoBehaviour
     public static CardManager instance;
 
     [SerializeField] ItemSO itemSO;
-    [SerializeField] private GameObject cardPrefab;    
+    [SerializeField] private GameObject cardPrefab;
     [SerializeField] float arcHeight = 70.0f;
 
     [SerializeField] private List<Card> myCards;
@@ -23,8 +23,12 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform aiGamerCardLeft;
     [SerializeField] private Transform aiGamerCardRight;
 
-
+    private Entity spellTarget;
     [SerializeField] private TurnManager turnManager;
+    [SerializeField] private EffectManager effectManager;
+    private Entity BattleCryCaster;
+    private Item BattleCryItem;
+    private Card BattleCryCard;
 
     [Header("Enlarge")]
     [SerializeField] float enlargeScale = 3.5f;
@@ -39,7 +43,11 @@ public class CardManager : MonoBehaviour
     Card dragCard;
     bool isMyCardDrag;
     [SerializeField] ECardState cardState;
-    
+
+    private bool isCurrentDrawMine = true;
+    private int myFatigueDamageCount = 0;
+    private int otherFatigueDamageCount = 0;
+    private int battleCryArmedFrame = -1;
     enum ECardState { Nothing, CanMouseOver, CanMouseDrag }
 
     private void Awake()
@@ -52,6 +60,9 @@ public class CardManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (effectManager == null)
+            effectManager = FindAnyObjectByType<EffectManager>();
     }
     private void Start()
     {
@@ -68,7 +79,7 @@ public class CardManager : MonoBehaviour
         TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
     }
     void OnTurnStarted(bool isMyTurn)
-    {        
+    {
     }
     private void Update()
     {
@@ -76,13 +87,51 @@ public class CardManager : MonoBehaviour
 
         if (isMyCardDrag && dragCard != null)
             CardDrag();
+        else
+            spellTarget = DetectSpellTarget();
 
         SetECardState();
 
         if (cardState != ECardState.Nothing)
-            DetectCardPointer();
-    }
+            DetectCardPointer();       
 
+        if (BattleCryCaster != null && BattleCryItem != null)
+        {
+            //타겟이 필요한 경우에만 갱신
+            if (TargetUtil.RequiresExternalTarget(BattleCryItem))
+            {
+                spellTarget = DetectSpellTarget();
+            }
+
+            //하수인을 내려놓은 이후에 마우스 클릭 시 발동
+            if (Time.frameCount > battleCryArmedFrame && Input.GetMouseButtonDown(0))
+            {
+                bool needTarget = TargetUtil.RequiresExternalTarget(BattleCryItem);
+                
+                if (needTarget && !IsTargetAllowed(BattleCryItem, spellTarget))
+                {                    
+                    return;
+                }
+
+                //타겟이 필요 없거나 유효한 타겟이 있는 경우 능력 발동
+                effectManager.RunAbilities(BattleCryItem, BattleCryCaster, spellTarget);
+
+                //초기화
+                BattleCryCaster = null;
+                BattleCryItem = null;
+                spellTarget = null;
+                battleCryArmedFrame = -1;
+            }
+        }
+    }
+    private void ClearBattleCry()
+    {
+        BattleCryCaster = null;
+        BattleCryItem = null;
+        BattleCryCard = null;   // 사실 안 쓰면 제거 후보
+        spellTarget = null;
+        battleCryArmedFrame = -1;
+    }
     public bool IsPointerInHandArea(Vector2 screenPos)
     {
         if (handAreaRect == null) return false;
@@ -93,7 +142,15 @@ public class CardManager : MonoBehaviour
     {
         if (itemBuffer.Count == 0)
         {
-            //TODO: 데미지 주는 로직 1부터 ++
+            if (isCurrentDrawMine)
+                myFatigueDamageCount++;
+            else
+                otherFatigueDamageCount++;
+
+            int damage = isCurrentDrawMine ? myFatigueDamageCount : otherFatigueDamageCount;
+
+            EntityManager.Instance.DamageBoss(isCurrentDrawMine, damage);
+            return null;
         }
         Item item = itemBuffer[0];
         itemBuffer.RemoveAt(0);
@@ -119,15 +176,27 @@ public class CardManager : MonoBehaviour
             itemBuffer[rand] = temp;
         }
     }
-    void AddCard(bool isMine)
+    public void AddCard(bool isMine)
     {
+        isCurrentDrawMine = isMine;
+        Item item = PopItem();
+        if (item == null) return;
+
         var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI, cardCanvas);
         var card = cardObject.GetComponent<Card>();
-        card.Setup(PopItem(), isMine);
+        card.Setup(item, isMine);
         (isMine ? myCards : otherCards).Add(card);
 
         SetOriginorder(isMine);
         CardAlignment(isMine);
+    }
+    public void DrawCard(bool isMine, int count)
+    {
+        count = Mathf.Max(0, count);
+        for (int i = 0; i < count; i++)
+        {
+            AddCard(isMine);
+        }
     }
     void SetOriginorder(bool isMine)
     {
@@ -192,7 +261,7 @@ public class CardManager : MonoBehaviour
     }
     public bool TryPutCard(bool isMine)
     {
-        if(isMine && selectCard != null)
+        if (isMine && selectCard != null)
         {
             int cost = selectCard.item.cardCost;
             if (TurnManager.Instance.myMana < cost) return false;
@@ -204,20 +273,38 @@ public class CardManager : MonoBehaviour
 
         Card card = isMine ? selectCard : otherCards[UnityEngine.Random.Range(0, otherCards.Count)];
 
-        if(!isMine)
+        if (!isMine)
         {
             int cost = card.item.cardCost;
             if (TurnManager.Instance.otherMana < cost) return false;
             if (TurnManager.Instance.otherMaxMana < cost) return false;
         }
 
+        if (!isMine && card.item.isSpell)
+        {
+            bool onlyMinion = IsOnlyMinionTarget(card.item);
+            Entity target = null;
+            if (card.item.needTarget)
+            {
+                if (onlyMinion)
+                    target = EntityManager.Instance.FindRandomEntity(true, false, true);
+                else
+                    target = EntityManager.Instance.FindRandomEntity(true, true, false);
+            }
+
+            return TryUseSpell(false, card, target);
+        }
+
         var spawnPos = isMine ? Utils.MousePos : otherCardSpawnPoint.position;
         var targetCards = isMine ? myCards : otherCards;
 
-        if (EntityManager.Instance.SpawnEntity(isMine, card.item, spawnPos))
+        Entity spawned = null;
+        bool isMineSpawn = EntityManager.Instance.SpawnEntity(isMine, card.item, spawnPos, out spawned);
+
+        if (isMineSpawn)
         {
             if (isMine) TurnManager.Instance.UseMana(true, card.item.cardCost);
-            else TurnManager.Instance.UseMana(false, card.item.cardCost);            
+            else TurnManager.Instance.UseMana(false, card.item.cardCost);
 
             targetCards.Remove(card);
             card.transform.DOKill();
@@ -226,7 +313,17 @@ public class CardManager : MonoBehaviour
             {
                 selectCard = null;
             }
-            CardAlignment(isMine);            
+            CardAlignment(isMine);
+
+            if (!isMine && spawned != null && card.item.isBattleCry)
+            {
+                bool onlyMinion = IsOnlyMinionTarget(card.item);
+                Entity target = null;
+                if (TargetUtil.RequiresExternalTarget(card.item))
+                    target = EntityManager.Instance.FindRandomEntity(isTargetIsMine: true, isIncludeBoss: !onlyMinion, isOnlyMinion: onlyMinion);
+
+                effectManager.RunAbilities(card.item, spawned, target);
+            }
             return true;
         }
         else
@@ -234,7 +331,117 @@ public class CardManager : MonoBehaviour
             targetCards.ForEach(x => x.GetComponent<SortingOrder>().SetMostFrontOrder(false));
             CardAlignment(isMine);
             return false;
-        }        
+        }
+    }
+    private bool TryPutMinionBattleCry(bool isMine, Card card)
+    {
+        if (card == null) return false;
+        if (card.item == null) return false;
+        if (card.item.isSpell) return false;
+
+        int cost = card.item.cardCost;
+        if (TurnManager.Instance.myMana < cost) return false;
+        if (TurnManager.Instance.myMaxMana < cost) return false;
+
+        if (card.item.isBattleCry && TargetUtil.RequiresExternalTarget(card.item))
+        {
+            bool onlyMinion = IsOnlyMinionTarget(card.item);
+            var candidates = EntityManager.Instance.GetAliveTargetCandidatesAll(includeBoss: !onlyMinion, onlyMinion: onlyMinion);
+
+            bool isTargetExist = false;
+            foreach (var ent in candidates)
+            {
+                if (IsTargetAllowed(card.item, ent))
+                {
+                    isTargetExist = true;
+                    break;
+                }
+            }
+            if (!isTargetExist) return false; // 타겟 없어서 낼 수 없음
+        }
+
+        var spawnPos = Utils.MousePos;
+
+        if (!EntityManager.Instance.SpawnEntity(true, card.item, spawnPos, out var spawned))
+            return false;
+
+        TurnManager.Instance.UseMana(true, cost);
+
+        myCards.Remove(card);
+        Destroy(card.gameObject);
+        CardAlignment(true);
+
+        if (spawned != null && card.item.isBattleCry)
+        {
+            // 타겟이 필요한 경우 -> Update에서 클릭 대기
+            if (TargetUtil.RequiresExternalTarget(card.item))
+            {
+                BattleCryCaster = spawned;
+                BattleCryItem = card.item;
+                battleCryArmedFrame = Time.frameCount; // 현재 프레임 저장 (바로 클릭되는 것 방지)
+            }
+            // 타겟이 필요 없는 경우 -> 즉시 발동
+            else
+            {
+                effectManager.RunAbilities(card.item, spawned, null);
+            }
+        }
+
+        return true;
+    }
+    public bool TryUseSpell(bool isMine, Card usedCard, Entity target)
+    {
+        if (usedCard == null) return false;
+
+        Item item = usedCard.item;
+        if (item == null) return false;
+
+        if (isMine)
+        {
+            if (TurnManager.Instance.myMana < item.cardCost)
+            {                
+                return false;
+            }
+        }
+        else
+        {            
+            if (TurnManager.Instance.otherMana < item.cardCost) return false;
+        }
+
+        if (item.needTarget && !IsTargetAllowed(item, target)) return false;
+        if (TargetUtil.RequiresExternalTarget(item) && target == null) return false;
+
+        bool isUseSpell = EntityManager.Instance.RunSpell(isMine, item, target);
+        if (!isUseSpell) return false;
+
+        TurnManager.Instance.UseMana(isMine, item.cardCost);
+
+        var list = isMine ? myCards : otherCards;
+        list.Remove(usedCard);
+
+        Destroy(usedCard.gameObject);
+
+        CardAlignment(isMine);
+
+        if (dragCard == usedCard) dragCard = null;
+        if (isMine) selectCard = null;
+
+        return true;
+    }
+    public void DiscardAllHand(bool isMine)
+    {
+        var list = isMine ? myCards : otherCards;
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            var card = list[i];
+            if (card != null) Destroy(card.gameObject);
+        }
+        list.Clear();
+    }
+    public void DiscardAllDeck()
+    {
+        if (itemBuffer != null) itemBuffer.Clear();
     }
     public void CardMouseOver(Card card)
     {
@@ -262,22 +469,36 @@ public class CardManager : MonoBehaviour
     {
         isMyCardDrag = false;
 
-        if (cardState != ECardState.CanMouseDrag) return;
+        if (cardState != ECardState.CanMouseDrag) return;        
 
         if (dragCard != null)
         {
-            if (!IsPointerInHandArea(Input.mousePosition) && TryPutCard(true))
+            if (!IsPointerInHandArea(Input.mousePosition))
             {
-                dragCard = null;
+                if (dragCard.item.isSpell)
+                {
+                    if (TryUseSpell(true, dragCard, spellTarget))
+                    {
+                        dragCard = null;
+                        spellTarget = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (TryPutMinionBattleCry(true, dragCard))
+                    {
+                        dragCard = null;
+                        return;
+                    }
+                }
             }
-            else
-            {
-                dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
+            dragCard.GetComponent<SortingOrder>().SetMostFrontOrder(false);
 
-                dragCard.MoveVisualTransform(dragCard.originPRS, false);
-                dragCard = null;
-                EntityManager.Instance.RemoveMyEmptyEntity();
-            }
+            dragCard.MoveVisualTransform(dragCard.originPRS, false);
+            dragCard = null;
+            spellTarget = null;
+            EntityManager.Instance.RemoveMyEmptyEntity();
         }
         DetectCardPointer();
     }
@@ -301,8 +522,52 @@ public class CardManager : MonoBehaviour
             );
 
             dragCard.SetDragPosition(new Vector3(mousePos.x, mousePos.y, 0));
-            EntityManager.Instance.InsertMyEmptyEntity(Utils.MousePos.x);
+            if (!dragCard.item.isSpell)
+            {
+                EntityManager.Instance.InsertMyEmptyEntity(Utils.MousePos.x);
+            }
+            else
+            {
+                spellTarget = DetectSpellTarget();
+            }
+
         }
+    }
+    private Entity DetectSpellTarget()
+    {
+        foreach (var hit in Physics2D.RaycastAll(Utils.MousePos, Vector3.forward))
+        {
+            var e = hit.collider?.GetComponentInParent<Entity>();
+            if (e == null) continue;
+
+            if (!e.isBossOrEmpty ||
+            e == EntityManager.Instance.GetBoss(true) ||
+            e == EntityManager.Instance.GetBoss(false))
+            {
+                return e;
+            }
+        }
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+        pointerData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        foreach (var r in results)
+        {
+            var e = r.gameObject.GetComponentInParent<Entity>();
+            if (e == null) continue;
+
+            if (!e.isBossOrEmpty ||
+            e == EntityManager.Instance.GetBoss(true) ||
+            e == EntityManager.Instance.GetBoss(false))
+            {
+                return e;
+            }
+        }
+
+        return null;
     }
     void DetectCardPointer()
     {
@@ -347,5 +612,34 @@ public class CardManager : MonoBehaviour
 
         else if (TurnManager.Instance.isMyTurn)
             cardState = ECardState.CanMouseDrag;
+    }
+    private bool IsOnlyMinionTarget(Item item)
+    {
+        if (item == null || item.abilities == null) return false;
+
+        foreach (var ab in item.abilities)
+        {
+            var rule = ab.targetRule;
+
+            if (rule.isOnlyMinion) return true;
+            if (rule.targetGroup == TargetGroup.OnlyEnemyMinions) return true;
+        }
+        return false;
+    }
+    private bool IsTargetAllowed(Item item, Entity target)
+    {
+        if (item == null) return false;
+        if (!item.needTarget) return true;
+        if (target == null) return false;
+
+        bool onlyMinion = IsOnlyMinionTarget(item);
+        if (onlyMinion)
+        {
+            if (target == EntityManager.Instance.GetBoss(true) ||
+                target == EntityManager.Instance.GetBoss(false) ||
+                target.isBossOrEmpty)
+                return false;
+        }
+        return true;
     }
 }

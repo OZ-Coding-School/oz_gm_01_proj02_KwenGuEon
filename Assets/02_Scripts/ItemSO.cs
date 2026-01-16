@@ -1,5 +1,71 @@
 using UnityEngine;
 using System.Linq;
+using JetBrains.Annotations;
+using System.Collections.Generic;
+[System.Serializable]
+public enum EffectType
+{
+    Damage,
+    Heal,
+    BuffStats,
+    Kill,
+    Draw,
+    Mana,
+    StatusAbnormality, //상태이상
+    SetStat,
+    MoveCard,
+    MoveMinion
+}
+public enum TargetGroup
+{
+    Target,
+    RandomEnemy,
+    EnemyHero,
+    Friendly,
+    EnemyAll,
+    OnlyEnemyMinions,
+    AllMinions
+}
+[System.Serializable]
+public struct TargetRule
+{
+    public TargetGroup targetGroup;
+
+    public bool isAffectAll;
+    public int count;
+
+    public bool isOnlyMinion;
+    public bool isOnlyDamage;    
+}
+[System.Serializable]
+public struct EffectDef
+{
+    public EffectType effectType;
+    public TargetRule targetRule;
+
+    public int defaultValue;
+    public int secondaryValue;
+
+    public int addAttack;
+    public int addHealth;
+    public bool isGrantHealth;
+
+    public bool isJustThisTurnMana;
+
+    public int StatusAbnormalityId;
+
+    public bool isSetAttack;
+
+    public bool isAffectHand;
+    public bool isAffectDeck;
+    public bool isMoveDiscard;
+
+    public bool isMoveToMyField;
+    public int needEnemyMinionCount;
+
+    public bool isTempThisTurn;
+}
+
 [System.Serializable]
 public class Item
 {
@@ -34,6 +100,9 @@ public class Item
     public bool isProvocation;  //도발
     public bool isBattleCry;    //전투의함성
     public bool isSpell;        //마법카드
+    public bool needTarget;
+    public List<EffectDef> abilities;
+    public CardEffectSO activeEffect;
 }
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "SeriptableObject/ItemSO")]

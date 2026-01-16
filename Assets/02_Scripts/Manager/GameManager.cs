@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,7 +5,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Multiline(10)]
-    [SerializeField] string cheatInfo;       
+    [SerializeField] string cheatInfo;
 
     private void Awake()
     {
@@ -23,7 +22,6 @@ public class GameManager : MonoBehaviour
     {
         StartGame();
     }
-
     void Update()
     {
 #if UNITY_EDITOR
@@ -57,9 +55,19 @@ public class GameManager : MonoBehaviour
         {
             EntityManager.Instance.DamageBoss(false, 29);
         }
+        if (Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            TurnManager.Instance.myMaxMana++;
+            TurnManager.Instance.myMana++;
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            TurnManager.Instance.otherMaxMana++;
+            TurnManager.Instance.otherMana++;
+        }
     }
     public void StartGame()
     {
         StartCoroutine(TurnManager.Instance.StartGameCo());
-    }   
+    }
 }
