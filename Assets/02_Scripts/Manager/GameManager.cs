@@ -55,6 +55,16 @@ public class GameManager : MonoBehaviour
         {
             EntityManager.Instance.DamageBoss(false, 29);
         }
+        if (Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            TurnManager.Instance.myMaxMana++;
+            TurnManager.Instance.myMana++;
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            TurnManager.Instance.otherMaxMana++;
+            TurnManager.Instance.otherMana++;
+        }
     }
     public void StartGame()
     {

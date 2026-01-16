@@ -178,6 +178,8 @@ public class EffectManager : MonoBehaviour
             case TargetGroup.AllMinions:
                 result.AddRange(entityManager.GetAliveMinions(true));
                 result.AddRange(entityManager.GetAliveMinions(false));
+                if(caster != null)
+                    result.Remove(caster);
                 break;
             default:
                 return null;
