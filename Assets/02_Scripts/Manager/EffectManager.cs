@@ -12,13 +12,29 @@ public class EffectManager : MonoBehaviour
     }
     public bool RunAbilities(Item item, Entity caster, Entity target)
     {
-        if (item == null || item.abilities == null || item.abilities.Count == 0) return false;
-        if (item.needTarget && target == null) return false;
+        if (item == null || item.abilities == null || item.abilities.Count == 0) return false;        
+
+        bool requiresExternalTarget = false;
+
+        if (item.needTarget && item.abilities != null)
+        {
+            foreach (var a in item.abilities)
+            {
+                var rule = a.targetRule;
+
+                if (rule.targetGroup == TargetGroup.Target)
+                {
+                    requiresExternalTarget = true;
+                    break;
+                }
+            }
+        }
+
+        if (requiresExternalTarget && target == null) return false;
 
         foreach (var define in item.abilities)
         {
             List<Entity> entities = GetOneTarget(define.targetRule, caster, target);
-
             if (entities == null || entities.Count == 0) continue;
 
             foreach (var entity in entities)
@@ -95,6 +111,8 @@ public class EffectManager : MonoBehaviour
                                 break;
                         }
                         entityManager.TryStealMinion(entity, caster.isMine);
+                        bool ok = entityManager.TryStealMinion(entity, caster.isMine);
+                        if (!ok) Debug.LogWarning($"[StealFail] target={entity?.name} toMine={caster.isMine}");
                         break;
 
                     case EffectType.StatusAbnormality:
@@ -123,6 +141,7 @@ public class EffectManager : MonoBehaviour
     private List<Entity> GetOneTarget(TargetRule rule, Entity caster, Entity target)
     {
         var result = new List<Entity>();
+        var boss = entityManager.FindEnemyBoss(caster.isMine);
 
         switch (rule.targetGroup)
         {
@@ -130,14 +149,14 @@ public class EffectManager : MonoBehaviour
                 if (target != null) result.Add(target);
                 break;
             case TargetGroup.EnemyHero:
-                var boss = entityManager.FindEnemyBoss(caster.isMine);
+
                 if (boss != null) result.Add(boss);
                 break;
             case TargetGroup.RandomEnemy:
                 int times = Mathf.Max(1, rule.count);
                 for (int i = 0; i < times; i++)
                 {
-                    var r = entityManager.FindRandomEntity(!caster.isMine);
+                    var r = entityManager.FindRandomEntity(isTargetIsMine: !caster.isMine, isIncludeBoss: true, isOnlyMinion: false);
                     if (r != null) result.Add(r);
                 }
                 break;
@@ -148,28 +167,21 @@ public class EffectManager : MonoBehaviour
                     result.Add(caster);
                 break;
             case TargetGroup.EnemyAll:
-                result.AddRange(entityManager.GetEntities(!caster.isMine));
-                result.Add(entityManager.FindEnemyBoss(caster.isMine));
+                result.AddRange(entityManager.GetAliveMinions(!caster.isMine));
+                if (boss != null && !boss.isDead) result.Add(boss);
                 break;
 
             case TargetGroup.OnlyEnemyMinions:
-                result.AddRange(entityManager.GetEntities(!caster.isMine));
+                result.AddRange(entityManager.GetAliveMinions(!caster.isMine));
                 break;
 
             case TargetGroup.AllMinions:
-                result.AddRange(entityManager.GetEntities(true));
-                result.AddRange(entityManager.GetEntities(false));
+                result.AddRange(entityManager.GetAliveMinions(true));
+                result.AddRange(entityManager.GetAliveMinions(false));
                 break;
             default:
                 return null;
-        }
-
-        result.RemoveAll(e =>
-           e == null ||
-           ((rule.targetGroup == TargetGroup.OnlyEnemyMinions ||
-           rule.targetGroup == TargetGroup.AllMinions ||
-           rule.isOnlyMinion) && e.isBossOrEmpty) ||
-           (rule.isOnlyDamage && e.health >= e.maxHealth));
+        }      
 
         return result;
     }

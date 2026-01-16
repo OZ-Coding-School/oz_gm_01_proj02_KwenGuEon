@@ -50,9 +50,6 @@ public class Entity : MonoBehaviour
 
             originPos.z = 0;
         }
-
-        if (outLineRenderer == null) return;
-        outLineRenderer.gameObject.SetActive(false);
     }
     private void OnDestroy()
     {
@@ -109,8 +106,6 @@ public class Entity : MonoBehaviour
         else
         {
             sleepParticle.SetActive(false);
-            outLineRenderer.gameObject.SetActive(true);
-
         }
     }
     public void Setup(Item item)
@@ -130,12 +125,14 @@ public class Entity : MonoBehaviour
 
         if (this.item.isRush)
         {
-            this.attackAble = true;
+            attackAble = true;
             sleepParticle.SetActive(false);
+            outLineRenderer.gameObject.SetActive(true);
         }
         else
         {
             sleepParticle.SetActive(true);
+
         }
 
         if (this.isProvocation)
@@ -154,7 +151,7 @@ public class Entity : MonoBehaviour
     public bool TakeDamage(int damage)
     {
         health -= damage;
-        UpdateHealthUI();        
+        UpdateHealthUI();
 
         if (health <= 0)
         {
@@ -177,11 +174,11 @@ public class Entity : MonoBehaviour
     public void AttackUP(int plusAttack)
     {
         attack += plusAttack;
-        if(attackTMP != null) attackTMP.text = attack.ToString();
+        if (attackTMP != null) attackTMP.text = attack.ToString();
     }
     public void GrantHealth(int amount)
     {
-        maxHealth += amount;        
+        maxHealth += amount;
         if (health > maxHealth) health = maxHealth;
         UpdateHealthUI();
     }
@@ -209,7 +206,7 @@ public class Entity : MonoBehaviour
         temporaryAttack += amount;
         attack += amount;
 
-        if(attackTMP != null)
+        if (attackTMP != null)
             attackTMP.text = attack.ToString();
     }
     public void RemoveTempAttackThisTurn()
@@ -219,8 +216,8 @@ public class Entity : MonoBehaviour
         attack -= temporaryAttack;
         temporaryAttack = 0;
 
-        if(attack < 0) attack = 0;
-        if(attackTMP != null)
+        if (attack < 0) attack = 0;
+        if (attackTMP != null)
             attackTMP.text = attack.ToString();
     }
     public void ConsumeCantActOnMyTurnStart()
@@ -229,20 +226,20 @@ public class Entity : MonoBehaviour
     }
     public void UpdateHealthUI()
     {
-        if(healthTMP != null)
+        if (healthTMP != null)
         {
             healthTMP.text = health.ToString();
 
-            if(health < maxHealth)
+            if (health < maxHealth)
             {
                 healthTMP.color = Color.red;
             }
-            else if(health >= maxHealth)
+            else if (health >= maxHealth)
             {
                 healthTMP.color = Color.white;
             }
-        }    
-    }   
+        }
+    }
     private void OnMouseDown()
     {
         if (isMine)

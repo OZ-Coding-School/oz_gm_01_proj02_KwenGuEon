@@ -12,12 +12,12 @@ public class RandomDamageEffectSO : CardEffectSO
 
         for (int i = 0; i < count; i++)
         {
-            Entity randomEnemy = EntityManager.Instance.FindRandomEntity(targetIsMine);
-
-            if (randomEnemy != null)
-            {
-                randomEnemy.TakeDamage(damage);
-            }
+            //Entity randomEnemy = EntityManager.Instance.FindRandomEntity(targetIsMine);
+            //
+            //if (randomEnemy != null)
+            //{
+            //    randomEnemy.TakeDamage(damage);
+            //}
         }
     }
 }

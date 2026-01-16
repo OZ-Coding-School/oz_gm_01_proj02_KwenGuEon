@@ -68,6 +68,50 @@ public class EntityManager : MonoBehaviour
     {
         ShowTargetPicker(existTargetPickEntity);
     }
+    #region Minions List
+    public List<Entity> GetAliveMinions(bool isMine)
+    {
+        var src = isMine ? myEntities : otherEntities;
+        var result = new List<Entity>(src.Count);
+
+        foreach(var ent in src)
+        {
+            if (ent == null) continue;
+            if (ent == myEmptyEntity) continue;
+            if (ent.isBossOrEmpty) continue;   // empty 포함
+            if (ent.isDead) continue;
+            result.Add(ent);
+        }
+        return result;
+    }
+    public List<Entity> GetAliveTargetCandidates(bool isTargetIsMine, bool includeBoss, bool onlyMinion)
+    {
+        var candidates = GetAliveMinions(isTargetIsMine);
+
+        if(includeBoss && !onlyMinion)
+        {
+            var boss = isTargetIsMine ? myBossEntity : otherBossEntity;
+            if(boss != null && !boss.isDead) candidates.Add(boss);
+        }
+
+        return candidates;
+    }
+    public List<Entity> GetAliveTargetCandidatesAll(bool includeBoss, bool onlyMinion)
+    {
+        var result = new List<Entity>();
+
+        result.AddRange(GetAliveMinions(true));
+        result.AddRange(GetAliveMinions(false));
+
+        if (includeBoss && !onlyMinion)
+        {
+            if (myBossEntity != null && !myBossEntity.isDead) result.Add(myBossEntity);
+            if (otherBossEntity != null && !otherBossEntity.isDead) result.Add(otherBossEntity);
+        }
+
+        return result;
+    }
+    #endregion
     //타겟이 누군지 보여주는 스프라이트의 로직
     void ShowTargetPicker(bool isShow)
     {
@@ -291,8 +335,10 @@ public class EntityManager : MonoBehaviour
         myEntities.RemoveAt(myEmptyEntityIndex);
         EntityAlignment(true);
     }
-    public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos, Entity target = null)
+    public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos, out Entity spawned, Entity target = null)
     {
+        spawned = null;
+
         if (isMine)
         {
             if (isFullMyEntities || !ExistMyEmptyEntity) return false;
@@ -317,14 +363,14 @@ public class EntityManager : MonoBehaviour
 
         entity.isMine = isMine;
         entity.Setup(item);
-        EntityAlignment(isMine);
+        EntityAlignment(isMine);       
 
-        if (item.isBattleCry)
-        {
-            effectManager.RunAbilities(item, entity, target);
-        }
-
+        spawned = entity;
         return true;
+    }
+    public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos, Entity target = null)
+    {
+        return SpawnEntity(isMine, item, spawnPos, out _, target);
     }
     public bool RunSpell(bool isMIne, Item item, Entity target = null)
     {
@@ -439,14 +485,12 @@ public class EntityManager : MonoBehaviour
         if(target.isMine == isToMine) return false;
 
         if(isToMine)
-        {            
-            if (isFullMyEntities || !myEntities.Exists(x => x == myEmptyEntity))
-                return false;
+        {
+            if (CountMinions(true) >= MAX_ENTITY_COUNT) return false;
         }
         else
         {
-            if(isFullOtherEntities)
-                return false;
+            if (CountMinions(false) >= MAX_ENTITY_COUNT) return false;
         }
 
         if(target.isMine) myEntities.Remove(target);
@@ -456,9 +500,7 @@ public class EntityManager : MonoBehaviour
 
         if(isToMine)
         {
-            int idx = myEntities.FindIndex(x => x == myEmptyEntity);
-            if(idx < 0) return false;
-            myEntities[idx] = target;
+            myEntities.Add(target);
         }
         else
         {
@@ -482,18 +524,12 @@ public class EntityManager : MonoBehaviour
         }
         return count;
     }
-    public Entity FindRandomEntity(bool isMIne)
+    public Entity FindRandomEntity(bool isTargetIsMine, bool isIncludeBoss, bool isOnlyMinion)
     {
-        List<Entity> targetList = isMIne ? myEntities : otherEntities;
-        Entity targetBoss = isMIne ? myBossEntity : otherBossEntity;
-
-        List<Entity> allTarget = new List<Entity>(targetList)
-        {
-            targetBoss
-        };
-
-        int randomIndex = Random.Range(0, allTarget.Count);
-        return allTarget[randomIndex];
+        // 2) 보스 포함 여부       
+        var candidates = GetAliveTargetCandidates(isTargetIsMine, isIncludeBoss, isOnlyMinion);
+        if (candidates.Count == 0) return null;
+        return candidates[Random.Range(0, candidates.Count)];
     }
     public Entity FindEnemyBoss(bool isMine)
     {
