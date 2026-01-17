@@ -462,7 +462,7 @@ public class EntityManager : MonoBehaviour
             if (ent.isCantAct)
             {
                 ent.ConsumeCantActOnMyTurnStart(); // 턴 시작에 1 감소
-                ent.attackAble = false;           // 이번 턴 행동 불가
+                ent.attackAble = false;            // 이번 턴 행동 불가
             }
         }
 
@@ -525,8 +525,7 @@ public class EntityManager : MonoBehaviour
         return count;
     }
     public Entity FindRandomEntity(bool isTargetIsMine, bool isIncludeBoss, bool isOnlyMinion)
-    {
-        // 2) 보스 포함 여부       
+    {             
         var candidates = GetAliveTargetCandidates(isTargetIsMine, isIncludeBoss, isOnlyMinion);
         if (candidates.Count == 0) return null;
         return candidates[Random.Range(0, candidates.Count)];
