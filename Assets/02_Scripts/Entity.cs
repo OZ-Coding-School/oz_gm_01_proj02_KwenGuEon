@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Entity : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Entity : MonoBehaviour
     [SerializeField] Item item;
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer character;
+    [SerializeField] Image heroImage;
     [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] GameObject sleepParticle;
@@ -239,6 +241,11 @@ public class Entity : MonoBehaviour
                 healthTMP.color = Color.white;
             }
         }
+    }
+    public void ChangeHeroImage(Sprite hero)
+    {
+        if (heroImage != null)
+            heroImage.sprite = hero;
     }
     private void OnMouseDown()
     {
