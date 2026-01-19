@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler
+public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] Image card;       //카드 전체 프리팹
     [SerializeField] Image character;  //케릭터 스프라이트
@@ -25,30 +25,45 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     public bool isFront;
     public PositionRotationScale originPRS;
 
+    [SerializeField] bool isLobby = false;
+
     private void Start()
     {
         GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
     }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (isLobby) return;
+    }
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (isLobby) return;
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (isLobby) return;
         if (isFront)
             CardManager.instance.CardMouseOver(this);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (isLobby) return;
         if (isFront)
             CardManager.instance.CardMouseExit(this);
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (isLobby) return;
         if (isFront)
             CardManager.instance.CardMouseDown(this);
     }
     public void OnDrag(PointerEventData eventData)
     {
+        if (isLobby) return;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (isLobby) return;
         if (isFront)
             CardManager.instance.CardMouseUp();
     }
@@ -59,10 +74,11 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         cardVisual.rotation = Utils.QI;
         cardVisual.localScale = Vector3.one;
     }
-    public void Setup(Item item, bool isFrount)
+    public void Setup(Item item, bool isFrount, bool isLoby = false)
     {
         this.item = item;
         this.isFront = isFrount;
+        this.isLobby = isLoby;
 
         if (this.isFront)
         {

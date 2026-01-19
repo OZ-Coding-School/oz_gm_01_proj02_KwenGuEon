@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -17,6 +19,16 @@ public class DeckManager : MonoBehaviour
     public List<int> otherCardDeck = new List<int>();
 
     public List<Item> myPlayCardDeck = new List<Item>();
+
+    private event Action<List<Item>> onDeckChanged;
+    public void SubscribeOnDeckChanged(Action<List<Item>> action)
+    {
+        onDeckChanged += action;
+    }
+    public void UnsubscribeOnDeckChanged(Action<List<Item>> action)
+    {
+        onDeckChanged -= action;
+    }
 
     private void Awake()
     {
@@ -42,8 +54,16 @@ public class DeckManager : MonoBehaviour
             return;
         }
 
+        int sameCardCount = myCardDeck.Count(id => id == cardId);
+
+        if (sameCardCount >= 2) 
+        {
+            return;
+        }
         myCardDeck.Add(cardId);
+        SortDeck();
         SaveDeck();
+        UpdateDeck();
     }
     public void RemoveCardDeck(int cardId)
     {
@@ -51,6 +71,7 @@ public class DeckManager : MonoBehaviour
         {
             myCardDeck.Remove(cardId);
             SaveDeck();
+            UpdateDeck();
         }
     }
     public void LoadDeck()
@@ -89,5 +110,24 @@ public class DeckManager : MonoBehaviour
                 myPlayCardDeck.Add(card);
             }
         }
+        onDeckChanged?.Invoke(myPlayCardDeck);
+    }
+    void SortDeck()
+    {
+        myCardDeck.Sort((idA, idB) =>
+        {
+            Item itemA = cardDeckBase.GetCardID(idA);
+            Item itemB = cardDeckBase.GetCardID(idB);
+
+            if (itemA == null) return 1;
+            if(itemB == null) return -1;
+
+            if(itemA.cardCost != itemB.cardCost)
+            {
+                return itemA.cardCost.CompareTo(itemB.cardCost);
+            }
+
+            return itemA.cardID.CompareTo(itemB.cardID);
+        });
     }
 }
