@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 2643725108755725045}
   - component: {fileID: 8022968028553026022}
   - component: {fileID: 8596281304711803173}
+  - component: {fileID: -1776539607553618818}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -143,15 +144,25 @@ MonoBehaviour:
   cardFrontGroup: {fileID: 3827309744042245793}
   cardBackGround: {fileID: 1068250446262372145}
   item:
+    cardID: 0
+    cardCost: 0
+    cardType: 0
+    cardClass: 0
     name: 
     attack: 0
     health: 0
     sprite: {fileID: 0}
     backGround: {fileID: 0}
     percent: 0
-    cardCost: 0
     cardInfo: 
     shopPercent: 0
+    isRush: 0
+    isProvocation: 0
+    isBattleCry: 0
+    isSpell: 0
+    needTarget: 0
+    abilities: []
+    activeEffect: {fileID: 0}
   isFront: 0
   originPRS:
     pos: {x: 0, y: 0, z: 0}
@@ -248,6 +259,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-1776539607553618818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152780296308746862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 8596281304711803173}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &223572940823362277
 GameObject:
   m_ObjectHideFlags: 0

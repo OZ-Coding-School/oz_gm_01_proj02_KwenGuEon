@@ -28,7 +28,6 @@ public class CardManager : MonoBehaviour
     [SerializeField] private EffectManager effectManager;
     private Entity BattleCryCaster;
     private Item BattleCryItem;
-    private Card BattleCryCard;
 
     [Header("Enlarge")]
     [SerializeField] float enlargeScale = 3.5f;
@@ -39,6 +38,10 @@ public class CardManager : MonoBehaviour
     [SerializeField] private RectTransform handAreaRect;
 
     List<Item> itemBuffer;
+
+    [SerializeField] List<Item> myDeck = new List<Item>();
+    [SerializeField] List<Item> otherDeck = new List<Item>();
+
     Card selectCard;
     Card dragCard;
     bool isMyCardDrag;
@@ -66,7 +69,12 @@ public class CardManager : MonoBehaviour
     }
     private void Start()
     {
-        SerupItemBuffer();
+        //인게임 테스트용
+        //SerupItemBuffer();
+
+        SetupGameDecks();
+
+
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
         TurnManager.Instance.SubscribeOnAddCard(AddCard);
 
@@ -93,7 +101,7 @@ public class CardManager : MonoBehaviour
         SetECardState();
 
         if (cardState != ECardState.Nothing)
-            DetectCardPointer();       
+            DetectCardPointer();
 
         if (BattleCryCaster != null && BattleCryItem != null)
         {
@@ -107,9 +115,9 @@ public class CardManager : MonoBehaviour
             if (Time.frameCount > battleCryArmedFrame && Input.GetMouseButtonDown(0))
             {
                 bool needTarget = TargetUtil.RequiresExternalTarget(BattleCryItem);
-                
+
                 if (needTarget && !IsTargetAllowed(BattleCryItem, spellTarget))
-                {                    
+                {
                     return;
                 }
 
@@ -124,11 +132,11 @@ public class CardManager : MonoBehaviour
             }
         }
     }
+    //청소용 사용안할시 삭제 예정
     private void ClearBattleCry()
     {
         BattleCryCaster = null;
         BattleCryItem = null;
-        BattleCryCard = null;   // 사실 안 쓰면 제거 후보
         spellTarget = null;
         battleCryArmedFrame = -1;
     }
@@ -138,24 +146,36 @@ public class CardManager : MonoBehaviour
 
         return RectTransformUtility.RectangleContainsScreenPoint(handAreaRect, screenPos, null);
     }
-    public Item PopItem()
+    public Item PopItem(bool isMine)
     {
-        if (itemBuffer.Count == 0)
+
+        if(isMine)
         {
-            if (isCurrentDrawMine)
+            if(myDeck.Count == 0)
+            {
                 myFatigueDamageCount++;
-            else
-                otherFatigueDamageCount++;
+                EntityManager.Instance.DamageBoss(true, myFatigueDamageCount);
+                return null;
+            }
 
-            int damage = isCurrentDrawMine ? myFatigueDamageCount : otherFatigueDamageCount;
-
-            EntityManager.Instance.DamageBoss(isCurrentDrawMine, damage);
-            return null;
+            Item item = myDeck[0];
+            myDeck.RemoveAt(0);
+            return item;
         }
-        Item item = itemBuffer[0];
-        itemBuffer.RemoveAt(0);
-        return item;
+        else
+        {
+            if(otherDeck.Count == 0)
+            {
+                otherFatigueDamageCount++;
+                EntityManager.Instance.DamageBoss(false, otherFatigueDamageCount);
+                return null;
+            }
+            Item item = otherDeck[0];
+            otherDeck.RemoveAt(0);
+            return item;
+        }
     }
+    //테스트용
     void SerupItemBuffer()
     {
         itemBuffer = new List<Item>();
@@ -176,10 +196,45 @@ public class CardManager : MonoBehaviour
             itemBuffer[rand] = temp;
         }
     }
+    void SetupGameDecks()
+    {
+        if (DeckManager.instance != null && DeckManager.instance.myPlayCardDeck.Count >= 30)
+        {
+            myDeck = new List<Item>(DeckManager.instance.myPlayCardDeck);
+        }
+        else
+        {
+            RandomDeck(myDeck, 30);
+        }
+        RandomDeck(otherDeck, 30);
+
+        ShuffleDeck(myDeck);
+        ShuffleDeck(otherDeck);
+    }
+    void RandomDeck(List<Item> deckList, int cardCount)
+    {
+        if (itemSO == null) return;
+        for(int i = 0; i < cardCount; i++)
+        {
+            deckList.Add(itemSO.items[Random.Range(0, itemSO.items.Length)]);
+        }
+    }
+    
+    //덱 섞기
+    void ShuffleDeck(List<Item> deckList)
+    {
+        for (int i = 0; i < deckList.Count; i++)
+        {
+            int rand = UnityEngine.Random.Range(i, deckList.Count);
+            Item temp = deckList[i];
+            deckList[i] = deckList[rand];
+            deckList[rand] = temp;
+        }
+    }
     public void AddCard(bool isMine)
     {
         isCurrentDrawMine = isMine;
-        Item item = PopItem();
+        Item item = PopItem(isMine);
         if (item == null) return;
 
         var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI, cardCanvas);

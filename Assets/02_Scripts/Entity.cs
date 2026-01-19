@@ -141,7 +141,14 @@ public class Entity : MonoBehaviour
         {
             //도발 스프라이트 on
             provocationSprite.gameObject.SetActive(true);
+        }       
+        
+        Button btn = GetComponent<Button>();
+        if(btn != null)
+        {
+            btn.enabled = false;
         }
+
     }
     public void MoveTransform(Vector3 pos, bool useDotween, float dotweenTIme = 0f)
     {
