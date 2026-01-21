@@ -44,6 +44,8 @@ public class DeckPanel : MonoBehaviour
     {
         if (deckPages.Count == 0 || pageIndex <= 0) return;
 
+        SoundManager.instance.PlayOnSFX("DeckPageButtonFrounfSFX");
+
         deckPages[pageIndex].SetActive(false);
         pageIndex--;
         if (pageIndex < 0) pageIndex = 0;
@@ -57,6 +59,8 @@ public class DeckPanel : MonoBehaviour
     public void OnBackPageButtonClick()
     {
         if (deckPages.Count == 0 || pageIndex >= deckPages.Count - 1) return;
+
+        SoundManager.instance.PlayOnSFX("DeckPageButtonBackSFX");
 
         deckPages[pageIndex].gameObject.SetActive(false);
         pageIndex++;
@@ -76,6 +80,7 @@ public class DeckPanel : MonoBehaviour
     //나가기 버튼 눌렀을때
     public void OnExitButtonClick()
     {
+        SoundManager.instance.PlayOnSFX("ButtonSFX2");
         deckPages[pageIndex].SetActive(false);
         if(DeckManager.instance != null)
         {

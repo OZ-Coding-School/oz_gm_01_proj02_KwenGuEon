@@ -1,14 +1,124 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class EffectManager : MonoBehaviour
 {
-    [SerializeField] private EntityManager entityManager;
+    [SerializeField] private EntityManager entityManager;  
 
     private void Awake()
     {
         if (entityManager == null)
             entityManager = EntityManager.Instance;
+    }
+
+    public void ApplyActualEffect(EffectDef define, Entity caster, Entity target)
+    {
+        if(target == null) return;
+
+        switch (define.effectType)
+        {
+            case (EffectType.Damage):
+                target.TakeDamage(define.defaultValue);
+                break;
+            case (EffectType.Heal):
+                target.Heal(define.defaultValue);
+                break;
+            case EffectType.BuffStats:                
+                if (define.addAttack != 0)
+                {
+                    if (define.isTempThisTurn)
+                        target.TempAttackThisTurn(define.addAttack);
+                    else
+                        target.AttackUP(define.addAttack);
+                }
+                if (define.isTempThisTurn)
+                {
+                    int rollbackValue = define.addAttack;
+                    TurnManager.Instance.RegisterEndTurnRollback(caster.isMine, () =>
+                    {
+                        if (target == null) return;
+                        target.SetAttack(target.attack - rollbackValue); // 또는 AttackUP(-rollbackValue)
+                    });
+                }
+                if (define.addHealth != 0)
+                {
+                    if (define.isGrantHealth)
+                        target.GrantHealth(define.addHealth);
+                    else
+                        target.Heal(define.addHealth);
+                }
+                break;
+            case EffectType.Kill:                
+                if (!target.isBossOrEmpty)
+                    target.isDead = true;
+                break;
+            case EffectType.SetStat:               
+                if (define.isSetAttack)
+                    target.SetAttack(define.defaultValue);
+                else
+                    target.SetHealth(define.defaultValue);
+                break;
+            case EffectType.Draw:
+                CardManager.instance.DrawCard(caster.isMine, define.defaultValue);
+                break;
+
+            case EffectType.Mana:              
+                if (define.isJustThisTurnMana)
+                    TurnManager.Instance.GainTempMana(caster.isMine, define.defaultValue);
+                else
+                    TurnManager.Instance.GainEmptyMana(caster.isMine, define.defaultValue);
+                break;
+
+            case EffectType.MoveCard:
+                if (define.isMoveDiscard)
+                {
+                    if (define.isAffectHand) CardManager.instance.DiscardAllHand(caster.isMine);
+                    if (define.isAffectDeck) CardManager.instance.DiscardAllDeck();
+                }
+                break;
+            case EffectType.MoveMinion:              
+                if (!define.isMoveToMyField) break;
+                if (define.needEnemyMinionCount > 0)
+                {
+                    int enemyMinions = entityManager.CountMinions(!caster.isMine);
+                    if (enemyMinions < define.needEnemyMinionCount)
+                        break;
+                }
+                entityManager.TryStealMinion(target, caster.isMine);
+                bool ok = entityManager.TryStealMinion(target, caster.isMine);                
+                break;
+
+            case EffectType.StatusAbnormality:
+                if (define.StatusAbnormalityId == 3)
+                {                    
+                    target.SetAttack(1);
+                    target.SetHealth(1);
+                }
+                // 1=기절, 2=빙결은 “행동 불가”를 어디에 둘지 정책이 필요해서
+                // 지금 구조에선 우선 패스하거나, e.attackAble=false 로만 처리해도 됨
+                else if (define.StatusAbnormalityId == 1 || define.StatusAbnormalityId == 2)
+                {                    
+                    target.cantActTurns = Mathf.Max(target.cantActTurns, 1);
+                    target.attackAble = false; // 최소 동작
+                    target.TurnOnOffOutLine(false);
+                }
+                break;
+        }
+    }
+    void ApplyEffect(Item item, EffectDef define, Entity caster, Entity target)
+    {
+        if(!string.IsNullOrEmpty(item.hitSFX))
+        {
+            SoundManager.instance.PlayOnSFX(item.hitSFX);
+        }
+
+        if(item.VFXPrefab != null)
+        {
+            SpawnVFX(item.VFXPrefab, target.transform.position);
+        }
+
+        ApplyActualEffect(define, caster, target);
     }
     public bool RunAbilities(Item item, Entity caster, Entity target)
     {
@@ -41,96 +151,23 @@ public class EffectManager : MonoBehaviour
             {
                 if (entity == null) continue;
 
-                switch (define.effectType)
-                {
-                    case (EffectType.Damage):
-                        entity.TakeDamage(define.defaultValue);
-                        break;
-                    case (EffectType.Heal):
-                        entity.Heal(define.defaultValue);
-                        break;
-                    case EffectType.BuffStats:
-                        if (define.addAttack != 0)
-                        {
-                            if (define.isTempThisTurn)
-                                entity.TempAttackThisTurn(define.addAttack);
-                            else
-                                entity.AttackUP(define.addAttack);
-                        }
-                        if (define.isTempThisTurn)
-                        {
-                            int rollbackValue = define.addAttack;
-                            TurnManager.Instance.RegisterEndTurnRollback(caster.isMine, () =>
-                            {
-                                if (entity == null) return;
-                                entity.SetAttack(entity.attack - rollbackValue); // 또는 AttackUP(-rollbackValue)
-                            });
-                        }
-                        if (define.addHealth != 0)
-                        {
-                            if (define.isGrantHealth)
-                                entity.GrantHealth(define.addHealth);
-                            else
-                                entity.Heal(define.addHealth);
-                        }
-                        break;
-                    case EffectType.Kill:
-                        if (!entity.isBossOrEmpty)
-                            entity.isDead = true;
-                        break;
-                    case EffectType.SetStat:
-                        if (define.isSetAttack)
-                            entity.SetAttack(define.defaultValue);
-                        else
-                            entity.SetHealth(define.defaultValue);
-                        break;
-                    case EffectType.Draw:
-                        CardManager.instance.DrawCard(caster.isMine, define.defaultValue);
-                        break;
+                bool isUseProjectile = IsProjectileType(define, caster, target);
 
-                    case EffectType.Mana:
-                        if (define.isJustThisTurnMana)
-                            TurnManager.Instance.GainTempMana(caster.isMine, define.defaultValue);
-                        else
-                            TurnManager.Instance.GainEmptyMana(caster.isMine, define.defaultValue);
-                        break;
+                if(isUseProjectile)
+                {   
+                    var projectileObj = Instantiate(item.projectilePrefab);
+                    var projectileLogic = projectileObj.GetComponent<AbilityProjectile>();
 
-                    case EffectType.MoveCard:
-                        if (define.isMoveDiscard)
-                        {
-                            if (define.isAffectHand) CardManager.instance.DiscardAllHand(caster.isMine);
-                            if (define.isAffectDeck) CardManager.instance.DiscardAllDeck();
-                        }
-                        break;
-                    case EffectType.MoveMinion:
-                        if (!define.isMoveToMyField) break;
-                        if (define.needEnemyMinionCount > 0)
-                        {
-                            int enemyMinions = entityManager.CountMinions(!caster.isMine);
-                            if (enemyMinions < define.needEnemyMinionCount)
-                                break;
-                        }
-                        entityManager.TryStealMinion(entity, caster.isMine);
-                        bool ok = entityManager.TryStealMinion(entity, caster.isMine);
-                        if (!ok) Debug.LogWarning($"[StealFail] target={entity?.name} toMine={caster.isMine}");
-                        break;
-
-                    case EffectType.StatusAbnormality:
-                        if (define.StatusAbnormalityId == 3)
-                        {
-                            entity.SetAttack(1);
-                            entity.SetHealth(1);
-                        }
-                        // 1=기절, 2=빙결은 “행동 불가”를 어디에 둘지 정책이 필요해서
-                        // 지금 구조에선 우선 패스하거나, e.attackAble=false 로만 처리해도 됨
-                        else if (define.StatusAbnormalityId == 1 || define.StatusAbnormalityId == 2)
-                        {
-                            entity.cantActTurns = Mathf.Max(entity.cantActTurns, 1);
-                            entity.attackAble = false; // 최소 동작
-                            entity.TurnOnOffOutLine(false);
-                        }
-                        break;
+                    projectileLogic.Setup(caster.transform.position, entity, () =>
+                    {
+                        ApplyEffect(item, define, caster, entity);
+                    });
                 }
+                else
+                {            
+                    ApplyEffect(item, define, caster, entity);
+                }
+
             }
         }
         entityManager.ResolveDead();
@@ -186,5 +223,33 @@ public class EffectManager : MonoBehaviour
         }      
 
         return result;
+    }
+    private bool IsProjectileType(EffectDef define, Entity caster, Entity target)
+    {
+        if (define.effectType != EffectType.Damage &&
+            define.effectType != EffectType.StatusAbnormality) return false;
+
+        if (define.targetRule.targetGroup == TargetGroup.EnemyAll ||
+            define.targetRule.targetGroup == TargetGroup.AllMinions ||
+            define.targetRule.targetGroup == TargetGroup.RandomEnemy)
+        {            
+            if (define.targetRule.targetGroup == TargetGroup.EnemyAll) return false;
+            if (define.targetRule.targetGroup == TargetGroup.AllMinions) return false;
+        }
+        
+        return true;
+    }
+    
+    void SpawnVFX(GameObject vfxPrefab, Vector3 pos)
+    {
+        if (vfxPrefab == null) return;
+
+        GameObject vfxObj = Instantiate(vfxPrefab, pos, Utils.QI);
+
+        var particles = vfxObj.GetComponent<ParticleSystem>();
+        if(particles != null) particles.Play();
+
+        Destroy(vfxObj, 2.0f);
+
     }
 }

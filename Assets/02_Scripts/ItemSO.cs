@@ -103,6 +103,12 @@ public class Item
     public bool needTarget;
     public List<EffectDef> abilities;
     public CardEffectSO activeEffect;
+
+    [Header("´É·Â SFX, VFX")]
+    public GameObject projectilePrefab;
+    public GameObject VFXPrefab;
+    public GameObject debuffVFX;
+    public string hitSFX;
 }
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "SeriptableObject/ItemSO")]
