@@ -16,10 +16,15 @@ public class MyDeckUI : MonoBehaviour
         DeckManager.instance.SubscribeOnDeckChanged(SelectedCardDeck);
         DeckManager.instance.UpdateDeck();
     }
-
+    private void OnDestroy()
+    {
+        DeckManager.instance.UnsubscribeOnDeckChanged(SelectedCardDeck);
+    }
     public void SelectedCardDeck(List<Item> currentDeck)
     {
-        foreach(Transform card in myDeckParent)
+        //if (this == null || gameObject == null || myDeckParent == null) return;
+
+        foreach (Transform card in myDeckParent)
         {
             Destroy(card.gameObject);
         }

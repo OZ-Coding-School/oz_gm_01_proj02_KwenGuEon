@@ -15,6 +15,8 @@ public class ResultPanel : MonoBehaviour
 
     public void ShowVictory()
     {
+        SoundManager.instance.PlayOnSFX("victory_fireworks");
+        SoundManager.instance.PlayOnSFX("victory_screen_start");
         losePanel.SetActive(false);
         victoryPanel.SetActive(true);
         transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutQuad);
@@ -22,6 +24,8 @@ public class ResultPanel : MonoBehaviour
     }
     public void ShowLose()
     {
+        SoundManager.instance.PlayOnSFX("defeat_jingle");
+        SoundManager.instance.PlayOnSFX("defeat_screen_start");
         victoryPanel.SetActive(false);
         losePanel.SetActive(true);
         transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutQuad);

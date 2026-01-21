@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4363968829adf0a4e971be7d091fd1a2, type: 2}
   m_sharedMaterial: {fileID: 6862797338895091252, guid: 4363968829adf0a4e971be7d091fd1a2, type: 2}
@@ -1079,8 +1079,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 199068376}
-        m_TargetAssemblyTypeName: VictoryPanel, Assembly-CSharp
-        m_MethodName: Restart
+        m_TargetAssemblyTypeName: ResultPanel, Assembly-CSharp
+        m_MethodName: GoLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1646,6 +1646,7 @@ GameObject:
   - component: {fileID: 333866551}
   - component: {fileID: 333866550}
   - component: {fileID: 333866549}
+  - component: {fileID: 333866552}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1727,6 +1728,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &333866552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333866548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e15d297c99b79b40adff5ff591d6946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &344916902
 GameObject:
   m_ObjectHideFlags: 0
@@ -5424,7 +5437,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4363968829adf0a4e971be7d091fd1a2, type: 2}
   m_sharedMaterial: {fileID: 6862797338895091252, guid: 4363968829adf0a4e971be7d091fd1a2, type: 2}
@@ -6385,6 +6398,8 @@ MonoBehaviour:
   enlargeYPos: 450
   enlargeZPos: 100
   handAreaRect: {fileID: 146430337}
+  myDeck: []
+  otherDeck: []
   cardState: 0
 --- !u!4 &1547938720
 Transform:

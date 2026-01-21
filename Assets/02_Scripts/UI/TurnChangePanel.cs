@@ -9,6 +9,7 @@ public class TurnChangePanel : MonoBehaviour
     public void Show(string message)
     {
         if (turnChangeText == null) return;
+        SoundManager.instance.PlayOnSFX("TurnEndSFX");
 
         turnChangeText.text = message;
         Sequence sequence = DOTween.Sequence()

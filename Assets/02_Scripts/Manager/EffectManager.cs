@@ -44,12 +44,18 @@ public class EffectManager : MonoBehaviour
                 switch (define.effectType)
                 {
                     case (EffectType.Damage):
+                        SoundManager.instance.PlayOnSFX("FireSFX");
+
                         entity.TakeDamage(define.defaultValue);
                         break;
                     case (EffectType.Heal):
+                        SoundManager.instance.PlayOnSFX("HealSfx2");
+
                         entity.Heal(define.defaultValue);
                         break;
                     case EffectType.BuffStats:
+                        SoundManager.instance.PlayOnSFX("BattlecrySFX");
+
                         if (define.addAttack != 0)
                         {
                             if (define.isTempThisTurn)
@@ -75,10 +81,14 @@ public class EffectManager : MonoBehaviour
                         }
                         break;
                     case EffectType.Kill:
+                        SoundManager.instance.PlayOnSFX("KillSFX");
+
                         if (!entity.isBossOrEmpty)
                             entity.isDead = true;
                         break;
                     case EffectType.SetStat:
+                        SoundManager.instance.PlayOnSFX("BattlecrySFX");
+
                         if (define.isSetAttack)
                             entity.SetAttack(define.defaultValue);
                         else
@@ -89,6 +99,8 @@ public class EffectManager : MonoBehaviour
                         break;
 
                     case EffectType.Mana:
+                        SoundManager.instance.PlayOnSFX("CoinSFX");
+
                         if (define.isJustThisTurnMana)
                             TurnManager.Instance.GainTempMana(caster.isMine, define.defaultValue);
                         else
@@ -103,6 +115,8 @@ public class EffectManager : MonoBehaviour
                         }
                         break;
                     case EffectType.MoveMinion:
+                        SoundManager.instance.PlayOnSFX("HealSFX03");
+
                         if (!define.isMoveToMyField) break;
                         if (define.needEnemyMinionCount > 0)
                         {
@@ -118,6 +132,7 @@ public class EffectManager : MonoBehaviour
                     case EffectType.StatusAbnormality:
                         if (define.StatusAbnormalityId == 3)
                         {
+                            SoundManager.instance.PlayOnSFX("HealSFX");
                             entity.SetAttack(1);
                             entity.SetHealth(1);
                         }
@@ -125,6 +140,7 @@ public class EffectManager : MonoBehaviour
                         // 지금 구조에선 우선 패스하거나, e.attackAble=false 로만 처리해도 됨
                         else if (define.StatusAbnormalityId == 1 || define.StatusAbnormalityId == 2)
                         {
+                            SoundManager.instance.PlayOnSFX("FreazzSFX");
                             entity.cantActTurns = Mathf.Max(entity.cantActTurns, 1);
                             entity.attackAble = false; // 최소 동작
                             entity.TurnOnOffOutLine(false);

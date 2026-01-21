@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01_Scenes/Deck.unity
     guid: b595f7dbea39bdb4ea0a2395527d4acd
+  - enabled: 1
+    path: Assets/01_Scenes/HeroSelectedScene.unity
+    guid: 6e8d103d484fd7747b0e6159ee72322b
   m_configObjects: {}

@@ -149,6 +149,7 @@ public class EntityManager : MonoBehaviour
             .Append(attacker.transform.DOMove(hitPos, 0.25f)).SetEase(Ease.InBack)
             .AppendCallback(() =>
             {
+                SoundManager.instance.PlayOnSFX("HitSFX02");
                 attacker.TakeDamage(defender.attack);
                 defender.TakeDamage(attacker.attack);
                 SpawnDamage(defender.attack, attacker);
@@ -181,6 +182,10 @@ public class EntityManager : MonoBehaviour
 
         if (entity.isMine) myEntities.Remove(entity);
         else otherEntities.Remove(entity);
+
+
+        SoundManager.instance.PlayOnSFX("DeadSFXgiant2");
+        SoundManager.instance.PlayOnSFX("Minion_Death_01");
 
         Sequence sequence = DOTween.Sequence()
                 .Append(entity.transform.DOShakePosition(0.5f, 0.5f, 30))
@@ -366,6 +371,9 @@ public class EntityManager : MonoBehaviour
         EntityAlignment(isMine);       
 
         spawned = entity;
+
+        SoundManager.instance.PlayOnSFX("MinionSpawnSFX02");
+
         return true;
     }
     public bool SpawnEntity(bool isMine, Item item, Vector3 spawnPos, Entity target = null)

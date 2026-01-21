@@ -176,7 +176,7 @@ public class CardManager : MonoBehaviour
         }
     }
     //테스트용
-    void SerupItemBuffer()
+    void SetupItemBuffer()
     {
         itemBuffer = new List<Item>();
         for (int i = 0; i < itemSO.items.Length; i++)
@@ -204,7 +204,7 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            RandomDeck(myDeck, 30);
+            return;
         }
         RandomDeck(otherDeck, 30);
 
@@ -319,8 +319,7 @@ public class CardManager : MonoBehaviour
         if (isMine && selectCard != null)
         {
             int cost = selectCard.item.cardCost;
-            if (TurnManager.Instance.myMana < cost) return false;
-            if (TurnManager.Instance.myMaxMana < cost) return false;
+            if (TurnManager.Instance.myMana < cost) return false;            
         }
 
         if (!isMine && otherCards.Count <= 0)
@@ -331,8 +330,7 @@ public class CardManager : MonoBehaviour
         if (!isMine)
         {
             int cost = card.item.cardCost;
-            if (TurnManager.Instance.otherMana < cost) return false;
-            if (TurnManager.Instance.otherMaxMana < cost) return false;
+            if (TurnManager.Instance.otherMana < cost) return false;            
         }
 
         if (!isMine && card.item.isSpell)
@@ -341,11 +339,16 @@ public class CardManager : MonoBehaviour
             Entity target = null;
             if (card.item.needTarget)
             {
+                bool isPositive = IsPositiveItem(card.item);
+                bool isTargetSide = isPositive ? false : true;
+
                 if (onlyMinion)
-                    target = EntityManager.Instance.FindRandomEntity(true, false, true);
+                    target = EntityManager.Instance.FindRandomEntity(isTargetSide, false, true);
                 else
-                    target = EntityManager.Instance.FindRandomEntity(true, true, false);
+                    target = EntityManager.Instance.FindRandomEntity(isTargetSide, true, false);
             }
+
+            if (card.item.needTarget && target == null) return false;
 
             return TryUseSpell(false, card, target);
         }
@@ -375,7 +378,12 @@ public class CardManager : MonoBehaviour
                 bool onlyMinion = IsOnlyMinionTarget(card.item);
                 Entity target = null;
                 if (TargetUtil.RequiresExternalTarget(card.item))
-                    target = EntityManager.Instance.FindRandomEntity(isTargetIsMine: true, isIncludeBoss: !onlyMinion, isOnlyMinion: onlyMinion);
+                {
+                    bool isPositive = IsPositiveItem(card.item);
+                    bool targetSide = isPositive ? false : true;
+
+                    target = EntityManager.Instance.FindRandomEntity(isTargetIsMine: targetSide, isIncludeBoss: !onlyMinion, isOnlyMinion: onlyMinion);
+                }
 
                 effectManager.RunAbilities(card.item, spawned, target);
             }
@@ -395,8 +403,7 @@ public class CardManager : MonoBehaviour
         if (card.item.isSpell) return false;
 
         int cost = card.item.cardCost;
-        if (TurnManager.Instance.myMana < cost) return false;
-        if (TurnManager.Instance.myMaxMana < cost) return false;
+        if (TurnManager.Instance.myMana < cost) return false;        
 
         if (card.item.isBattleCry && TargetUtil.RequiresExternalTarget(card.item))
         {
@@ -696,5 +703,29 @@ public class CardManager : MonoBehaviour
                 return false;
         }
         return true;
+    }
+    private bool IsPositiveItem(Item item)
+    {
+        if (item == null || item.abilities == null) return false;
+
+        foreach(var ability in item.abilities)
+        {
+            switch(ability.effectType)
+            {
+                case (EffectType.Heal):                    
+                case (EffectType.BuffStats):                    
+                case (EffectType.Mana):                    
+                case (EffectType.Draw):                    
+                    return true;
+
+                case (EffectType.Damage):                    
+                case (EffectType.Kill):                    
+                case (EffectType.StatusAbnormality):                    
+                case (EffectType.MoveMinion):
+                    return false;
+            }
+        }
+
+        return false;
     }
 }

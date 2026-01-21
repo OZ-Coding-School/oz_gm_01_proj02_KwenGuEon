@@ -223,6 +223,11 @@ public class TurnManager : MonoBehaviour
     }
     public void EndTurn()
     {
+        if(isMyTurn)
+        {
+            SoundManager.instance.PlayOnSFX("EndTurnButtonSFX");
+        }
+        
         ExecuteEndTurnRollbacks(isMyTurn);
 
         isMyTurn = !isMyTurn;
