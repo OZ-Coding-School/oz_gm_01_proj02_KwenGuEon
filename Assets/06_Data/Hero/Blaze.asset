@@ -56,4 +56,8 @@ MonoBehaviour:
       needEnemyMinionCount: 0
       isTempThisTurn: 0
     activeEffect: {fileID: 0}
+    projectilePrefab: {fileID: 53274936828570022, guid: 43de398846740f2418d05ca8d1a9a03f, type: 3}
+    VFXPrefab: {fileID: 100002, guid: 6890a03af913b874092fbb1e8337747d, type: 3}
+    debuffVFX: {fileID: 0}
+    hitSFX: 
   health: 30

@@ -1,20 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EffectManager : MonoBehaviour
 {
-    [SerializeField] private EntityManager entityManager;  
+    [SerializeField] private EntityManager entityManager;
+
+    [SerializeField] Camera mainCamera;
+    [SerializeField] Camera vfxCamera;
 
     private void Awake()
     {
         if (entityManager == null)
             entityManager = EntityManager.Instance;
+        if(mainCamera == null)
+            mainCamera = Camera.main;
     }
 
     public void ApplyActualEffect(EffectDef define, Entity caster, Entity target)
     {
-        if(target == null) return;
+        if (target == null) return;
 
         switch (define.effectType)
         {
@@ -24,7 +28,7 @@ public class EffectManager : MonoBehaviour
             case (EffectType.Heal):
                 target.Heal(define.defaultValue);
                 break;
-            case EffectType.BuffStats:                
+            case EffectType.BuffStats:
                 if (define.addAttack != 0)
                 {
                     if (define.isTempThisTurn)
@@ -49,11 +53,11 @@ public class EffectManager : MonoBehaviour
                         target.Heal(define.addHealth);
                 }
                 break;
-            case EffectType.Kill:                
+            case EffectType.Kill:
                 if (!target.isBossOrEmpty)
                     target.isDead = true;
                 break;
-            case EffectType.SetStat:               
+            case EffectType.SetStat:
                 if (define.isSetAttack)
                     target.SetAttack(define.defaultValue);
                 else
@@ -63,7 +67,7 @@ public class EffectManager : MonoBehaviour
                 CardManager.instance.DrawCard(caster.isMine, define.defaultValue);
                 break;
 
-            case EffectType.Mana:              
+            case EffectType.Mana:
                 if (define.isJustThisTurnMana)
                     TurnManager.Instance.GainTempMana(caster.isMine, define.defaultValue);
                 else
@@ -77,7 +81,7 @@ public class EffectManager : MonoBehaviour
                     if (define.isAffectDeck) CardManager.instance.DiscardAllDeck();
                 }
                 break;
-            case EffectType.MoveMinion:              
+            case EffectType.MoveMinion:
                 if (!define.isMoveToMyField) break;
                 if (define.needEnemyMinionCount > 0)
                 {
@@ -85,20 +89,19 @@ public class EffectManager : MonoBehaviour
                     if (enemyMinions < define.needEnemyMinionCount)
                         break;
                 }
-                entityManager.TryStealMinion(target, caster.isMine);
-                bool ok = entityManager.TryStealMinion(target, caster.isMine);                
+                entityManager.TryStealMinion(target, caster.isMine);                
                 break;
 
             case EffectType.StatusAbnormality:
                 if (define.StatusAbnormalityId == 3)
-                {                    
+                {
                     target.SetAttack(1);
                     target.SetHealth(1);
                 }
                 // 1=기절, 2=빙결은 “행동 불가”를 어디에 둘지 정책이 필요해서
                 // 지금 구조에선 우선 패스하거나, e.attackAble=false 로만 처리해도 됨
                 else if (define.StatusAbnormalityId == 1 || define.StatusAbnormalityId == 2)
-                {                    
+                {
                     target.cantActTurns = Mathf.Max(target.cantActTurns, 1);
                     target.attackAble = false; // 최소 동작
                     target.TurnOnOffOutLine(false);
@@ -108,21 +111,27 @@ public class EffectManager : MonoBehaviour
     }
     void ApplyEffect(Item item, EffectDef define, Entity caster, Entity target)
     {
-        if(!string.IsNullOrEmpty(item.hitSFX))
+        if (!string.IsNullOrEmpty(item.hitSFX))
         {
             SoundManager.instance.PlayOnSFX(item.hitSFX);
         }
 
-        if(item.VFXPrefab != null)
+        if (item.VFXPrefab != null)
         {
-            SpawnVFX(item.VFXPrefab, target.transform.position);
+            SpawnVFX(item.VFXPrefab, target.transform.position, target);
         }
 
         ApplyActualEffect(define, caster, target);
     }
     public bool RunAbilities(Item item, Entity caster, Entity target)
     {
-        if (item == null || item.abilities == null || item.abilities.Count == 0) return false;        
+        Debug.Log($"[1] 스킬 시작: {item?.name ?? "이름없음"}");
+
+        if (item == null || item.abilities == null || item.abilities.Count == 0)
+        {
+            Debug.LogError("[ERROR] 아이템 데이터가 없거나 능력(Abilities) 리스트가 비어있습니다!");
+            return false;
+        }
 
         bool requiresExternalTarget = false;
 
@@ -140,32 +149,56 @@ public class EffectManager : MonoBehaviour
             }
         }
 
-        if (requiresExternalTarget && target == null) return false;
+        if (requiresExternalTarget && target == null)
+        {
+            Debug.LogError("[ERROR] 타겟이 필요한 카드인데, 타겟(target)이 null입니다!");
+            return false;
+        }
 
         foreach (var define in item.abilities)
         {
             List<Entity> entities = GetOneTarget(define.targetRule, caster, target);
-            if (entities == null || entities.Count == 0) continue;
+            if (entities == null || entities.Count == 0)
+            {
+                Debug.LogWarning($"[WARNING] 타겟을 찾지 못했습니다. Rule: {define.targetRule.targetGroup}");
+                continue;
+            }
 
             foreach (var entity in entities)
             {
                 if (entity == null) continue;
 
-                bool isUseProjectile = IsProjectileType(define, caster, target);
+                bool isUseProjectile = IsProjectileType(define, caster, target) && item.projectilePrefab != null;
 
-                if(isUseProjectile)
-                {   
-                    var projectileObj = Instantiate(item.projectilePrefab);
+                if (isUseProjectile)
+                {
+                    Transform canvasTr = GameObject.Find("Canvas").transform;
+
+                    var projectileObj = Instantiate(item.projectilePrefab, canvasTr, false);
                     var projectileLogic = projectileObj.GetComponent<AbilityProjectile>();
 
-                    projectileLogic.Setup(caster.transform.position, entity, () =>
+                    if (projectileLogic == null)
+                    {
+                        Debug.LogError($"[ERROR] 프리팹({item.projectilePrefab.name})에 'AbilityProjectile' 스크립트가 없습니다!");
+                        Destroy(projectileObj);
+                        ApplyEffect(item, define, caster, entity); // 즉시 발동으로 처리
+                        entityManager.ResolveDead();
+                        entityManager.CheckBossDeadCo();
+                        continue;
+                    }
+
+                    projectileLogic.Setup(caster, entity, () =>
                     {
                         ApplyEffect(item, define, caster, entity);
+                        entityManager.ResolveDead();
+                        entityManager.CheckBossDeadCo();
                     });
                 }
                 else
-                {            
+                {
                     ApplyEffect(item, define, caster, entity);
+                    entityManager.ResolveDead();
+                    entityManager.CheckBossDeadCo();
                 }
 
             }
@@ -215,12 +248,12 @@ public class EffectManager : MonoBehaviour
             case TargetGroup.AllMinions:
                 result.AddRange(entityManager.GetAliveMinions(true));
                 result.AddRange(entityManager.GetAliveMinions(false));
-                if(caster != null)
+                if (caster != null)
                     result.Remove(caster);
                 break;
             default:
                 return null;
-        }      
+        }
 
         return result;
     }
@@ -232,24 +265,52 @@ public class EffectManager : MonoBehaviour
         if (define.targetRule.targetGroup == TargetGroup.EnemyAll ||
             define.targetRule.targetGroup == TargetGroup.AllMinions ||
             define.targetRule.targetGroup == TargetGroup.RandomEnemy)
-        {            
+        {
             if (define.targetRule.targetGroup == TargetGroup.EnemyAll) return false;
             if (define.targetRule.targetGroup == TargetGroup.AllMinions) return false;
         }
-        
+
         return true;
     }
-    
-    void SpawnVFX(GameObject vfxPrefab, Vector3 pos)
+
+    void SpawnVFX(GameObject vfxPrefab, Vector3 pos, Entity target = null)
     {
         if (vfxPrefab == null) return;
 
-        GameObject vfxObj = Instantiate(vfxPrefab, pos, Utils.QI);
+        Vector3 finalSpawnVFXPos = Vector3.zero;
+
+        bool isTargetUI = (target != null) && (target.GetComponent<RectTransform>() != null);
+
+        if (isTargetUI)
+        {
+            float ratioX = pos.x / Screen.width;
+            float ratioY = pos.y / Screen.height;
+
+            finalSpawnVFXPos = vfxCamera.ViewportToWorldPoint(new Vector3(ratioX, ratioY, 10f));
+        }
+        else
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(pos);
+
+            finalSpawnVFXPos = vfxCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+        }       
+
+        GameObject vfxObj = Instantiate(vfxPrefab, finalSpawnVFXPos, Utils.QI);
+
+        SetLayerVFX(vfxObj, LayerMask.NameToLayer("UI_VFX"));
 
         var particles = vfxObj.GetComponent<ParticleSystem>();
-        if(particles != null) particles.Play();
+        if (particles != null) particles.Play();
 
-        Destroy(vfxObj, 2.0f);
+        Destroy(vfxObj, 1.0f);
 
+    }
+    void SetLayerVFX(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach(Transform child in obj.transform)
+        {
+            SetLayerVFX(child.gameObject, newLayer);
+        }
     }
 }

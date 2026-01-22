@@ -124,7 +124,8 @@ public class EntityManager : MonoBehaviour
 
             if (isUITarget)
             {
-                finalPos = targetPickEntity.transform.position;
+                Vector3 pos = targetPickEntity.transform.position;
+                finalPos = new Vector3(pos.x, pos.y, -10f);
             }
             else
             {
