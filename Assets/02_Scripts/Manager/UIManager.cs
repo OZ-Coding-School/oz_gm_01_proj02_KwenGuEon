@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject[] otherManaCost;
     [SerializeField] GameObject[] otherMAnaCostBG;
 
+    bool isGameOver = false;
+
     void Start()
     {
         UpdateManaUI(true, 0, 0);
@@ -40,6 +42,8 @@ public class UIManager : MonoBehaviour
     }    
     void TurnStarted(bool isMyTurn)
     {
+        if (isGameOver) return;
+
         if (isMyTurn)
         {
             turnChangePanel.Show("나의 턴");
@@ -82,7 +86,12 @@ public class UIManager : MonoBehaviour
     // 게임 결과 이후 호출
     void GameResult(bool isWin)
     {
+        isGameOver = true;
+
         endTurnBtn.SetActive(false);
+        
+        turnChangePanel.gameObject.SetActive(false);
+
         StartCoroutine(ShowResultCo(isWin));
     }
     IEnumerator ShowResultCo(bool isWin)

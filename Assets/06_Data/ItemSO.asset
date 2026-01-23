@@ -36,6 +36,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 1
     cardCost: 1
     cardType: 0
@@ -59,6 +60,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 2
     cardCost: 1
     cardType: 0
@@ -103,6 +105,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Arcane_Arrow_Targeted_Impact_02
+    vfxScale: 1
   - cardID: 3
     cardCost: 1
     cardType: 0
@@ -126,6 +129,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 4
     cardCost: 1
     cardType: 0
@@ -149,6 +153,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 5
     cardCost: 2
     cardType: 0
@@ -172,6 +177,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 6
     cardCost: 2
     cardType: 0
@@ -195,6 +201,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 7
     cardCost: 2
     cardType: 0
@@ -218,6 +225,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 8
     cardCost: 2
     cardType: 0
@@ -241,6 +249,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 9
     cardCost: 2
     cardType: 0
@@ -285,6 +294,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 1590415177872986601, guid: acdb90624a404aa438447006f1026065, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: HealSfx2
+    vfxScale: 2.37
   - cardID: 10
     cardCost: 2
     cardType: 0
@@ -329,6 +339,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Holy_Smite_Impact_01
+    vfxScale: 1
   - cardID: 11
     cardCost: 2
     cardType: 1
@@ -373,6 +384,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: BattlecrySFX
+    vfxScale: 1
   - cardID: 12
     cardCost: 1
     cardType: 1
@@ -417,6 +429,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Mage_ArcaneMissiles_Impact_1
+    vfxScale: 1
   - cardID: 13
     cardCost: 1
     cardType: 1
@@ -483,6 +496,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Physical_Impact_01
+    vfxScale: 1
   - cardID: 14
     cardCost: 1
     cardType: 1
@@ -527,6 +541,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: HealSFX03
+    vfxScale: 2
   - cardID: 15
     cardCost: 2
     cardType: 1
@@ -572,6 +587,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 2353600328335836179, guid: ceec7516237b4104b94300043ca39784, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: AttackEffectSFX
+    vfxScale: 1
   - cardID: 16
     cardCost: 0
     cardType: 1
@@ -616,6 +632,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 3053724306134487678, guid: 825fa02a7f86dd74cb5fae9038304906, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: GadgetzanAuctioneer_card_spawn_coins
+    vfxScale: 1
   - cardID: 17
     cardCost: 2
     cardType: 1
@@ -660,6 +677,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 8362349209469777719, guid: 1835dbeede209484cb976155d1b75638, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: HealSFX
+    vfxScale: 1
   - cardID: 18
     cardCost: 2
     cardType: 1
@@ -725,6 +743,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 5112403345868107898, guid: 6f34ef0d986e9db4199cf75805f79753, type: 3}
     debuffVFX: {fileID: 7007303815369820270, guid: 75cbb81d360203f4e9833bdfe0368fbd, type: 3}
     hitSFX: FreazzSFX
+    vfxScale: 1
   - cardID: 19
     cardCost: 1
     cardType: 1
@@ -770,6 +789,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: BattlecrySFX
+    vfxScale: 1
   - cardID: 20
     cardCost: 3
     cardType: 0
@@ -793,6 +813,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 21
     cardCost: 3
     cardType: 0
@@ -816,6 +837,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 22
     cardCost: 3
     cardType: 0
@@ -839,6 +861,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 23
     cardCost: 3
     cardType: 0
@@ -862,6 +885,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 24
     cardCost: 3
     cardType: 0
@@ -927,6 +951,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 1590415177872986601, guid: acdb90624a404aa438447006f1026065, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: HealSFX03
+    vfxScale: 2.37
   - cardID: 25
     cardCost: 4
     cardType: 0
@@ -950,6 +975,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 26
     cardCost: 4
     cardType: 0
@@ -973,6 +999,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 27
     cardCost: 4
     cardType: 0
@@ -996,6 +1023,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 28
     cardCost: 4
     cardType: 0
@@ -1019,6 +1047,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 29
     cardCost: 4
     cardType: 0
@@ -1064,6 +1093,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: KillSFX02
+    vfxScale: 1
   - cardID: 30
     cardCost: 5
     cardType: 0
@@ -1087,6 +1117,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 31
     cardCost: 5
     cardType: 0
@@ -1110,6 +1141,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 32
     cardCost: 5
     cardType: 0
@@ -1151,9 +1183,10 @@ MonoBehaviour:
       isTempThisTurn: 0
     activeEffect: {fileID: 0}
     projectilePrefab: {fileID: 0}
-    VFXPrefab: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
+    VFXPrefab: {fileID: 8525990746615576120, guid: b85d21f3b8fed714bacf0c4fd50fa512, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Armor_Destroyed_1
+    vfxScale: 1.5
   - cardID: 33
     cardCost: 3
     cardType: 1
@@ -1198,6 +1231,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 2360655870356088562, guid: 57a776ff377f3c44e8403e2067a4d41f, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Fire_Impact_Small
+    vfxScale: 1
   - cardID: 34
     cardCost: 4
     cardType: 1
@@ -1242,6 +1276,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Lightning_Cast_AoE_1
+    vfxScale: 3
   - cardID: 35
     cardCost: 4
     cardType: 1
@@ -1308,6 +1343,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: BattlecrySFX
+    vfxScale: 1
   - cardID: 36
     cardCost: 5
     cardType: 0
@@ -1373,6 +1409,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 5137123306192418792, guid: 5a8d99fb95262ea458a7b580f2a1611c, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: HealSFX03
+    vfxScale: 1
   - cardID: 37
     cardCost: 4
     cardType: 1
@@ -1417,6 +1454,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 100004, guid: b46890100828db6429ff69c322b45893, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Fire_Impact_Small
+    vfxScale: 1
   - cardID: 38
     cardCost: 5
     cardType: 1
@@ -1461,6 +1499,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 8525990746615576120, guid: b85d21f3b8fed714bacf0c4fd50fa512, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Rogue_Eviscerate_Impact_1
+    vfxScale: 1.5
   - cardID: 39
     cardCost: 5
     cardType: 1
@@ -1506,6 +1545,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4922659033416720293, guid: e3f2adf95423d494fb1bff5a380480f4, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: AttackEffectSFX
+    vfxScale: 2
   - cardID: 40
     cardCost: 6
     cardType: 1
@@ -1571,6 +1611,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 3536986080484332858, guid: 8946e62d89e36e9449c8b9e92eba8fc9, type: 3}
     debuffVFX: {fileID: 7007303815369820270, guid: 75cbb81d360203f4e9833bdfe0368fbd, type: 3}
     hitSFX: Shared_Frost_Impact_1
+    vfxScale: 1
   - cardID: 41
     cardCost: 3
     cardType: 1
@@ -1615,6 +1656,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 2294555824928324180, guid: 3e33a52d79be8d64d936e68cfa38b605, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Fire_Cast_Large_1
+    vfxScale: 0.3
   - cardID: 42
     cardCost: 4
     cardType: 0
@@ -1660,6 +1702,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 8102155473089344357, guid: d56b87557a2d32340bf36655f72d7ef8, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: BloodKnight_DispelShield_Cast_1
+    vfxScale: 1
   - cardID: 43
     cardCost: 4
     cardType: 0
@@ -1683,6 +1726,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 44
     cardCost: 6
     cardType: 0
@@ -1706,6 +1750,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 45
     cardCost: 6
     cardType: 0
@@ -1729,6 +1774,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 46
     cardCost: 6
     cardType: 0
@@ -1752,6 +1798,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 47
     cardCost: 7
     cardType: 0
@@ -1775,6 +1822,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 48
     cardCost: 8
     cardType: 0
@@ -1841,6 +1889,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4922659033416720293, guid: e3f2adf95423d494fb1bff5a380480f4, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: BattlecrySFX
+    vfxScale: 2
   - cardID: 49
     cardCost: 7
     cardType: 0
@@ -1885,6 +1934,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 8430737855443032435, guid: 24b86388d47215d4b98788fb02b3c8da, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Fire_Cast_Large_1
+    vfxScale: 0.4
   - cardID: 50
     cardCost: 8
     cardType: 0
@@ -1908,6 +1958,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 51
     cardCost: 8
     cardType: 0
@@ -1953,6 +2004,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 4426621991517509651, guid: adcb95a05ba2b3040b161e3571a7ed69, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: CircleOfHealing_cast
+    vfxScale: 0.5
   - cardID: 52
     cardCost: 9
     cardType: 0
@@ -1976,6 +2028,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 53
     cardCost: 10
     cardType: 0
@@ -2039,9 +2092,10 @@ MonoBehaviour:
       isTempThisTurn: 0
     activeEffect: {fileID: 0}
     projectilePrefab: {fileID: 0}
-    VFXPrefab: {fileID: 100002, guid: 9debd342863be9747b5a48c343184a31, type: 3}
+    VFXPrefab: {fileID: 6875871598205834589, guid: 583ed185b5641b84e82ba81a629e2671, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Warlock_Hellfire_Cast_1
+    vfxScale: 3
   - cardID: 54
     cardCost: 10
     cardType: 1
@@ -2086,11 +2140,12 @@ MonoBehaviour:
     VFXPrefab: {fileID: 647104670885987435, guid: 4779b010dbd1403488ea49e9d17ffd85, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: mirror_entity_cast
+    vfxScale: 0.7
   - cardID: 55
     cardCost: 7
     cardType: 1
     cardClass: 0
-    name: "\uBD88\uAE30\uB465"
+    name: "\uD1A0\uB124\uC774\uB3C4"
     attack: 2
     health: 2
     sprite: {fileID: 21300000, guid: c6406523391cdce44a6d3f221b6615f4, type: 3}
@@ -2128,9 +2183,10 @@ MonoBehaviour:
       isTempThisTurn: 0
     activeEffect: {fileID: 0}
     projectilePrefab: {fileID: 0}
-    VFXPrefab: {fileID: 2294555824928324180, guid: 3e33a52d79be8d64d936e68cfa38b605, type: 3}
+    VFXPrefab: {fileID: 4074180291764849440, guid: da387ef9566fb3e4884431f6512b9795, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Fire_Cast_Large_1
+    vfxScale: 2
   - cardID: 56
     cardCost: 8
     cardType: 1
@@ -2175,6 +2231,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 5824670795371433373, guid: f6fd568b816c64943a44efc3add3a881, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Generic_Untargeted_Cast_01
+    vfxScale: 3
   - cardID: 57
     cardCost: 10
     cardType: 1
@@ -2219,6 +2276,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 416251089823111746, guid: 240c830bfe588ad4f9925288b65d7a18, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Shared_Fire_Impact_Large
+    vfxScale: 3
   - cardID: 58
     cardCost: 2
     cardType: 0
@@ -2285,6 +2343,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 6710139492206580332, guid: 95b8d3d65b5d7f1409c4ed1723887826, type: 3}
     debuffVFX: {fileID: 0}
     hitSFX: Mage_ConeOfCold_Cast_1
+    vfxScale: 1.2
   - cardID: 59
     cardCost: 8
     cardType: 0
@@ -2308,6 +2367,7 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1
   - cardID: 60
     cardCost: 5
     cardType: 0
@@ -2331,3 +2391,4 @@ MonoBehaviour:
     VFXPrefab: {fileID: 0}
     debuffVFX: {fileID: 0}
     hitSFX: 
+    vfxScale: 1

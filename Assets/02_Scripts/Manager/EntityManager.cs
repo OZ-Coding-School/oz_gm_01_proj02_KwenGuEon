@@ -469,9 +469,9 @@ public class EntityManager : MonoBehaviour
             if (ent.isBossOrEmpty) continue;
 
             if (ent.isCantAct)
-            {
-                ent.ConsumeCantActOnMyTurnStart(); // 턴 시작에 1 감소
-                ent.attackAble = false;            // 이번 턴 행동 불가
+            {                
+                ent.attackAble = false; // 이번 턴 행동 불가
+                ent.TurnOnOffOutLine(false);
             }
         }
 

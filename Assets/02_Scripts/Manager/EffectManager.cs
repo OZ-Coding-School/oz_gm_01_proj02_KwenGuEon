@@ -8,6 +8,8 @@ public class EffectManager : MonoBehaviour
     [SerializeField] Camera mainCamera;
     [SerializeField] Camera vfxCamera;
 
+    private int debuffCount = 2;
+
     private void Awake()
     {
         if (entityManager == null)
@@ -118,7 +120,30 @@ public class EffectManager : MonoBehaviour
 
         if (item.VFXPrefab != null)
         {
-            SpawnVFX(item.VFXPrefab, target.transform.position, target);
+            SpawnVFX(item.VFXPrefab, target.transform.position, item.vfxScale,target);
+        }
+        if(item.debuffVFX != null)
+        {
+            if (define.effectType == EffectType.StatusAbnormality &&
+               (define.StatusAbnormalityId == 1 || define.StatusAbnormalityId == 2))
+            {                
+                GameObject debuffObj = SpawnDebuffVFX(item.debuffVFX, target.transform.position, item.vfxScale, target);
+
+                int duration = (define.defaultValue > 0) ? define.defaultValue : 1;
+
+                target.SetCC(duration, debuffObj);
+
+                TurnManager.Instance.RegisterEndTurnRollback(target.isMine, () =>
+                {
+                    if (target == null) return;
+                    target.ConsumeCantActOnMyTurnStart();
+                });
+
+            }
+            else
+            {                
+                SpawnVFX(item.debuffVFX, target.transform.position, item.vfxScale, target);
+            }
         }
 
         ApplyActualEffect(define, caster, target);
@@ -273,9 +298,63 @@ public class EffectManager : MonoBehaviour
         return true;
     }
 
-    void SpawnVFX(GameObject vfxPrefab, Vector3 pos, Entity target = null)
+    public void SpawnVFX(GameObject vfxPrefab, Vector3 pos, float scale, Entity target = null)
     {
-        if (vfxPrefab == null) return;
+        Debug.Log($"[SpawnVFX 호출됨] 프리팹 이름: {vfxPrefab?.name ?? "NULL"}");
+        
+        if (vfxPrefab == null)
+        {
+            Debug.LogError(" [오류] VFX 프리팹이 비어있습니다(NULL)! 데이터(ItemSO)를 확인하세요.");
+            return;
+        }
+
+        Vector3 finalSpawnVFXPos = Vector3.zero;
+
+        bool isTargetUI = (target != null) && (target.GetComponent<RectTransform>() != null);
+
+        if (isTargetUI)
+        {
+            float ratioX = pos.x / Screen.width;
+            float ratioY = pos.y / Screen.height;
+
+            finalSpawnVFXPos = vfxCamera.ViewportToWorldPoint(new Vector3(ratioX, ratioY, 10f));
+        }
+        else
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(pos);
+
+            finalSpawnVFXPos = vfxCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+        }       
+
+        GameObject vfxObj = Instantiate(vfxPrefab, finalSpawnVFXPos, Utils.QI);
+
+        if(scale > 0)
+        {
+            vfxObj.transform.localScale = Vector3.one * scale;
+        }
+
+        SetLayerVFX(vfxObj, LayerMask.NameToLayer("UI_VFX"));
+
+        var particles = vfxObj.GetComponent<ParticleSystem>();
+        if (particles != null) particles.Play();
+
+        Destroy(vfxObj, 1.0f);
+
+    }
+    void SetLayerVFX(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach(Transform child in obj.transform)
+        {
+            SetLayerVFX(child.gameObject, newLayer);
+        }
+    }
+    public GameObject SpawnDebuffVFX(GameObject vfxPrefab, Vector3 pos, float scale, Entity target = null)
+    {       
+        if (vfxPrefab == null)
+        {            
+            return null;
+        }
 
         Vector3 finalSpawnVFXPos = Vector3.zero;
 
@@ -302,15 +381,14 @@ public class EffectManager : MonoBehaviour
         var particles = vfxObj.GetComponent<ParticleSystem>();
         if (particles != null) particles.Play();
 
-        Destroy(vfxObj, 1.0f);
-
-    }
-    void SetLayerVFX(GameObject obj, int newLayer)
-    {
-        obj.layer = newLayer;
-        foreach(Transform child in obj.transform)
+        if (target != null)
         {
-            SetLayerVFX(child.gameObject, newLayer);
+            VFXFollower follower = vfxObj.GetComponent<VFXFollower>();
+            if (follower == null) follower = vfxObj.AddComponent<VFXFollower>();
+            follower.Setup(target.transform, mainCamera, vfxCamera);
         }
-    }
+
+        return vfxObj;
+
+    }    
 }
