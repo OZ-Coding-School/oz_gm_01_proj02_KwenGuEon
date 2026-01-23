@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
@@ -42,13 +41,13 @@ public class TurnManager : MonoBehaviour
     WaitForSeconds turnCardDelay = new WaitForSeconds(0.5f);
 
 
-    private event Action< bool ,int, int> onManaChange;
+    private event Action<bool, int, int> onManaChange;
     #region onManaChange
-    public void SubscribeOnManaChange(Action< bool, int, int> action)
+    public void SubscribeOnManaChange(Action<bool, int, int> action)
     {
         onManaChange += action;
     }
-    public void UnsubscribeOnManaChange(Action< bool, int, int> action)
+    public void UnsubscribeOnManaChange(Action<bool, int, int> action)
     {
         onManaChange -= action;
     }
@@ -137,9 +136,10 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator StartTurnCo()
     {
+
         isLoading = true;
 
-        if(isMyTurn)
+        if (isMyTurn)
         {
             if (myMaxMana < 10) myMaxMana++;
             myMana = myMaxMana;
@@ -147,7 +147,7 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
-            if(otherMaxMana < 10) otherMaxMana++;
+            if (otherMaxMana < 10) otherMaxMana++;
             otherMana = otherMaxMana;
             TriggerOnManaChange(false, otherMana, otherMaxMana);
         }
@@ -156,22 +156,22 @@ public class TurnManager : MonoBehaviour
         yield return turnCardDelay;
         TriggerOnAddCard(isMyTurn);
         yield return turnCardDelay;
-        isLoading = false;        
+        isLoading = false;
     }
     public bool UseMana(bool isMine, int cost)
     {
-        if(isMine)
+        if (isMine)
         {
-            if(myMana >= cost)
+            if (myMana >= cost)
             {
                 myMana -= cost;
                 TriggerOnManaChange(true, myMana, myMaxMana);
                 return true;
-            }            
+            }
         }
         else
         {
-            if(otherMana >= cost)
+            if (otherMana >= cost)
             {
                 otherMana -= cost;
                 TriggerOnManaChange(false, otherMana, otherMaxMana);
@@ -203,7 +203,7 @@ public class TurnManager : MonoBehaviour
     {
         if (amount <= 0) return;
 
-        if(isMine)
+        if (isMine)
         {
             myMaxMana += amount;
         }
@@ -223,11 +223,11 @@ public class TurnManager : MonoBehaviour
     }
     public void EndTurn()
     {
-        if(isMyTurn)
+        if (isMyTurn)
         {
             SoundManager.instance.PlayOnSFX("EndTurnButtonSFX");
         }
-        
+
         ExecuteEndTurnRollbacks(isMyTurn);
 
         isMyTurn = !isMyTurn;

@@ -1,7 +1,8 @@
-using UnityEngine;
-using System.Linq;
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 [System.Serializable]
 public enum EffectType
 {
@@ -109,6 +110,7 @@ public class Item
     public GameObject VFXPrefab;
     public GameObject debuffVFX;
     public string hitSFX;
+    public float vfxScale = 1.0f;
 }
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "SeriptableObject/ItemSO")]
@@ -119,5 +121,28 @@ public class ItemSO : ScriptableObject
     public Item GetCardID(int id)
     {
         return System.Array.Find(items, item => item.cardID == id);
+    }
+
+    [ContextMenu("Zero Scale -> 1.0 Fix")]
+    public void FixZeroScales()
+    {
+        int fixCount = 0;
+        foreach (var item in items)
+        {
+            // 스케일이 0이거나 0보다 작으면 1로 강제 변경
+            if (item.vfxScale <= 0.01f)
+            {
+                item.vfxScale = 1.0f;
+                fixCount++;
+            }
+        }
+
+        Debug.Log($"총 {fixCount}개의 아이템 스케일을 1.0으로 수정했습니다! 저장해주세요.");
+
+#if UNITY_EDITOR
+        // 변경된 값을 실제 파일에 저장하라고 유니티에게 알림 (이거 안 하면 되돌아감)
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssets();
+#endif
     }
 }

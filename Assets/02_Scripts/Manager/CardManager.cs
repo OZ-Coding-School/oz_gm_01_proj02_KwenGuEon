@@ -7,6 +7,8 @@ public class CardManager : MonoBehaviour
 {
     public static CardManager instance;
 
+    private Camera uiCamera;
+
     [SerializeField] ItemSO itemSO;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] float arcHeight = 70.0f;
@@ -74,6 +76,7 @@ public class CardManager : MonoBehaviour
 
         SetupGameDecks();
 
+        uiCamera = Camera.main;
 
         TurnManager.Instance.UnsubscribeOnAddCard(AddCard);
         TurnManager.Instance.SubscribeOnAddCard(AddCard);

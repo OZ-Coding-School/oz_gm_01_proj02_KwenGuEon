@@ -18,6 +18,8 @@ public class Entity : MonoBehaviour
     [SerializeField] SpriteRenderer provocationSpriteOutLIne;
     [SerializeField] SpriteRenderer provocationSprite;
 
+    [SerializeField] GameObject activedebuffVFX;
+
     public int attack;
     public int health;
     public int maxHealth;
@@ -56,6 +58,8 @@ public class Entity : MonoBehaviour
     private void OnDestroy()
     {
         TurnManager.Instance.UnsubscribeOnTurnStarted(OnTurnStarted);
+
+        if(activedebuffVFX != null) Destroy(activedebuffVFX);
     }
     public void TurnOnOffOutLine(bool isAttackable)
     {
@@ -100,7 +104,9 @@ public class Entity : MonoBehaviour
             RemoveTempAttackThisTurn();
 
         if (isMine == myTurn)
-            liveCount++;
+        {
+            liveCount++;            
+        }
         if (!isRush)
         {
             sleepParticle.SetActive(liveCount < 1);
@@ -208,6 +214,34 @@ public class Entity : MonoBehaviour
         attack = Mathf.Max(0, value);
         if (attackTMP != null) attackTMP.text = attack.ToString();
     }
+    public void SetCC(int count, GameObject vfxCCPrefab)
+    {
+        cantActTurns = count;
+
+        if(activedebuffVFX != null)
+            Destroy(activedebuffVFX);
+
+        activedebuffVFX = vfxCCPrefab;
+    }   
+    public void ConsumeCantActOnMyTurnStart()
+    {
+        if (cantActTurns <= 0) return;
+
+        cantActTurns--;
+        Debug.Log($"현재 카운트 {cantActTurns}");
+        
+        if (cantActTurns <= 0)
+        {
+            if (activedebuffVFX != null)
+            {
+                Destroy(activedebuffVFX);
+                activedebuffVFX = null;
+            }
+            
+            attackAble = true;
+            TurnOnOffOutLine(true);
+        }
+    }
     public void TempAttackThisTurn(int amount)
     {
         if (amount == 0) return;
@@ -228,10 +262,6 @@ public class Entity : MonoBehaviour
         if (attack < 0) attack = 0;
         if (attackTMP != null)
             attackTMP.text = attack.ToString();
-    }
-    public void ConsumeCantActOnMyTurnStart()
-    {
-        if (cantActTurns > 0) cantActTurns--;
     }
     public void UpdateHealthUI()
     {
