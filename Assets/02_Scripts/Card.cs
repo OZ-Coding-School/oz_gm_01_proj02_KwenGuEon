@@ -136,5 +136,5 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
             cardVisual.transform.rotation = prs.rot;
             cardVisual.transform.localScale = prs.scale;
         }
-    }
+    }    
 }

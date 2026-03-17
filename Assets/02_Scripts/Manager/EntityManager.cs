@@ -244,6 +244,12 @@ public class EntityManager : MonoBehaviour
             yield return delay1Sc;
         }
 
+        if(UnityEngine.Random.Range(0,2) == 0)
+        {
+            HeroManager.instance.TryUseOtherHeroAbility();
+            yield return delay1Sc;
+        }
+
         //공격로직
         var attackers = new List<Entity>(otherEntities.FindAll(x => x.attackAble == true));
 

@@ -16,7 +16,7 @@ public class VFXFollower : MonoBehaviour
         this.isUI = target.GetComponent<RectTransform>() != null;
     }
 
-    void Update()
+    void LateUpdate()
     {        
         if (target == null)
         {
@@ -33,8 +33,8 @@ public class VFXFollower : MonoBehaviour
         }
         else
         {
-            Vector3 screenPos = mainCam.WorldToScreenPoint(target.position);
-            finalPos = vfxCam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+            Vector3 viewport = mainCam.WorldToViewportPoint(target.position);
+            finalPos = vfxCam.ViewportToWorldPoint(new Vector3(viewport.x, viewport.y, 10f));
         }
 
         transform.position = finalPos;

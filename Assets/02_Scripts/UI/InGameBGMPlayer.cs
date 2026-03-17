@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InGameBGM : MonoBehaviour
+public class InGameBGMPlayer : MonoBehaviour
 {    
     void Start()
     {

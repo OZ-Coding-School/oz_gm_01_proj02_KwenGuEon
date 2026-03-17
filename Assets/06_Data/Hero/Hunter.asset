@@ -23,10 +23,10 @@ MonoBehaviour:
     name: 
     attack: 0
     health: 0
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 95916d24a5a199b4abc0cbff6abca015, type: 3}
     backGround: {fileID: 0}
     percent: 0
-    cardInfo: 
+    cardInfo: "\uC801 \uC601\uC6C5\uC5D0\uAC8C 2\uD53C\uD574"
     shopPercent: 0
     isRush: 0
     isProvocation: 0
@@ -59,5 +59,6 @@ MonoBehaviour:
     projectilePrefab: {fileID: 3113141687695676963, guid: 66c3f287c0f020d458265b7c7d4b3877, type: 3}
     VFXPrefab: {fileID: 660604078598729712, guid: 28e3a12f83bb82d4187803aac2e18d7f, type: 3}
     debuffVFX: {fileID: 0}
-    hitSFX: 
+    hitSFX: ShipsCannon_Missile_Sound_01
+    vfxScale: 1
   health: 30

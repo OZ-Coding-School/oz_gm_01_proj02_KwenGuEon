@@ -158,6 +158,8 @@ public class HeroManager : MonoBehaviour
         {
             Debug.Log("타겟팅 모드 진입 성공!");
             isTargetingSpriteOn = true;
+
+            TurnManager.Instance.SetEndTurnButton(false);
         }
         else
         {
@@ -181,6 +183,7 @@ public class HeroManager : MonoBehaviour
 
         if(isSuccess)
         {
+            CardShowManager.Instance.ShowCard(currentOtherHeroAbility, false);
             turnManager.UseMana(false, currentOtherHeroAbility.cardCost);
             isCanOtherAbility = false;
         }
@@ -219,10 +222,14 @@ public class HeroManager : MonoBehaviour
 
         if(isSuccess)
         {
+            CardShowManager.Instance.ShowCard(currentPlayerHeroAbility, true);
+
             turnManager.UseMana(true, currentPlayerHeroAbility.cardCost);
 
             isCanAbility = false;
             isTargetingSpriteOn=false;
+
+            TurnManager.Instance.SetEndTurnButton(true);
 
             if (playerAbilityImage != null) playerAbilityImage.gameObject.SetActive(false);
             if (playerHeroAbilityButton != null) playerHeroAbilityButton.interactable = false;
@@ -233,6 +240,8 @@ public class HeroManager : MonoBehaviour
     void CancelTargeting()
     {
         isTargetingSpriteOn = false;
+
+        TurnManager.Instance.SetEndTurnButton(true);
     }
 
     //타게팅할 객체 찾기
