@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Lobby : MonoBehaviour
+public class LobbyBGMPlayer : MonoBehaviour
 {
     void Start()
     {

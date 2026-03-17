@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class TurnManager : MonoBehaviour
 
     private readonly List<Action> myEndTurnRollback = new List<Action>();
     private readonly List<Action> otherEndTurnRollback = new List<Action>();
+
+    [SerializeField] Button endTurnButton;
     private void Awake()
     {
         if (Instance == null)
@@ -139,6 +142,8 @@ public class TurnManager : MonoBehaviour
 
         isLoading = true;
 
+        SetEndTurnButton(false);
+
         if (isMyTurn)
         {
             if (myMaxMana < 10) myMaxMana++;
@@ -157,6 +162,11 @@ public class TurnManager : MonoBehaviour
         TriggerOnAddCard(isMyTurn);
         yield return turnCardDelay;
         isLoading = false;
+
+        if(isMyTurn)
+        {
+            SetEndTurnButton(true);
+        }
     }
     public bool UseMana(bool isMine, int cost)
     {
@@ -223,6 +233,8 @@ public class TurnManager : MonoBehaviour
     }
     public void EndTurn()
     {
+        SetEndTurnButton(false);
+
         if (isMyTurn)
         {
             SoundManager.instance.PlayOnSFX("EndTurnButtonSFX");
@@ -232,5 +244,12 @@ public class TurnManager : MonoBehaviour
 
         isMyTurn = !isMyTurn;
         StartCoroutine(StartTurnCo());
+    }
+    public void SetEndTurnButton(bool isAvailable)
+    {
+        if(endTurnButton != null)
+        {
+            endTurnButton.interactable = isAvailable;
+        }
     }
 }

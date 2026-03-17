@@ -127,17 +127,18 @@ public class CardManager : MonoBehaviour
                 //타겟이 필요 없거나 유효한 타겟이 있는 경우 능력 발동
                 effectManager.RunAbilities(BattleCryItem, BattleCryCaster, spellTarget);
 
-                //초기화
-                BattleCryCaster = null;
-                BattleCryItem = null;
-                spellTarget = null;
-                battleCryArmedFrame = -1;
+                TurnManager.Instance.SetEndTurnButton(true);
+                
+                ClearBattleCry();
             }
         }
     }
-    //청소용 사용안할시 삭제 예정
+
+    //초기화
     private void ClearBattleCry()
     {
+        TurnManager.Instance.SetEndTurnButton(true);
+
         BattleCryCaster = null;
         BattleCryItem = null;
         spellTarget = null;
@@ -364,6 +365,8 @@ public class CardManager : MonoBehaviour
 
         if (isMineSpawn)
         {
+            CardShowManager.Instance.ShowCard(card.item, isMine);
+
             if (isMine) TurnManager.Instance.UseMana(true, card.item.cardCost);
             else TurnManager.Instance.UseMana(false, card.item.cardCost);
 
@@ -430,6 +433,8 @@ public class CardManager : MonoBehaviour
         if (!EntityManager.Instance.SpawnEntity(true, card.item, spawnPos, out var spawned))
             return false;
 
+        CardShowManager.Instance.ShowCard(card.item, isMine);
+
         TurnManager.Instance.UseMana(true, cost);
 
         myCards.Remove(card);
@@ -444,6 +449,8 @@ public class CardManager : MonoBehaviour
                 BattleCryCaster = spawned;
                 BattleCryItem = card.item;
                 battleCryArmedFrame = Time.frameCount; // 현재 프레임 저장 (바로 클릭되는 것 방지)
+
+                TurnManager.Instance.SetEndTurnButton(false);
             }
             // 타겟이 필요 없는 경우 -> 즉시 발동
             else
@@ -478,6 +485,8 @@ public class CardManager : MonoBehaviour
 
         bool isUseSpell = EntityManager.Instance.RunSpell(isMine, item, target);
         if (!isUseSpell) return false;
+
+        CardShowManager.Instance.ShowCard(item, isMine);
 
         TurnManager.Instance.UseMana(isMine, item.cardCost);
 

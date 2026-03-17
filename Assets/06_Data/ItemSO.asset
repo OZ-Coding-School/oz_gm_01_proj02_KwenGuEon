@@ -158,7 +158,7 @@ MonoBehaviour:
     cardCost: 2
     cardType: 0
     cardClass: 0
-    name: "\uACB8\uC2B5 \uB9C8\uBC95\uC0AC"
+    name: "\uACAC\uC2B5 \uB9C8\uBC95\uC0AC"
     attack: 3
     health: 2
     sprite: {fileID: 21300000, guid: 3f03aa17c3f2dc84187d86fd2436a3a9, type: 3}
@@ -395,7 +395,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 487ca9c97a2121c49b97711625081a3b, type: 3}
     backGround: {fileID: 0}
     percent: 4
-    cardInfo: "\uC120\uD0DD\uD55C \uC801\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC90D\uB2C8\uB2E4."
+    cardInfo: "\uC120\uD0DD\uD55C \uB300\uC0C1\uC5D0\uAC8C \uD53C\uD5742\uB97C \uC90D\uB2C8\uB2E4."
     shopPercent: 0
     isRush: 0
     isProvocation: 0
@@ -896,7 +896,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 0dfc16044bcc25443a2cf75af388f273, type: 3}
     backGround: {fileID: 0}
     percent: 4
-    cardInfo: "\uC544\uAD70\uC758 \uCCB4\uB825\uC744 +2\uBD80\uC5EC"
+    cardInfo: "\uD558\uC218\uC778 \uD558\uB098\uC758 \uCCB4\uB825\uC744 +2\uBD80\uC5EC"
     shopPercent: 0
     isRush: 0
     isProvocation: 0
@@ -1658,7 +1658,7 @@ MonoBehaviour:
     hitSFX: Shared_Fire_Cast_Large_1
     vfxScale: 0.3
   - cardID: 42
-    cardCost: 4
+    cardCost: 6
     cardType: 0
     cardClass: 0
     name: "\uC815\uC2E0 \uC9C0\uBC30\uC790"
@@ -1667,8 +1667,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 8823b99716022a342ac93230cdbee756, type: 3}
     backGround: {fileID: 0}
     percent: 4
-    cardInfo: "\uC801 \uD558\uC218\uC778\uC774 4\uBA85 \uC774\uC0C1\uC774\uBA74 \uD558\uB098\uB97C
-      \uBE8F\uC5B4 \uC635\uB2C8\uB2E4"
+    cardInfo: "\uC801 \uD558\uC218\uC778 \uD558\uB098\uB97C \uBE8F\uC5B4 \uC635\uB2C8\uB2E4"
     shopPercent: 0
     isRush: 0
     isProvocation: 0

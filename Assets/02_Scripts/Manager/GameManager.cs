@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         InputcheatKey();
-#endif
+//#endif
     }
     void InputcheatKey()
     {

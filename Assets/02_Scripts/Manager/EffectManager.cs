@@ -321,9 +321,8 @@ public class EffectManager : MonoBehaviour
         }
         else
         {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(pos);
-
-            finalSpawnVFXPos = vfxCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+            Vector3 viewport = mainCamera.WorldToViewportPoint(pos);
+            finalSpawnVFXPos = vfxCamera.ViewportToWorldPoint(new Vector3(viewport.x, viewport.y, 10f));
         }       
 
         GameObject vfxObj = Instantiate(vfxPrefab, finalSpawnVFXPos, Utils.QI);
@@ -369,9 +368,8 @@ public class EffectManager : MonoBehaviour
         }
         else
         {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(pos);
-
-            finalSpawnVFXPos = vfxCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+            Vector3 viewport = mainCamera.WorldToViewportPoint(pos);
+            finalSpawnVFXPos = vfxCamera.ViewportToWorldPoint(new Vector3(viewport.x, viewport.y, 10f));
         }       
 
         GameObject vfxObj = Instantiate(vfxPrefab, finalSpawnVFXPos, Utils.QI);
